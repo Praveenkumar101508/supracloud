@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
 
     const { error } = await resend.emails.send({
       from: "SupraCloud <applications@supracloud.co.uk>",
-      to: ["radhakrishna.uk.ai@gmail.com"],
+      to: ["rk@supracloud.co.uk"],
       replyTo: email,
       subject: `New Application: ${name} — ${targetRole}`,
       html: `
