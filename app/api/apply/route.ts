@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
     }
 
     const { error } = await resend.emails.send({
-      from: "ProdReady Labs <applications@prodreadylabs.com>",
+      from: "SupraCloud <applications@supracloud.co.uk>",
       to: ["radhakrishna.uk.ai@gmail.com"],
       replyTo: email,
       subject: `New Application: ${name} — ${targetRole}`,
@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #f8fafc; padding: 32px; border-radius: 8px;">
           <div style="background: #0A192F; padding: 24px; border-radius: 8px 8px 0 0; text-align: center;">
             <h1 style="color: #ffffff; margin: 0; font-size: 22px;">New Application Received</h1>
-            <p style="color: #10B981; margin: 8px 0 0;">ProdReady Labs</p>
+            <p style="color: #10B981; margin: 8px 0 0;">SupraCloud</p>
           </div>
           <div style="background: #ffffff; padding: 32px; border-radius: 0 0 8px 8px; border: 1px solid #e2e8f0;">
             <table style="width: 100%; border-collapse: collapse;">
