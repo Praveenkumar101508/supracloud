@@ -42,11 +42,11 @@ export default function Footer() {
             <ul className="space-y-3 text-sm">
               <li>
                 <a
-                  href="mailto:radhakrishna.uk.ai@gmail.com"
+                  href="mailto:rk@supracloud.co.uk"
                   className="flex items-center gap-2 hover:text-white transition-colors"
                 >
                   <Mail size={16} />
-                  radhakrishna.uk.ai@gmail.com
+                  rk@supracloud.co.uk
                 </a>
               </li>
               <li>

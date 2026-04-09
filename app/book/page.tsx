@@ -49,11 +49,11 @@ export default function BookPage() {
             <h2 className="text-xl font-bold text-gray-900 mb-4">Prefer to Reach Out Directly?</h2>
             <div className="space-y-3">
               <a
-                href="mailto:radhakrishna.uk.ai@gmail.com"
+                href="mailto:rk@supracloud.co.uk"
                 className="flex items-center gap-3 text-sm text-gray-600 hover:text-emerald-600 transition-colors"
               >
                 <Mail size={16} className="text-emerald-500 shrink-0" />
-                radhakrishna.uk.ai@gmail.com
+                rk@supracloud.co.uk
               </a>
               <a
                 href="https://wa.me/447776456694"

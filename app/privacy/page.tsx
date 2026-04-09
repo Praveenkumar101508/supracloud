@@ -10,7 +10,7 @@ export default function PrivacyPage() {
             <h2 className="text-base font-semibold text-gray-900 mb-2">1. Who We Are</h2>
             <p>
               SupraCloud (&ldquo;we&rdquo;, &ldquo;us&rdquo;, &ldquo;our&rdquo;) operates the website and career accelerator programme.
-              Our contact email is radhakrishna.uk.ai@gmail.com.
+              Our contact email is rk@supracloud.co.uk.
             </p>
           </section>
 
@@ -45,7 +45,7 @@ export default function PrivacyPage() {
             <p>
               Under UK GDPR you have the right to access, correct, or delete your personal data, restrict or
               object to processing, and data portability. To exercise any of these rights, contact us at
-              radhakrishna.uk.ai@gmail.com.
+              rk@supracloud.co.uk.
             </p>
           </section>
 
@@ -61,8 +61,8 @@ export default function PrivacyPage() {
             <h2 className="text-base font-semibold text-gray-900 mb-2">7. Contact</h2>
             <p>
               For any privacy-related queries, please contact us at{" "}
-              <a href="mailto:radhakrishna.uk.ai@gmail.com" className="text-emerald-600 hover:underline">
-                radhakrishna.uk.ai@gmail.com
+              <a href="mailto:rk@supracloud.co.uk" className="text-emerald-600 hover:underline">
+                rk@supracloud.co.uk
               </a>.
             </p>
           </section>

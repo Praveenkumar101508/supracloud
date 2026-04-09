@@ -70,8 +70,8 @@ export default function TermsPage() {
             <h2 className="text-base font-semibold text-gray-900 mb-2">8. Contact</h2>
             <p>
               For any queries regarding these terms, email us at{" "}
-              <a href="mailto:radhakrishna.uk.ai@gmail.com" className="text-emerald-600 hover:underline">
-                radhakrishna.uk.ai@gmail.com
+              <a href="mailto:rk@supracloud.co.uk" className="text-emerald-600 hover:underline">
+                rk@supracloud.co.uk
               </a>.
             </p>
           </section>
