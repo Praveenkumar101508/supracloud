@@ -1,4 +1,5 @@
 import { CheckCircle, Clock, MessageCircle, Mail } from "lucide-react";
+import Script from "next/script";
 
 const prepItems = [
   "Your current CV or LinkedIn profile URL",
@@ -11,6 +12,16 @@ const prepItems = [
 export default function BookPage() {
   return (
     <div className="bg-slate-50">
+      {/* Calendly widget script */}
+      <Script
+        src="https://assets.calendly.com/assets/external/widget.js"
+        strategy="lazyOnload"
+      />
+      <link
+        rel="stylesheet"
+        href="https://assets.calendly.com/assets/external/widget.css"
+      />
+
       {/* Header */}
       <section style={{ backgroundColor: "#0A192F" }} className="py-20 text-center">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -28,7 +39,8 @@ export default function BookPage() {
       </section>
 
       <section className="py-16">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-12">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 gap-12">
+
           {/* Left: prep + contact */}
           <div>
             <div className="flex items-center gap-2 mb-6">
@@ -67,24 +79,12 @@ export default function BookPage() {
             </div>
           </div>
 
-          {/* Right: Calendly placeholder */}
-          <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-8 flex flex-col items-center justify-center text-center min-h-[400px]">
-            <div className="w-16 h-16 bg-emerald-50 rounded-full flex items-center justify-center mb-4">
-              <Clock size={28} className="text-emerald-500" />
-            </div>
-            <p className="text-lg font-bold text-gray-900 mb-2">Calendly Booking</p>
-            <p className="text-sm text-gray-500 mb-6 max-w-xs">
-              The live scheduling widget will appear here once the Calendly account is connected.
-            </p>
-            <a
-              href="https://wa.me/447776456694"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block px-6 py-3 rounded-md text-sm font-semibold text-white bg-emerald-500 hover:bg-emerald-600 transition-colors"
-            >
-              Message on WhatsApp to Book
-            </a>
-          </div>
+          {/* Right: Live Calendly embed */}
+          <div
+            className="calendly-inline-widget rounded-xl overflow-hidden shadow-sm border border-slate-200"
+            data-url="https://calendly.com/rk-supracloud/30min?hide_gdpr_banner=1&primary_color=10b981"
+            style={{ minWidth: "320px", height: "700px" }}
+          />
         </div>
       </section>
     </div>
