@@ -1,5 +1,4 @@
 import { CheckCircle, Clock, MessageCircle, Mail } from "lucide-react";
-import Script from "next/script";
 
 const prepItems = [
   "Your current CV or LinkedIn profile URL",
@@ -12,15 +11,6 @@ const prepItems = [
 export default function BookPage() {
   return (
     <div className="bg-slate-50">
-      {/* Calendly widget script */}
-      <Script
-        src="https://assets.calendly.com/assets/external/widget.js"
-        strategy="lazyOnload"
-      />
-      <link
-        rel="stylesheet"
-        href="https://assets.calendly.com/assets/external/widget.css"
-      />
 
       {/* Header */}
       <section style={{ backgroundColor: "#0A192F" }} className="py-20 text-center">
@@ -79,12 +69,18 @@ export default function BookPage() {
             </div>
           </div>
 
-          {/* Right: Live Calendly embed */}
-          <div
-            className="calendly-inline-widget rounded-xl overflow-hidden shadow-sm border border-slate-200"
-            data-url="https://calendly.com/rk-supracloud/30min?hide_gdpr_banner=1&primary_color=10b981"
-            style={{ minWidth: "320px", height: "700px" }}
-          />
+          {/* Right: Live Calendly iframe embed */}
+          <div className="rounded-xl overflow-hidden shadow-sm border border-slate-200">
+            <iframe
+              src="https://calendly.com/rk-supracloud/30min?hide_gdpr_banner=1&primary_color=10b981&embed_type=inline"
+              width="100%"
+              height="700"
+              frameBorder="0"
+              title="Book a Free Assessment Call with SupraCloud"
+              allow="fullscreen"
+              style={{ display: "block" }}
+            />
+          </div>
         </div>
       </section>
     </div>

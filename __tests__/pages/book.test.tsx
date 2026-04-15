@@ -9,12 +9,6 @@ jest.mock("next/link", () => {
   };
 });
 
-jest.mock("next/script", () => {
-  return function MockScript({ src }: any) {
-    return <script data-testid="calendly-script" src={src} />;
-  };
-});
-
 describe("Book Page", () => {
   it("renders page heading", () => {
     render(<BookPage />);
@@ -68,21 +62,21 @@ describe("Book Page", () => {
     expect(waLink).toHaveAttribute("href", "https://wa.me/447776456694");
   });
 
-  it("renders Calendly inline widget div", () => {
+  it("renders Calendly iframe embed", () => {
     const { container } = render(<BookPage />);
-    const widget = container.querySelector(".calendly-inline-widget");
-    expect(widget).toBeInTheDocument();
+    const iframe = container.querySelector("iframe");
+    expect(iframe).toBeInTheDocument();
   });
 
-  it("Calendly widget has correct data-url", () => {
+  it("Calendly iframe has correct src", () => {
     const { container } = render(<BookPage />);
-    const widget = container.querySelector(".calendly-inline-widget");
-    expect(widget?.getAttribute("data-url")).toContain("calendly.com/rk-supracloud/30min");
+    const iframe = container.querySelector("iframe");
+    expect(iframe?.getAttribute("src")).toContain("calendly.com/rk-supracloud/30min");
   });
 
-  it("loads Calendly script", () => {
-    render(<BookPage />);
-    const script = screen.getByTestId("calendly-script");
-    expect(script).toHaveAttribute("src", "https://assets.calendly.com/assets/external/widget.js");
+  it("Calendly iframe has accessible title", () => {
+    const { container } = render(<BookPage />);
+    const iframe = container.querySelector("iframe");
+    expect(iframe?.getAttribute("title")).toMatch(/SupraCloud/i);
   });
 });
