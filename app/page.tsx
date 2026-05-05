@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { LayoutDashboard, BookOpen, Trophy, GitBranch, FileText, Mic, Link2, CheckCircle } from "lucide-react";
+import { LayoutDashboard, BookOpen, Trophy, GitBranch, FileText, Mic, Link2, CheckCircle, Users, Building2 } from "lucide-react";
 
 const pillars = [
   {
@@ -33,6 +33,7 @@ const tiers = [
   {
     name: "The Foundation",
     price: "Tier 1",
+    priceLabel: "From £299",
     description: "Your professional presence, rebuilt from the ground up.",
     features: [
       "ATS-compliant CV rewrite",
@@ -47,6 +48,7 @@ const tiers = [
   {
     name: "The Application Engine",
     price: "Tier 2",
+    priceLabel: "From £599",
     description: "Everything in Tier 1, plus a done-for-you job search.",
     features: [
       "Everything in The Foundation",
@@ -61,6 +63,7 @@ const tiers = [
   {
     name: "The Full Accelerator",
     price: "Tier 3",
+    priceLabel: "From £999",
     description: "End-to-end support from profile to offer letter.",
     features: [
       "Everything in Tiers 1 & 2",
@@ -73,6 +76,13 @@ const tiers = [
     href: "/book",
     highlight: false,
   },
+];
+
+const stats = [
+  "20+ Candidates Supported",
+  "3 Industry Sectors",
+  "£40k–£75k Roles Secured",
+  "Built by ex-IBM Engineers",
 ];
 
 export default function Home() {
@@ -122,8 +132,75 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── 3 CORE PILLARS ── */}
+      {/* ── SOCIAL PROOF BAR ── */}
+      <section className="bg-emerald-900/30 border-y border-emerald-800/40 py-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-sm font-semibold text-emerald-300">
+            {stats.map((stat, i) => (
+              <span key={i} className="flex items-center gap-2">
+                {i > 0 && <span className="hidden sm:inline text-emerald-700">·</span>}
+                {stat}
+              </span>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── WHO IS THIS FOR ── */}
       <section className="bg-slate-50 py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">Who is SupraCloud for?</h2>
+            <p className="mt-3 text-gray-500 max-w-xl mx-auto">
+              Whether you&apos;re a candidate ready to level up or a business that needs real tech capability.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* Candidate card */}
+            <div className="bg-white rounded-xl p-8 border border-slate-200 shadow-sm hover:shadow-md transition-shadow flex flex-col">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-full bg-emerald-50 border border-emerald-200 flex items-center justify-center">
+                  <Users size={20} className="text-emerald-600" />
+                </div>
+                <span className="text-xs font-semibold uppercase tracking-widest text-emerald-600">For Candidates</span>
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-3">Looking to break into UK Data, Cloud & AI?</h3>
+              <p className="text-gray-500 text-sm leading-relaxed flex-1">
+                Career accelerator with real projects, done-for-you applications, and interview mastery. We close the gap between technically capable and confidently hired.
+              </p>
+              <Link
+                href="/programs"
+                className="mt-6 inline-block px-6 py-3 rounded-md text-sm font-semibold text-white bg-emerald-500 hover:bg-emerald-600 transition-colors text-center"
+              >
+                View Programmes
+              </Link>
+            </div>
+
+            {/* Business card */}
+            <div className="bg-white rounded-xl p-8 border border-slate-200 shadow-sm hover:shadow-md transition-shadow flex flex-col">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center">
+                  <Building2 size={20} className="text-slate-600" />
+                </div>
+                <span className="text-xs font-semibold uppercase tracking-widest text-slate-500">For Businesses</span>
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-3">Need AI agents or vetted tech talent?</h3>
+              <p className="text-gray-500 text-sm leading-relaxed flex-1">
+                We build custom AI agents for banking and retail, and staff vetted IT professionals across Data, Cloud, and AI. Engineer-led, not recruiter-led.
+              </p>
+              <Link
+                href="/ai-agents"
+                className="mt-6 inline-block px-6 py-3 rounded-md text-sm font-semibold text-gray-800 border border-slate-300 hover:border-slate-500 transition-colors text-center"
+              >
+                See Business Services
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── 3 CORE PILLARS ── */}
+      <section className="bg-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-14">
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">
@@ -137,7 +214,7 @@ export default function Home() {
             {pillars.map((pillar) => (
               <div
                 key={pillar.title}
-                className="bg-white rounded-xl p-8 shadow-sm border border-slate-100 hover:shadow-md transition-shadow"
+                className="bg-slate-50 rounded-xl p-8 shadow-sm border border-slate-100 hover:shadow-md transition-shadow"
               >
                 <div className="mb-4">{pillar.icon}</div>
                 <h3 className="text-lg font-bold text-gray-900 mb-3">{pillar.title}</h3>
@@ -149,21 +226,21 @@ export default function Home() {
       </section>
 
       {/* ── MEASURABLE OUTCOMES ── */}
-      <section className="bg-white py-20">
+      <section className="bg-slate-50 py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-14">
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">
               What You Walk Away With
             </h2>
             <p className="mt-3 text-gray-500 max-w-xl mx-auto">
-              Tangible, measurable deliverables — not vague "confidence boosts".
+              Tangible, measurable deliverables — not vague &ldquo;confidence boosts&rdquo;.
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {outcomes.map((o) => (
               <div
                 key={o.label}
-                className="flex flex-col gap-3 p-6 rounded-xl border border-slate-100 bg-slate-50 hover:shadow-sm transition-shadow"
+                className="flex flex-col gap-3 p-6 rounded-xl border border-slate-100 bg-white hover:shadow-sm transition-shadow"
               >
                 <div>{o.icon}</div>
                 <p className="font-semibold text-gray-900">{o.label}</p>
@@ -175,7 +252,7 @@ export default function Home() {
       </section>
 
       {/* ── PROGRAM TIER PREVIEW ── */}
-      <section className="bg-slate-50 py-20">
+      <section className="bg-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-14">
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">Choose Your Programme</h2>
@@ -199,7 +276,8 @@ export default function Home() {
                   </span>
                 )}
                 <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-1">{tier.price}</p>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">{tier.name}</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-1">{tier.name}</h3>
+                <p className="text-lg font-bold text-emerald-600 mb-2">{tier.priceLabel}</p>
                 <p className="text-sm text-gray-500 mb-6">{tier.description}</p>
                 <ul className="space-y-3 mb-8">
                   {tier.features.map((f) => (
@@ -230,6 +308,28 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── FOUNDER STRIP ── */}
+      <section className="bg-slate-50 py-16 border-t border-slate-100">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
+            {/* Photo placeholder */}
+            <div className="w-20 h-20 rounded-full bg-slate-200 border-2 border-emerald-200 flex items-center justify-center shrink-0 text-2xl font-bold text-slate-400 select-none">
+              PK
+            </div>
+            <div className="text-center sm:text-left">
+              <p className="font-bold text-gray-900 text-lg">Praveen Kumar</p>
+              <p className="text-sm text-emerald-600 font-medium mb-3">Founder · AI/ML Engineer · ex-IBM</p>
+              <p className="text-sm text-gray-500 leading-relaxed">
+                I spent 5 years building production RAG pipelines and ML systems at IBM. I built SupraCloud because I know exactly what UK employers want — and most candidates are never shown how to deliver it.
+              </p>
+              <Link href="/about" className="inline-block mt-4 text-sm font-semibold text-emerald-600 hover:text-emerald-700 underline underline-offset-2">
+                Read My Story →
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ── FINAL CTA ── */}
       <section style={{ backgroundColor: "#0A192F" }} className="py-20">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -237,7 +337,7 @@ export default function Home() {
             Ready to Get Industry-Ready?
           </h2>
           <p className="text-slate-300 mb-10 text-lg leading-relaxed">
-            Book a free 30-minute assessment call. We'll map out exactly where you are,
+            Book a free 30-minute assessment call. We&apos;ll map out exactly where you are,
             where you need to be, and which programme gets you there fastest.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
