@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import CookieBanner from "./components/CookieBanner";
 import { Providers } from "./providers";
 
 const inter = Inter({
@@ -30,15 +31,17 @@ export const metadata: Metadata = {
     "Python SQL interview prep UK",
     "career accelerator UK",
     "data engineering portfolio",
+    "AI agent development UK",
+    "IT staffing UK",
   ],
   authors: [{ name: "SupraCloud", url: BASE_URL }],
   creator: "SupraCloud",
   publisher: "SupraCloud",
   icons: {
     icon: [
-      { url: "/favicon.ico",           sizes: "any" },
-      { url: "/icon-192.png",          sizes: "192x192", type: "image/png" },
-      { url: "/icon-512.png",          sizes: "512x512", type: "image/png" },
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
     ],
     apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
     shortcut: "/favicon.ico",
@@ -81,6 +84,20 @@ export const metadata: Metadata = {
   },
 };
 
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "SupraCloud",
+  url: "https://supracloud.co.uk",
+  logo: "https://supracloud.co.uk/og-image.jpg",
+  contactPoint: {
+    "@type": "ContactPoint",
+    email: "rk@supracloud.co.uk",
+    contactType: "customer service",
+  },
+  sameAs: ["https://twitter.com/supracloud"],
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -88,11 +105,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} h-full antialiased`}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
+      </head>
       <body className="min-h-full flex flex-col bg-slate-50 text-gray-900">
         <Providers>
           <Navbar />
           <main className="flex-1">{children}</main>
           <Footer />
+          <CookieBanner />
         </Providers>
       </body>
     </html>
