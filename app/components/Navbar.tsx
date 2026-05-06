@@ -191,6 +191,12 @@ export default function Navbar() {
         {/* Desktop CTAs */}
         <div className="hidden md:flex items-center gap-3">
           <Link
+            href="/portal"
+            className="text-sm font-semibold px-4 py-2 rounded-md text-slate-400 hover:text-white transition-colors"
+          >
+            Client Login
+          </Link>
+          <Link
             href="/contact"
             className="text-sm font-semibold px-4 py-2 rounded-md border border-slate-600 text-slate-200 hover:border-emerald-500 hover:text-white transition-colors"
           >
