@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Components · Badges</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin:0; padding:22px; background:#fff; font-family: var(--sc-font-sans); }
+  .row { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; align-items:center; }
+  .badge { padding:3px 10px; border-radius:9999px; font-size:11px; font-weight:600; border:1px solid; }
+  .b-success { background:#EFF6FF; color:#1D4ED8; border-color:#BFDBFE; }
+  .b-info    { background:#EFF6FF; color:#1D4ED8; border-color:#BFDBFE; }
+  .b-pending { background:#F1F5F9; color:#64748B; border-color:#E2E8F0; }
+  .tech { display:inline-flex; padding:5px 12px; border-radius:9999px; font-size:12px; font-weight:500; background:#334155; color:#CBD5E1; border:1px solid #475569; }
+  .stat { display:inline-flex; align-items:center; gap:6px; font-size:13px; color:#CBD5E1; font-weight:600; }
+  .label { font-family:'JetBrains Mono', monospace; font-size:10px; color:#9CA3AF; margin-bottom:6px; text-transform:uppercase; letter-spacing:0.1em; }
+</style>
+</head>
+<body>
+  <div class="label">Status badges (portal)</div>
+  <div class="row">
+    <span class="badge b-success">Delivered</span>
+    <span class="badge b-info">In Progress</span>
+    <span class="badge b-pending">Upcoming</span>
+  </div>
+  <div class="label">Tech stack chips (on dark)</div>
+  <div class="row" style="background:#0A192F; padding:12px; border-radius:10px;">
+    <span class="tech">Claude API</span>
+    <span class="tech">LangGraph</span>
+    <span class="tech">RAG</span>
+    <span class="tech">FastAPI</span>
+    <span class="tech">Pinecone</span>
+  </div>
+  <div class="label">Trust strip glyphs</div>
+  <div class="row" style="background:#071527; padding:12px; border-radius:10px;">
+    <span class="stat"><span style="color:#3B82F6">✓</span> Banking & Retail Specialists</span>
+    <span style="color:#334155">·</span>
+    <span class="stat"><span style="color:#3B82F6">✓</span> UK-Based Team</span>
+  </div>
+</body>
+</html>

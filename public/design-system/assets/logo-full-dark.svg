@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 40" width="200" height="40" fill="none">
+  <defs>
+    <linearGradient id="scDgmark" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#06B6D4"></stop>
+      <stop offset="100%" stop-color="#10B981"></stop>
+    </linearGradient>
+    <linearGradient id="scDgdim" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0891B2" stop-opacity="0.50"></stop>
+      <stop offset="100%" stop-color="#0891B2" stop-opacity="0.78"></stop>
+    </linearGradient>
+  </defs>
+  <g>
+    <rect x="0" y="29" width="22" height="7" rx="3.5" fill="url(#scDgdim)"></rect>
+    <rect x="9" y="17" width="22" height="7" rx="3.5" fill="url(#scDgmark)" opacity="0.84"></rect>
+    <rect x="18" y="5" width="22" height="7" rx="3.5" fill="url(#scDgmark)"></rect>
+    <circle cx="15" cy="26.5" r="2.2" fill="#06B6D4" opacity="0.58"></circle>
+    <circle cx="24" cy="14.5" r="2.2" fill="#10B981" opacity="0.80"></circle>
+  </g>
+  <text x="50" y="28" font-family="Inter, system-ui, sans-serif" font-size="22" font-weight="700" letter-spacing="-0.02em">
+    <tspan fill="#0A192F">Supra</tspan><tspan fill="#06B6D4">Cloud</tspan>
+  </text>
+</svg>

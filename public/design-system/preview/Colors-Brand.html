@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Colors · Brand</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin:0; padding:20px; background:#fff; font-family: var(--sc-font-sans); }
+  .stack { display:flex; flex-direction:column; gap:14px; }
+  .scale { display:grid; grid-template-columns: repeat(5, 1fr); gap:8px; }
+  .chip { height:60px; border-radius:10px; display:flex; align-items:flex-end; padding:8px; color:#fff; font-family: var(--sc-font-mono); font-size:10px; font-weight:500; }
+  .chip.dark-text { color: #0A192F; }
+  .label { font-size:11px; font-weight:600; color:var(--sc-fg-3); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:2px; }
+  .grad-row { display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
+  .grad { height:54px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:600; color:#fff; }
+</style>
+</head>
+<body>
+  <div class="stack">
+    <div>
+      <div class="label">Emerald · Primary</div>
+      <div class="scale">
+        <div class="chip dark-text" style="background:#BFDBFE">200</div>
+        <div class="chip dark-text" style="background:#93C5FD">300</div>
+        <div class="chip" style="background:#60A5FA">400</div>
+        <div class="chip" style="background:#3B82F6">500</div>
+        <div class="chip" style="background:#2563EB">600</div>
+      </div>
+    </div>
+    <div>
+      <div class="label">Cyan · Mark Accent</div>
+      <div class="scale">
+        <div class="chip dark-text" style="background:#A5F3FC">200</div>
+        <div class="chip dark-text" style="background:#93C5FD">300</div>
+        <div class="chip dark-text" style="background:#60A5FA">400</div>
+        <div class="chip" style="background:#3B82F6">500</div>
+        <div class="chip" style="background:#2563EB">600</div>
+      </div>
+    </div>
+    <div class="grad-row">
+      <div class="grad" style="background:linear-gradient(135deg,#3B82F6,#60A5FA)">Text gradient</div>
+      <div class="grad" style="background:linear-gradient(90deg,#3B82F6,#3B82F6)">Mark gradient</div>
+    </div>
+  </div>
+</body>
+</html>

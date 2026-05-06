@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Banking AI — SupraCloud</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../../assets/favicon.svg">
+<link rel="stylesheet" href="../../colors_and_type.css">
+<link rel="stylesheet" href="kit.css">
+<script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="dark">
+<div data-include="nav.html"></div>
+
+<main>
+  <section class="hero">
+    <div class="container hero-center">
+      <div class="eyebrow-pill"><i data-lucide="shield-check" style="width:14px;height:14px"></i> Enterprise-Grade Security &amp; Compliance</div>
+      <h1 class="display">Autonomous AI Agents for<br><span class="grad">Global Banking Operations</span></h1>
+      <p class="lede-dark">Scale operational excellence with Level 1 and Level 2 autonomous support agents designed for high-compliance financial environments. Reduce friction, increase accuracy.</p>
+      <div class="ctas">
+        <a class="btn-primary-lg" href="booking.html">Request Technical Demo <i data-lucide="arrow-right" style="width:14px;height:14px"></i></a>
+        <a class="btn-ghost-lg" href="portal.html">View Sample QA Reports</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="dark-section">
+    <div class="container">
+      <div class="grid-2">
+        <div class="vert-card">
+          <div class="vc-ic blue"><i data-lucide="cpu" style="width:22px;height:22px"></i></div>
+          <h3>Level 1: Autonomous Response</h3>
+          <p>Handle high-volume inquiries with zero human intervention. Our agents manage balance checks, transaction disputes, and secure resets using RAG-based architectures for 99.9% accuracy.</p>
+        </div>
+        <div class="vert-card">
+          <div class="vc-ic blue-light"><i data-lucide="bar-chart-3" style="width:22px;height:22px"></i></div>
+          <h3>Level 2: Complex Troubleshooting</h3>
+          <p>Advanced agents capable of navigating multi-step verification and fraud detection triggers. Seamlessly integrates with core banking systems to solve complex customer journeys.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="dark-section bordered">
+    <div class="container">
+      <div class="center">
+        <div class="eyebrow-pill"><i data-lucide="git-branch" style="width:14px;height:14px"></i> Reference Architecture</div>
+        <h2 class="h2-dark">How a Banking AI Agent Resolves a Query</h2>
+        <p class="lede-dark">From customer message to resolution — every hop logged, audited, and replayable in your client portal.</p>
+      </div>
+      <div class="arch-diagram">
+        <div class="arch-row">
+          <div class="arch-node"><div class="nd-eye">Channel</div><div class="nd-t">Customer Touchpoint</div><div class="nd-d">Mobile · Web Chat · IVR · WhatsApp</div></div>
+          <div class="arch-node"><div class="nd-eye">Gateway</div><div class="nd-t">Auth &amp; Routing</div><div class="nd-d">OAuth2 · MFA · PII redaction</div></div>
+          <div class="arch-node solid"><div class="nd-eye">Orchestrator</div><div class="nd-t">LangGraph Runtime</div><div class="nd-d">Plans, calls tools, streams response</div></div>
+          <div class="arch-node"><div class="nd-eye">Output</div><div class="nd-t">Resolved &amp; Logged</div><div class="nd-d">SLA tracked · QA replay-ready</div></div>
+        </div>
+        <div class="arch-rail"><span class="arch-line solid"></span></div>
+        <div class="arch-row three">
+          <div class="arch-node"><div class="nd-eye">Knowledge</div><div class="nd-t">Banking RAG Index</div><div class="nd-d">Policy docs · Product T&amp;Cs · FAQ corpus</div></div>
+          <div class="arch-node"><div class="nd-eye">Tools</div><div class="nd-t">Core Banking APIs</div><div class="nd-d">Balance · Payments · Cards · Disputes</div></div>
+          <div class="arch-node dashed"><div class="nd-eye">Escalation</div><div class="nd-t">L2 / Human Handoff</div><div class="nd-d">Full context transfer · 0 customer repeat</div></div>
+        </div>
+        <div class="arch-legend">
+          <span><i></i> Synchronous request</span>
+          <span><i class="dashed"></i> Conditional escalation path</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="dark-section">
+    <div class="container">
+      <div class="center">
+        <div class="eyebrow-pill"><i data-lucide="message-square" style="width:14px;height:14px"></i> Sample L2 Resolution</div>
+        <h2 class="h2-dark">A Disputed Card Transaction, End-to-End</h2>
+        <p class="lede-dark">Replayed from a real production trace — names anonymised, latency unedited.</p>
+      </div>
+      <div class="grid-2 mt-12">
+        <div class="transcript">
+          <div class="transcript-head"><span class="pulse"></span> session_a83f · banking-l2-agent v3.2.1 · 14:02 BST</div>
+          <div class="transcript-body">
+            <div class="bubble user"><div class="meta">Customer</div>I see a £128.40 charge from "GLOBALPAY*WEB" on my Platinum card I don't recognise. Can you cancel it?</div>
+            <div class="bubble tool"><div class="meta">tool · core_banking.lookup_txn</div>txn_id=tx_2c91 · merchant=GLOBALPAY · auth=2026-05-04 · amt=128.40 · channel=card-not-present · 3DS=skipped</div>
+            <div class="bubble agent"><div class="meta">SupraCloud Agent</div>I can see the transaction — £128.40 to GLOBALPAY on 4 May. It bypassed 3D-Secure, which is unusual on your Platinum card. To raise a Section 75 dispute, can you confirm: did anyone in your household authorise it?</div>
+            <div class="bubble user"><div class="meta">Customer</div>No-one. I haven't used that card online this week.</div>
+            <div class="bubble tool"><div class="meta">tool · fraud.flag_and_freeze</div>card_id=plat_••4421 · status=frozen · replacement=expedited · eta=2 business days</div>
+            <div class="bubble agent"><div class="meta">SupraCloud Agent</div>Card frozen and a replacement is on its way (2 business days). I've opened dispute case <strong>#DSP-9041</strong> — provisional credit of £128.40 will land within 24h. You'll get an SMS when it's posted.</div>
+          </div>
+          <div class="transcript-foot">
+            <span>Resolution: <strong>L2 autonomous</strong> · 4 tool calls</span>
+            <span>SLA: <strong>3.2s</strong> avg latency</span>
+            <span>Handoff: <strong>0</strong> · Replay ID <strong>a83f</strong></span>
+          </div>
+        </div>
+        <div>
+          <h3 style="color:#fff; font-size: 22px; font-weight: 700; margin: 0 0 14px;">What just happened</h3>
+          <p class="lede-dark left" style="margin-bottom:18px">A textbook L2 flow: the agent gathered the missing fact (authorisation), made two privileged tool calls (freeze card, open dispute), and closed with a concrete SLA — no human in the loop. The full trace is available in your client portal as a replayable QA artifact.</p>
+          <div class="metric-strip" style="grid-template-columns: 1fr 1fr; margin-top: 8px;">
+            <div class="metric"><div class="mv">63%</div><div class="ml">L1 deflection rate, 90 days</div></div>
+            <div class="metric"><div class="mv">94.2%</div><div class="ml">L2 first-contact resolution</div></div>
+            <div class="metric"><div class="mv">3.2s</div><div class="ml">Median end-to-end latency</div></div>
+            <div class="metric"><div class="mv">0</div><div class="ml">PII leakage incidents</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="dark-section bordered">
+    <div class="container">
+      <h2 class="h2-dark center">Engineering-First Delivery</h2>
+      <div class="grid-3 mt-12">
+        <div class="trust-col"><h4>Playwright QA Reports</h4><p>Full automated testing logs provided for every agent deployment to ensure zero regressions.</p></div>
+        <div class="trust-col"><h4>ProdReady Labs™ Certified</h4><p>Rigorous stress-testing and edge-case validation before moving to production traffic.</p></div>
+        <div class="trust-col"><h4>GDPR &amp; ISO Compliant</h4><p>Data-privacy-first logic integrated into every LLM call for banking security standards.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="dark-section cta-band">
+    <div class="container narrow center">
+      <h2 class="h2-dark">Make it easy to respond.</h2>
+      <p class="lede-dark">Generic outreach fails because it creates friction. Just tell us your core business challenge below, and we'll show you the solution.</p>
+      <a class="btn-primary-lg" href="booking.html">Book a Banking Strategy Session <i data-lucide="arrow-right" style="width:14px;height:14px"></i></a>
+    </div>
+  </section>
+</main>
+
+<div data-include="footer.html"></div>
+<script src="kit.js"></script>
+</body>
+</html>

@@ -1,0 +1,236 @@
+/* =========================================================================
+   SupraCloud — Colors & Type
+   Single source of truth for design tokens.
+   ========================================================================= */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap");
+
+:root {
+  /* ── COLORS · BRAND ──────────────────────────────────────────── */
+  /* Electric Blue — primary accent (matches logo mark) */
+  --sc-blue-300:      #93C5FD;
+  --sc-blue-400:      #60A5FA;   /* logo highlight stroke / on-dark accent */
+  --sc-blue-500:      #3B82F6;   /* primary action — logo main stroke */
+  --sc-blue-600:      #2563EB;   /* primary hover */
+  --sc-blue-700:      #1D4ED8;
+  /* Cloud White — secondary accent for on-dark surfaces */
+  --sc-cloud:         #F8FAFC;
+  --sc-cloud-dim:     #CBD5E1;
+  /* Legacy aliases (kept so older components don't break) */
+  --sc-emerald-400:   #60A5FA;
+  --sc-emerald-500:   #3B82F6;
+  --sc-emerald-600:   #2563EB;
+  --sc-cyan-400:      #60A5FA;
+  --sc-cyan-500:      #3B82F6;
+  --sc-cyan-600:      #2563EB;
+
+  /* ── COLORS · SURFACE (DARK) ─────────────────────────────────── */
+  --sc-navy-deep:     #071527;   /* stat bars, final CTA */
+  --sc-navy:          #0A192F;   /* primary dark surface */
+  --sc-navy-elevated: #0D2137;   /* dropdowns, popovers */
+
+  /* ── COLORS · SURFACE (LIGHT) ─────────────────────────────────── */
+  --sc-bg:            #F8FAFC;   /* slate-50 page bg */
+  --sc-card:          #FFFFFF;
+  --sc-inset:         #F1F5F9;   /* slate-100 */
+
+  /* ── COLORS · NEUTRAL TEXT (DARK SURFACE) ────────────────────── */
+  --sc-fg-on-dark-1:  #FFFFFF;   /* headings */
+  --sc-fg-on-dark-2:  #CBD5E1;   /* slate-300 — nav */
+  --sc-fg-on-dark-3:  #94A3B8;   /* slate-400 — body */
+  --sc-fg-on-dark-4:  #64748B;   /* slate-500 — caption */
+  --sc-fg-on-dark-5:  #475569;   /* slate-600 — muted */
+
+  /* ── COLORS · NEUTRAL TEXT (LIGHT SURFACE) ───────────────────── */
+  --sc-fg-1:          #111827;   /* gray-900 headings */
+  --sc-fg-2:          #374151;   /* gray-700 body strong */
+  --sc-fg-3:          #6B7280;   /* gray-500 body */
+  --sc-fg-4:          #9CA3AF;   /* gray-400 caption */
+
+  /* ── COLORS · BORDERS ─────────────────────────────────────────── */
+  --sc-border-light-1: #F1F5F9;   /* slate-100 — subtle card */
+  --sc-border-light-2: #E2E8F0;   /* slate-200 — input */
+  --sc-border-light-3: #CBD5E1;   /* slate-300 — strong */
+  --sc-border-dark-1:  rgba(255,255,255,0.08);  /* glass / nav */
+  --sc-border-dark-2:  rgba(255,255,255,0.16);  /* hover */
+  --sc-border-dark-3:  #1E293B;   /* slate-800 — section divider */
+
+  /* ── COLORS · SEMANTIC ────────────────────────────────────────── */
+  --sc-success:       #10B981;   /* still emerald — semantic only, not brand */
+  --sc-success-bg:    #ECFDF5;
+  --sc-success-bd:    #A7F3D0;
+  --sc-info:          #3B82F6;   /* aligns with brand blue */
+  --sc-info-bg:       #EFF6FF;
+  --sc-info-bd:       #BFDBFE;
+  --sc-warn:          #F59E0B;
+  --sc-warn-bg:       #FFFBEB;
+  --sc-warn-bd:       #FDE68A;
+  --sc-danger:        #EF4444;
+  --sc-danger-bg:     #FEF2F2;
+  --sc-danger-bd:     #FECACA;
+
+  /* ── COLORS · GRADIENTS ───────────────────────────────────────── */
+  --sc-grad-text:     linear-gradient(135deg, #3B82F6, #60A5FA);
+  --sc-grad-mark:     linear-gradient(90deg, #2563EB, #60A5FA);
+  --sc-grad-glow:     radial-gradient(ellipse 80% 60% at 50% 0%, rgba(59,130,246,0.10), transparent 70%);
+
+  /* ── TYPE · FAMILIES ─────────────────────────────────────────── */
+  --sc-font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --sc-font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* ── TYPE · WEIGHTS ──────────────────────────────────────────── */
+  --sc-w-regular:  400;
+  --sc-w-medium:   500;
+  --sc-w-semibold: 600;
+  --sc-w-bold:     700;
+  --sc-w-extra:    800;
+
+  /* ── TYPE · SCALE ────────────────────────────────────────────── */
+  --sc-fs-display:   3.75rem;   /* 60px — hero H1 */
+  --sc-fs-h1:        3rem;      /* 48px */
+  --sc-fs-h2:        2.25rem;   /* 36px */
+  --sc-fs-h3:        1.5rem;    /* 24px — card title */
+  --sc-fs-h4:        1.125rem;  /* 18px */
+  --sc-fs-body-lg:   1.125rem;  /* 18px — hero sub */
+  --sc-fs-body:      1rem;      /* 16px */
+  --sc-fs-body-sm:   0.875rem;  /* 14px */
+  --sc-fs-caption:   0.8125rem; /* 13px */
+  --sc-fs-eyebrow:   0.75rem;   /* 12px */
+  --sc-fs-mono:      0.8125rem; /* 13px terminal */
+
+  /* ── TYPE · LINE HEIGHT ──────────────────────────────────────── */
+  --sc-lh-tight:    1.1;
+  --sc-lh-snug:     1.25;
+  --sc-lh-normal:   1.5;
+  --sc-lh-relaxed:  1.625;
+
+  /* ── TYPE · TRACKING ─────────────────────────────────────────── */
+  --sc-tr-tight:    -0.02em;
+  --sc-tr-normal:   0;
+  --sc-tr-wide:     0.05em;
+  --sc-tr-widest:   0.15em;
+
+  /* ── SPACING (4px base) ──────────────────────────────────────── */
+  --sc-sp-1:  0.25rem;   /*  4px */
+  --sc-sp-2:  0.5rem;    /*  8px */
+  --sc-sp-3:  0.75rem;   /* 12px */
+  --sc-sp-4:  1rem;      /* 16px */
+  --sc-sp-5:  1.25rem;   /* 20px */
+  --sc-sp-6:  1.5rem;    /* 24px */
+  --sc-sp-8:  2rem;      /* 32px */
+  --sc-sp-10: 2.5rem;    /* 40px */
+  --sc-sp-12: 3rem;      /* 48px */
+  --sc-sp-16: 4rem;      /* 64px */
+  --sc-sp-20: 5rem;      /* 80px */
+  --sc-sp-24: 6rem;      /* 96px */
+
+  /* ── RADII ───────────────────────────────────────────────────── */
+  --sc-r-sm:   6px;
+  --sc-r-md:   8px;
+  --sc-r-lg:   12px;
+  --sc-r-xl:   16px;
+  --sc-r-2xl:  24px;
+  --sc-r-pill: 9999px;
+
+  /* ── SHADOWS ─────────────────────────────────────────────────── */
+  --sc-shadow-sm:    0 1px 2px rgba(0,0,0,0.05);
+  --sc-shadow-md:    0 4px 12px rgba(0,0,0,0.08);
+  --sc-shadow-lg:    0 12px 32px rgba(0,0,0,0.12);
+  --sc-shadow-2xl:   0 25px 50px -12px rgba(0,0,0,0.25);
+  --sc-shadow-popover: 0 24px 48px rgba(0,0,0,0.4);
+  --sc-shadow-blue-glow:    0 0 0 1px #3B82F6, 0 4px 20px rgba(59,130,246,0.18);
+  --sc-shadow-emerald-glow: 0 0 0 1px #3B82F6, 0 4px 20px rgba(59,130,246,0.18); /* legacy alias */
+
+  /* ── MOTION ──────────────────────────────────────────────────── */
+  --sc-ease:        cubic-bezier(0.4, 0, 0.2, 1);
+  --sc-dur-fast:    150ms;
+  --sc-dur-normal:  200ms;
+  --sc-dur-slow:    600ms;
+}
+
+/* =========================================================================
+   SEMANTIC ELEMENT STYLES
+   Use these directly on raw HTML or copy as Tailwind/utility patterns.
+   ========================================================================= */
+
+html, body {
+  font-family: var(--sc-font-sans);
+  background: var(--sc-bg);
+  color: var(--sc-fg-1);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "cv11", "ss01";
+}
+
+h1, .sc-h1 {
+  font-size: var(--sc-fs-display);
+  font-weight: var(--sc-w-extra);
+  line-height: var(--sc-lh-tight);
+  letter-spacing: var(--sc-tr-tight);
+  color: var(--sc-fg-1);
+}
+
+h2, .sc-h2 {
+  font-size: var(--sc-fs-h2);
+  font-weight: var(--sc-w-bold);
+  line-height: var(--sc-lh-snug);
+  letter-spacing: var(--sc-tr-tight);
+  color: var(--sc-fg-1);
+}
+
+h3, .sc-h3 {
+  font-size: var(--sc-fs-h3);
+  font-weight: var(--sc-w-bold);
+  line-height: var(--sc-lh-snug);
+  color: var(--sc-fg-1);
+}
+
+h4, .sc-h4 {
+  font-size: var(--sc-fs-h4);
+  font-weight: var(--sc-w-bold);
+  line-height: var(--sc-lh-snug);
+  color: var(--sc-fg-1);
+}
+
+p, .sc-p {
+  font-size: var(--sc-fs-body);
+  line-height: var(--sc-lh-relaxed);
+  color: var(--sc-fg-3);
+}
+
+.sc-eyebrow {
+  font-size: var(--sc-fs-eyebrow);
+  font-weight: var(--sc-w-semibold);
+  letter-spacing: var(--sc-tr-widest);
+  text-transform: uppercase;
+  color: var(--sc-blue-500);
+}
+
+.sc-eyebrow--on-dark { color: var(--sc-blue-400); }
+
+.sc-caption {
+  font-size: var(--sc-fs-caption);
+  color: var(--sc-fg-4);
+  line-height: var(--sc-lh-normal);
+}
+
+code, .sc-code, .sc-mono {
+  font-family: var(--sc-font-mono);
+  font-size: var(--sc-fs-mono);
+  font-weight: var(--sc-w-medium);
+}
+
+.sc-grad-text {
+  background: var(--sc-grad-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* dark surface helpers */
+.sc-on-dark { color: var(--sc-fg-on-dark-3); }
+.sc-on-dark h1, .sc-on-dark h2, .sc-on-dark h3, .sc-on-dark h4,
+.sc-on-dark .sc-h1, .sc-on-dark .sc-h2, .sc-on-dark .sc-h3, .sc-on-dark .sc-h4 {
+  color: var(--sc-fg-on-dark-1);
+}
+.sc-on-dark p { color: var(--sc-fg-on-dark-3); }

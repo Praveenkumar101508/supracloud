@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Colors · Surface</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin:0; padding:20px; background:#fff; font-family: var(--sc-font-sans); }
+  .row { display:grid; grid-template-columns: repeat(6, 1fr); gap:12px; }
+  .sw { display:flex; flex-direction:column; gap:8px; }
+  .chip { height:88px; border-radius:12px; border:1px solid var(--sc-border-light-1); position:relative; overflow:hidden; }
+  .chip .grid {
+    position:absolute; inset:0;
+    background-image: linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px);
+    background-size: 24px 24px;
+    opacity: 0.05;
+  }
+  .name { font-size:12px; font-weight:600; color:var(--sc-fg-1); }
+  .hex  { font-family: var(--sc-font-mono); font-size:11px; color:var(--sc-fg-3); letter-spacing:-0.01em; }
+</style>
+</head>
+<body>
+  <div class="row">
+    <div class="sw"><div class="chip" style="background:#071527"><div class="grid"></div></div><div class="name">Navy Deep</div><div class="hex">#071527</div></div>
+    <div class="sw"><div class="chip" style="background:#0A192F"><div class="grid"></div></div><div class="name">Navy</div><div class="hex">#0A192F</div></div>
+    <div class="sw"><div class="chip" style="background:#0D2137"><div class="grid"></div></div><div class="name">Navy Elevated</div><div class="hex">#0D2137</div></div>
+    <div class="sw"><div class="chip" style="background:#F1F5F9"></div><div class="name">Inset</div><div class="hex">#F1F5F9</div></div>
+    <div class="sw"><div class="chip" style="background:#F8FAFC"></div><div class="name">Bg</div><div class="hex">#F8FAFC</div></div>
+    <div class="sw"><div class="chip" style="background:#FFFFFF"></div><div class="name">Card</div><div class="hex">#FFFFFF</div></div>
+  </div>
+</body>
+</html>
