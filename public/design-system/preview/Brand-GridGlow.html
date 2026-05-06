@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Brand · Grid + Glow</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin:0; padding:0; background:#0A192F; font-family: var(--sc-font-sans); height:100vh; position:relative; overflow:hidden; }
+  .grid { position:absolute; inset:0;
+    background-image: linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px);
+    background-size: 48px 48px; opacity:0.035;
+  }
+  .glow { position:absolute; inset:0;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(59,130,246,0.12), transparent 70%);
+  }
+  .label {
+    position:absolute; left:20px; bottom:18px;
+    font-family:'JetBrains Mono', monospace; font-size:11px; color:#64748B;
+  }
+  .label .em { color:#60A5FA; }
+</style>
+</head>
+<body>
+  <div class="grid"></div>
+  <div class="glow"></div>
+  <div class="label">grid <span class="em">48px @ 3.5%</span> · radial glow <span class="em">emerald 8%</span></div>
+</body>
+</html>

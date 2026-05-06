@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Components · Stat Tile</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin:0; padding:20px; background:#0A192F; font-family: var(--sc-font-sans); }
+  .row { display:grid; grid-template-columns: repeat(4, 1fr); gap:12px; margin-bottom:14px; }
+  .tile { background:#fff; border:1px solid #F1F5F9; border-radius:12px; padding:14px; text-align:center; }
+  .tile .v { font-size:24px; font-weight:800; color:#2563EB; }
+  .tile .l { font-size:11px; color:#6B7280; margin-top:2px; }
+  .stat-card {
+    background:rgba(59,130,246,0.10); border:1px solid rgba(59,130,246,0.20);
+    border-radius:14px; padding:16px;
+  }
+  .stat-card .v { font-size:30px; font-weight:800; color:#60A5FA; }
+  .stat-card .l { font-size:13px; color:#BFDBFE; margin-top:4px; }
+</style>
+</head>
+<body>
+  <div class="row">
+    <div class="tile"><div class="v">63%</div><div class="l">L1 deflection</div></div>
+    <div class="tile"><div class="v">&lt;0.5s</div><div class="l">Response time</div></div>
+    <div class="tile"><div class="v">99.97%</div><div class="l">Uptime SLA</div></div>
+    <div class="tile"><div class="v">24/7</div><div class="l">Coverage</div></div>
+  </div>
+  <div class="stat-card">
+    <div class="v">63%</div>
+    <div class="l">reduction in L1 call volume</div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Brand · Logo</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin:0; padding:22px; background:#fff; font-family: var(--sc-font-sans); display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .panel { padding:18px; border-radius:14px; display:flex; flex-direction:column; gap:10px; align-items:flex-start; }
+  .panel.dark { background:#0A192F; }
+  .panel.light { background:#F8FAFC; border:1px solid #F1F5F9; }
+  .label { font-family:'JetBrains Mono', monospace; font-size:10px; color:#94A3B8; }
+  .panel.light .label { color:#9CA3AF; }
+  img { display:block; }
+</style>
+</head>
+<body>
+  <div class="panel dark">
+    <img src="../assets/logo-full-light.svg" alt="" width="180">
+    <span class="label">light variant — on navy</span>
+    <img src="../assets/logo-mark.svg" alt="" width="40">
+  </div>
+  <div class="panel light">
+    <img src="../assets/logo-full-dark.svg" alt="" width="180">
+    <span class="label">dark variant — on slate</span>
+    <img src="../assets/logo-mark.svg" alt="" width="40">
+  </div>
+</body>
+</html>
