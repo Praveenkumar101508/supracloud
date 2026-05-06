@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CheckCircle, ArrowRight, Zap, Cpu, ShoppingCart, Package, Clock, TrendingUp } from "lucide-react";
+import BookingSystem from "@/app/components/BookingSystem";
 
 export const metadata: Metadata = {
   title: "Retail AI Agents | Supermarket & E-Commerce Support Automation",
@@ -253,29 +254,23 @@ export default function RetailPage() {
         </div>
       </section>
 
-      {/* ── CTA ── */}
-      <section style={{ backgroundColor: "#0A192F" }} className="py-20 text-center">
-        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-white mb-4">
-            Ready to scale without the seasonal overhead?
-          </h2>
-          <p className="text-slate-400 mb-10 leading-relaxed">
-            Book a discovery call and we&apos;ll review your peak support volumes, system integrations, and delivery timeline.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/book"
-              className="px-8 py-3.5 rounded-lg text-base font-semibold text-white bg-emerald-500 hover:bg-emerald-600 transition-colors"
-            >
-              Book a Discovery Call
-            </Link>
-            <Link
-              href="/contact"
-              className="px-8 py-3.5 rounded-lg text-base font-semibold text-white border border-slate-600 hover:border-slate-400 transition-colors"
-            >
-              Submit a Brief
-            </Link>
+      {/* ── BOOKING ── */}
+      <section style={{ backgroundColor: "#0A192F" }} className="py-20">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-10">
+            <p className="text-xs font-semibold uppercase tracking-widest text-emerald-400 mb-3">No generic demos</p>
+            <h2 className="text-3xl font-bold text-white mb-3">
+              Ready to scale without the seasonal overhead?
+            </h2>
+            <p className="text-slate-400 leading-relaxed">
+              Book directly below. We&apos;ll review your peak support volumes, system integrations, and delivery timeline — written summary sent after the call.
+            </p>
           </div>
+          <BookingSystem
+            defaultInquiry="Retail AI Agents"
+            title="Book a Retail AI Demo"
+            subtitle="Your slot is confirmed within 1 business day. Calendar invite and Google Meet link sent to your inbox."
+          />
         </div>
       </section>
     </div>

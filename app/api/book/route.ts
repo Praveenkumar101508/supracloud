@@ -106,6 +106,11 @@ function clientHtml(d: {
             <a href="https://wa.me/447776456694" style="color:#10B981;font-weight:600;"> +44 7776 456694</a>.
           </p>
 
+          <p style="margin:0 0 28px;font-size:13px;color:#94a3b8;background:#f8fafc;border-left:3px solid #10B981;padding:12px 16px;border-radius:0 8px 8px 0;">
+            After the demo, your <strong style="color:#0A192F;">Production Ready Report</strong> will be available in the
+            <a href="${SITE_URL}/portal" style="color:#10B981;font-weight:600;">Supracloud Client Portal</a> — your private delivery dashboard.
+          </p>
+
           <p style="margin:0 0 6px;font-size:15px;color:#374151;">Talk soon,</p>
           <p style="margin:0 0 4px;font-size:15px;font-weight:700;color:#0A192F;">Praveen Kumar</p>
           <p style="margin:0 0 32px;font-size:13px;color:#94a3b8;">Founder · SupraCloud &nbsp;|&nbsp; ex-IBM AI/ML Engineer</p>
