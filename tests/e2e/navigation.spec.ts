@@ -7,7 +7,7 @@ test.describe('Navigation – TC-1.xx', () => {
     await page.waitForLoadState('networkidle');
 
     // Logo
-    await expect(page.locator('text=ProdReady Labs').first()).toBeVisible();
+    await expect(page.locator('text=SupraCloud').first()).toBeVisible();
 
     // Nav links (desktop hidden md:flex — only check on desktop viewport)
     const viewport = page.viewportSize();
@@ -65,7 +65,7 @@ test.describe('Navigation – TC-1.xx', () => {
 
     const footer = page.locator('footer');
     await expect(footer).toBeVisible();
-    await expect(footer).toContainText('ProdReady Labs');
+    await expect(footer).toContainText('SupraCloud');
     await expect(footer).toContainText('2026');
 
     await page.screenshot({ path: 'test-results/TC-1.04-footer.png', fullPage: true });
@@ -75,10 +75,10 @@ test.describe('Navigation – TC-1.xx', () => {
     await page.goto('/');
     await page.waitForLoadState('networkidle');
 
-    const emailLink = page.locator('footer a[href="mailto:radhakrishna.uk.ai@gmail.com"]');
+    const emailLink = page.locator('footer a[href="mailto:rk@supracloud.co.uk"]');
     await expect(emailLink).toBeVisible();
     const href = await emailLink.getAttribute('href');
-    expect(href).toBe('mailto:radhakrishna.uk.ai@gmail.com');
+    expect(href).toBe('mailto:rk@supracloud.co.uk');
   });
 
   test('TC-1.06: Footer WhatsApp link href contains wa.me/447776456694', async ({ page }) => {
