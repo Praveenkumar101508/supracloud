@@ -7,7 +7,7 @@ test.describe('SEO & Accessibility – TC-5.xx', () => {
     await page.waitForLoadState('networkidle');
 
     const title = await page.title();
-    expect(title).toContain('ProdReady Labs');
+    expect(title).toContain('SupraCloud');
 
     const metaDesc = page.locator('meta[name="description"]');
     const content = await metaDesc.getAttribute('content');

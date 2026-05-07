@@ -73,7 +73,7 @@ export default function ApplyPage() {
       {/* Header */}
       <section style={{ backgroundColor: "#0A192F" }} className="py-16 text-center">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl font-extrabold text-white mb-3">Apply to ProdReady Labs</h1>
+          <h1 className="text-4xl font-extrabold text-white mb-3">Apply to SupraCloud</h1>
           <p className="text-slate-300">
             Tell us about yourself. We review every application personally and respond within 48 hours.
           </p>
