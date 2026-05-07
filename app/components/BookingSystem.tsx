@@ -78,7 +78,7 @@ export default function BookingSystem({
           Check your inbox — a confirmation is on its way. We&apos;ll reply within 1 business day with your calendar invite and Google Meet link.
         </p>
         <p className="text-slate-500 text-xs mt-4">
-          Upon completion of the demo, your Production Ready Report will be available in the{" "}
+          Upon completion of the demo, your SupraCloud Delivery Report will be available in the{" "}
           <a href="/portal" className="text-emerald-400 hover:underline">Supracloud Client Portal</a>.
         </p>
       </div>
@@ -126,27 +126,30 @@ export default function BookingSystem({
         {/* Contact details */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
-            <label className="block text-xs font-medium text-slate-400 mb-1.5">
+            <label htmlFor="booking-name" className="block text-xs font-medium text-slate-400 mb-1.5">
               Full Name <span className="text-red-400">*</span>
             </label>
             <input
+              id="booking-name"
               name="name"
               required
               className="w-full px-3 py-2.5 rounded-lg bg-slate-900 border border-slate-700 text-white text-sm placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition"
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-slate-400 mb-1.5">Company / Organisation</label>
+            <label htmlFor="booking-company" className="block text-xs font-medium text-slate-400 mb-1.5">Company / Organisation</label>
             <input
+              id="booking-company"
               name="company"
               className="w-full px-3 py-2.5 rounded-lg bg-slate-900 border border-slate-700 text-white text-sm placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition"
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-slate-400 mb-1.5">
+            <label htmlFor="booking-email" className="block text-xs font-medium text-slate-400 mb-1.5">
               Corporate Email <span className="text-red-400">*</span>
             </label>
             <input
+              id="booking-email"
               name="email"
               type="email"
               required
@@ -154,8 +157,9 @@ export default function BookingSystem({
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-slate-400 mb-1.5">Phone (optional)</label>
+            <label htmlFor="booking-phone" className="block text-xs font-medium text-slate-400 mb-1.5">Phone (optional)</label>
             <input
+              id="booking-phone"
               name="phone"
               type="tel"
               className="w-full px-3 py-2.5 rounded-lg bg-slate-900 border border-slate-700 text-white text-sm placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition"
@@ -198,10 +202,11 @@ export default function BookingSystem({
 
         {/* Message */}
         <div>
-          <label className="block text-xs font-medium text-slate-400 mb-1.5">
+          <label htmlFor="booking-message" className="block text-xs font-medium text-slate-400 mb-1.5">
             Briefly describe your requirements
           </label>
           <textarea
+            id="booking-message"
             name="message"
             rows={3}
             placeholder="e.g. We need to automate ~3,000 L1 queries/month. Currently using Zendesk. 3-month target timeline..."

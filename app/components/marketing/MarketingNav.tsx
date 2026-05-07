@@ -1,13 +1,12 @@
 import Link from "next/link";
-import Image from "next/image";
+import Logo from "@/app/components/Logo";
 
 export default function MarketingNav() {
   return (
     <nav className="sc-nav">
       <div className="container nav-row">
         <Link className="brand" href="/">
-          <Image src="/design-system/assets/logo-mark.svg" width={28} height={28} alt="" />
-          <span className="brand-text">Supra<span className="cyan">Cloud</span></span>
+          <Logo size="sm" variant="light" showWordmark={true} />
         </Link>
         <div className="nav-links">
           <div className="nav-item">

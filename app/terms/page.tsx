@@ -17,9 +17,8 @@ export default function TermsPage() {
           <section>
             <h2 className="text-base font-semibold text-gray-900 mb-2">2. Services</h2>
             <p>
-              SupraCloud provides career acceleration services including CV rewriting, LinkedIn
-              optimisation, portfolio creation, job application support, and interview preparation. The
-              specific scope of services is agreed upon prior to programme commencement.
+              SupraCloud provides enterprise AI agent development, IT staffing, consultation, and talent
+              pipeline services. The specific scope of services is agreed upon prior to engagement commencement.
             </p>
           </section>
 

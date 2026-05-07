@@ -1,16 +1,26 @@
 import MarketingLayout from "@/app/components/marketing/MarketingLayout";
+import BookingSystem from "@/app/components/BookingSystem";
 
 export const metadata = {
   title: "Book a Demo — SupraCloud",
   description: "Schedule a strategy session with our solutions engineers.",
 };
 
-const BODY = "<section class=\"hero compact\">\n    <div class=\"container hero-center\">\n      <div class=\"eyebrow-pill\"><i data-lucide=\"calendar\" style=\"width:14px;height:14px\"></i> Industry Strategy Session</div>\n      <h1 class=\"display\">Worth a <span class=\"grad\">quick chat?</span></h1>\n      <p class=\"lede-dark\">Tell us which workflow you want to automate. We'll come back within 24h with a session tailored to your sector — Banking or Retail.</p>\n    </div>\n  </section>\n\n  <section class=\"dark-section\">\n    <div class=\"container narrow\">\n      <div class=\"booking-card\">\n        <div class=\"booking-step\">\n          <div class=\"step-eye\">Step 01 · Industry</div>\n          <div class=\"industry-toggle\" id=\"industry\">\n            <button class=\"ind active\" data-ind=\"banking\"><i data-lucide=\"landmark\" style=\"width:18px;height:18px\"></i><div><div class=\"ind-t\">Banking</div><div class=\"ind-d\">L1 / L2 support automation, fraud, compliance</div></div></button>\n            <button class=\"ind\" data-ind=\"retail\"><i data-lucide=\"shopping-cart\" style=\"width:18px;height:18px\"></i><div><div class=\"ind-t\">Supermarket / Retail</div><div class=\"ind-d\">Inventory, customer support, loyalty workflows</div></div></button>\n          </div>\n        </div>\n\n        <div class=\"booking-step\">\n          <div class=\"step-eye\">Step 02 · Engagement Type</div>\n          <div class=\"chip-group\">\n            <button class=\"chip-btn active\">Technical Demo</button>\n            <button class=\"chip-btn\">Solutions Engineering Review</button>\n            <button class=\"chip-btn\">Pilot Scoping</button>\n            <button class=\"chip-btn\">Resource Outsourcing</button>\n          </div>\n        </div>\n\n        <div class=\"booking-step\">\n          <div class=\"step-eye\">Step 03 · Your Details</div>\n          <div class=\"form-grid\">\n            <label><span>Full name</span><input type=\"text\" placeholder=\"Jane Doe\"></label>\n            <label><span>Work email</span><input type=\"email\" placeholder=\"jane@bank.co.uk\"></label>\n            <label><span>Company</span><input type=\"text\" placeholder=\"Tier 1 Financial\"></label>\n            <label><span>Role</span><input type=\"text\" placeholder=\"Head of Customer Ops\"></label>\n            <label class=\"full\"><span>What workflow are you trying to automate?</span><textarea rows=\"3\" placeholder=\"e.g. L1 mortgage queries, fraud triage, refund routing...\"></textarea></label>\n          </div>\n        </div>\n\n        <div class=\"booking-step\">\n          <div class=\"step-eye\">Step 04 · Pick a window</div>\n          <div class=\"time-grid\">\n            <button class=\"time-slot\">Tue 12 May · 10:00 BST</button>\n            <button class=\"time-slot\">Tue 12 May · 14:30 BST</button>\n            <button class=\"time-slot\">Wed 13 May · 09:00 BST</button>\n            <button class=\"time-slot active\">Wed 13 May · 15:00 BST</button>\n            <button class=\"time-slot\">Thu 14 May · 11:30 BST</button>\n            <button class=\"time-slot\">Fri 15 May · 16:00 BST</button>\n          </div>\n        </div>\n\n        <div class=\"booking-foot\">\n          <div class=\"booking-summary\">\n            <div><strong>Banking</strong> · Technical Demo · Wed 13 May 15:00 BST</div>\n            <div class=\"booking-meta\">45 min · UK timezone · Solutions Engineer + AI Engineer</div>\n          </div>\n          <button class=\"btn-primary-lg\">Confirm Session <i data-lucide=\"arrow-right\" style=\"width:14px;height:14px\"></i></button>\n        </div>\n      </div>\n    </div>\n  </section>";
-
 export default function Page() {
   return (
     <MarketingLayout>
-      <div dangerouslySetInnerHTML={{ __html: BODY }} />
+      <section className="hero compact">
+        <div className="container hero-center">
+          <div className="eyebrow-pill">Industry Strategy Session</div>
+          <h1 className="display">Worth a <span className="grad">quick chat?</span></h1>
+          <p className="lede-dark">Tell us which workflow you want to automate. We&apos;ll come back within 24h with a session tailored to your sector — Banking or Retail.</p>
+        </div>
+      </section>
+      <section className="dark-section">
+        <div className="container narrow">
+          <BookingSystem />
+        </div>
+      </section>
     </MarketingLayout>
   );
 }
