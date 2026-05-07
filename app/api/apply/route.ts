@@ -2,13 +2,14 @@ import { Resend } from "resend";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-  const resend = new Resend(process.env.RESEND_API_KEY!);
   try {
     const { name, email, targetRole, level, tools, goal } = await req.json();
 
     if (!name || !email || !targetRole || !level || !goal) {
       return NextResponse.json({ error: "Missing required fields." }, { status: 400 });
     }
+
+    const resend = new Resend(process.env.RESEND_API_KEY!);
 
     const { error } = await resend.emails.send({
       from: "SupraCloud <applications@supracloud.co.uk>",
