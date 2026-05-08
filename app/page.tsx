@@ -46,7 +46,7 @@ const TERMINAL_LINES = [
   "$ initialising SupraCloud enterprise runtime...",
   "$ deploying banking-ai-agent v3.2.1 → production",
   "$ agent.handleQuery('account_balance') → resolved in 0.4s",
-  "$ L1_deflection_rate: 63% ↑ | SLA: 99.97%",
+  "$ L1_deflection_rate: 60%+ target | SLA: 99.97%",
   "$ retail-ai-agent: processing 2,400 concurrent queries",
   "$ rag_pipeline: 14ms avg latency | accuracy: 94.2%",
   "$ all systems operational ",
@@ -110,7 +110,7 @@ const matrix = {
     color: "emerald",
     headline: "Banking AI Agents",
     sub: "L1 & L2 customer support automation for financial services",
-    stat: { value: "63%", label: "reduction in L1 call volume" },
+    stat: { value: "Up to 60%", label: "target L1 deflection (target SLA)" },
     capabilities: [
       "Account balance & transaction queries",
       "Product information & eligibility checks",
@@ -375,7 +375,7 @@ export default function Home() {
             <h2 className="text-2xl font-bold text-gray-900">Numbers That Matter</h2>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <AnimatedStat value={63} suffix="%" label="Average L1 query deflection rate" />
+            <AnimatedStat value={60} suffix="%+" label="Target L1 deflection (target SLA)" />
             <AnimatedStat value={14} suffix="ms" label="Average agent response latency" />
             <AnimatedStat value={99} suffix="%" label="Agent uptime SLA guaranteed" />
             <AnimatedStat value={5} suffix="+" label="Years enterprise AI delivery" />
@@ -533,8 +533,8 @@ export default function Home() {
                   },
                   {
                     icon: <Users size={18} className="text-emerald-500" />,
-                    title: "Full-Stack Delivery Team",
-                    desc: "ML engineers, backend devs, and QA specialists — not just a solo consultant.",
+                    title: "Founder-Led with Specialist Network",
+                    desc: "Senior ML engineers, backend developers, and QA specialists engaged per project — not just a solo consultant.",
                   },
                 ].map((point) => (
                   <div key={point.title} className="flex items-start gap-4 p-5 rounded-xl bg-slate-50 border border-slate-100">
@@ -568,7 +568,7 @@ export default function Home() {
                 {[
                   { value: "5+", label: "Years in enterprise AI" },
                   { value: "2", label: "Industry verticals" },
-                  { value: "63%", label: "Avg. L1 deflection" },
+                  { value: "60%+", label: "Target L1 deflection" },
                   { value: "99.9%", label: "Agent uptime SLA" },
                 ].map((s) => (
                   <div key={s.label} className="bg-white rounded-xl p-4 border border-slate-100 text-center">
