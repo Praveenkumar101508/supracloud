@@ -32,26 +32,37 @@ function matchKnowledge(text, name) {
 
 function extractName(text) {
   const t = text.trim();
-  // Strip common phrases
   const cleaned = t
-    .replace(/^(my name is|i'm|i am|call me|it's|its|this is)\s+/i, "")
+    .replace(/^(hello|hi|hey|good morning|good afternoon|good evening)[,!\s]+/i, "")
+    .replace(/^(my name is|i'm|i am|call me|it's|its|this is|myself|my self|the name is|name's|its)\s+/i, "")
     .replace(/[.,!?]+$/, "")
     .trim();
-  // Accept 1-3 words, each starting with capital or just a single word
   const parts = cleaned.split(/\s+/);
   if (parts.length >= 1 && parts.length <= 3) {
-    // Capitalise first letter of each word
     return parts.map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(" ");
   }
   return null;
 }
 
-async function fetchAIResponse(question, pathname, name) {
+function normalizeTranscript(text) {
+  // Fix common speech-to-text misrecognitions
+  return text
+    .replace(/\babam\b/gi, "IBM")
+    .replace(/\bi\.b\.m\.?\b/gi, "IBM")
+    .replace(/\bI be m\b/gi, "IBM")
+    .replace(/\bsupracloud\b/gi, "SupraCloud")
+    .replace(/\bsupra cloud\b/gi, "SupraCloud")
+    .replace(/\blang graph\b/gi, "LangGraph")
+    .replace(/\brag\b/gi, "RAG")
+    .trim();
+}
+
+async function fetchAIResponse(question, pathname, name, history = []) {
   try {
     const res = await fetch("/api/agent/respond", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ question, pathname, visitorName: name }),
+      body: JSON.stringify({ question, pathname, visitorName: name, history }),
     });
     if (!res.ok) throw new Error("API error");
     const data = await res.json();
@@ -61,7 +72,7 @@ async function fetchAIResponse(question, pathname, name) {
   }
 }
 
-async function speakText(text) {
+async function speakText(text, abortRef) {
   try {
     const res = await fetch("/api/agent/speak", {
       method: "POST",
@@ -72,9 +83,10 @@ async function speakText(text) {
       const blob = await res.blob();
       const url = URL.createObjectURL(blob);
       const audio = new Audio(url);
+      if (abortRef) abortRef.current = () => { audio.pause(); audio.src = ""; URL.revokeObjectURL(url); };
       return new Promise((resolve) => {
-        audio.onended = () => { URL.revokeObjectURL(url); resolve(); };
-        audio.onerror = () => { URL.revokeObjectURL(url); resolve(); };
+        audio.onended = () => { if (abortRef) abortRef.current = null; URL.revokeObjectURL(url); resolve(); };
+        audio.onerror = () => { if (abortRef) abortRef.current = null; URL.revokeObjectURL(url); resolve(); };
         audio.play().catch(resolve);
       });
     }
@@ -92,8 +104,9 @@ async function speakText(text) {
         voices.find((v) => v.lang.startsWith("en-GB")) ||
         voices[0];
       if (preferred) utt.voice = preferred;
-      utt.onend = resolve;
-      utt.onerror = resolve;
+      if (abortRef) abortRef.current = () => { window.speechSynthesis.cancel(); };
+      utt.onend = () => { if (abortRef) abortRef.current = null; resolve(); };
+      utt.onerror = () => { if (abortRef) abortRef.current = null; resolve(); };
       window.speechSynthesis.speak(utt);
     });
   }
@@ -126,6 +139,7 @@ export function useVoiceAgent() {
   });
   // stage: "ask_name" | "chatting" | "lead_capture" | "done"
   const [stage,       setStage]       = useState("ask_name");
+  const [leadStep,    setLeadStep]    = useState(0);
 
   // Lead capture
   const leadRef    = useRef({});     // accumulates field answers
@@ -145,11 +159,14 @@ export function useVoiceAgent() {
   const stageRef       = useRef(stage);
   const isOpenRef      = useRef(false);
   const recognitionRef = useRef(null);
+  const messagesRef    = useRef([]);
+  const abortSpeechRef = useRef(null); // cancels current TTS audio
 
-  useEffect(() => { mutedRef.current  = isMuted;     }, [isMuted]);
-  useEffect(() => { nameRef.current   = visitorName; }, [visitorName]);
-  useEffect(() => { stageRef.current  = stage;       }, [stage]);
-  useEffect(() => { isOpenRef.current = isOpen;      }, [isOpen]);
+  useEffect(() => { mutedRef.current    = isMuted;     }, [isMuted]);
+  useEffect(() => { nameRef.current     = visitorName; }, [visitorName]);
+  useEffect(() => { stageRef.current    = stage;       }, [stage]);
+  useEffect(() => { isOpenRef.current   = isOpen;      }, [isOpen]);
+  useEffect(() => { messagesRef.current = messages;    }, [messages]);
 
   // ── Inactivity timer management ────────────────────────────────────────────
 
@@ -172,14 +189,14 @@ export function useVoiceAgent() {
 
   // ── Core speak ─────────────────────────────────────────────────────────────
 
-  const speak = useCallback(async (text, skipInactivityReset = false) => {
+  const speak = useCallback(async (text) => {
     if (mutedRef.current) {
       setMessages((prev) => [...prev, { role: "aria", text }]);
       return;
     }
     setIsSpeaking(true);
     setMessages((prev) => [...prev, { role: "aria", text }]);
-    await speakText(text);
+    await speakText(text, abortSpeechRef);
     setIsSpeaking(false);
   }, []);
 
@@ -207,6 +224,7 @@ export function useVoiceAgent() {
     leadRef.current[fieldDef.field] = answer;
     const nextStep = step + 1;
     stepRef.current = nextStep;
+    setLeadStep(nextStep);
 
     if (nextStep < LEAD_QUESTIONS.length) {
       await speakAndResetTimer(LEAD_QUESTIONS[nextStep - 1].question);
@@ -230,7 +248,8 @@ export function useVoiceAgent() {
 
   // ── Handle incoming speech transcript ─────────────────────────────────────
 
-  const handleTranscript = useCallback(async (text) => {
+  const handleTranscript = useCallback(async (rawText) => {
+    const text = normalizeTranscript(rawText);
     setMessages((prev) => [...prev, { role: "user", text }]);
     clearInactivity();
     const currentStage = stageRef.current;
@@ -262,6 +281,7 @@ export function useVoiceAgent() {
     if (hasDemoIntent(text) && currentStage !== "done") {
       setStage("lead_capture");
       stepRef.current = 0;
+      setLeadStep(0);
       leadRef.current = {};
       await speakAndResetTimer(LEAD_CAPTURE_INTRO(name || "there"));
       return;
@@ -281,9 +301,14 @@ export function useVoiceAgent() {
       return;
     }
 
-    // Fall back to Claude AI
+    // Fall back to Claude AI (send full conversation history for memory)
     setIsThinking(true);
-    const aiAnswer = await fetchAIResponse(text, typeof window !== "undefined" ? window.location.pathname : "/", name);
+    const aiAnswer = await fetchAIResponse(
+      text,
+      typeof window !== "undefined" ? window.location.pathname : "/",
+      name,
+      messagesRef.current,
+    );
     setIsThinking(false);
     await speakAndResetTimer(aiAnswer);
 
@@ -389,11 +414,21 @@ export function useVoiceAgent() {
     setIsListening(false);
   }, []);
 
+  const submitEmailFromText = useCallback(async (email) => {
+    await processLeadAnswer(email.trim());
+  }, [processLeadAnswer]);
+
+  const interruptSpeech = useCallback(() => {
+    if (abortSpeechRef.current) { abortSpeechRef.current(); abortSpeechRef.current = null; }
+    if (typeof window !== "undefined" && window.speechSynthesis) window.speechSynthesis.cancel();
+    setIsSpeaking(false);
+  }, []);
+
   return {
     isOpen, isSpeaking, isListening, isMuted, isThinking,
-    messages, visitorName, stage,
+    messages, visitorName, stage, leadStep,
     open, close, toggleMute,
     startListening, stopListening,
-    announceRoute,
+    announceRoute, submitEmailFromText, interruptSpeech,
   };
 }

@@ -1,8 +1,45 @@
 ﻿"use client";
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
-import { Bot, Briefcase, GraduationCap, CheckCircle, ArrowRight, Building2, ShoppingCart, Zap, Shield, TrendingUp, Users, ChevronRight } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { Bot, Briefcase, GraduationCap, CheckCircle, ArrowRight, Building2, ShoppingCart, Zap, Shield, TrendingUp, Users, ChevronRight, X } from "lucide-react";
+
+/* Animated counter hook */
+function useCountUp(target: number, duration = 1600) {
+  const [count, setCount] = useState(0);
+  const ref = useRef<HTMLDivElement>(null);
+  const started = useRef(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && !started.current) {
+        started.current = true;
+        const start = performance.now();
+        const tick = (now: number) => {
+          const p = Math.min((now - start) / duration, 1);
+          setCount(Math.floor(p * p * target));
+          if (p < 1) requestAnimationFrame(tick);
+          else setCount(target);
+        };
+        requestAnimationFrame(tick);
+      }
+    }, { threshold: 0.3 });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [target, duration]);
+  return { count, ref };
+}
+
+function AnimatedStat({ value, suffix = "", label }: { value: number; suffix?: string; label: string }) {
+  const { count, ref } = useCountUp(value);
+  return (
+    <div ref={ref} className="bg-white rounded-2xl p-6 border border-slate-100 text-center hover-lift">
+      <p className="text-3xl font-extrabold text-emerald-600">{count}{suffix}</p>
+      <p className="text-xs text-gray-500 mt-2 leading-relaxed">{label}</p>
+    </div>
+  );
+}
 
 /*  Terminal animation  */
 const TERMINAL_LINES = [
@@ -326,6 +363,121 @@ export default function Home() {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/*  LIVE METRICS  */}
+      <section className="bg-slate-50 py-16 border-y border-slate-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-10">
+            <p className="text-xs font-semibold uppercase tracking-widest text-emerald-600 mb-2">Proven in Production</p>
+            <h2 className="text-2xl font-bold text-gray-900">Numbers That Matter</h2>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <AnimatedStat value={63} suffix="%" label="Average L1 query deflection rate" />
+            <AnimatedStat value={14} suffix="ms" label="Average agent response latency" />
+            <AnimatedStat value={99} suffix="%" label="Agent uptime SLA guaranteed" />
+            <AnimatedStat value={5} suffix="+" label="Years enterprise AI delivery" />
+          </div>
+        </div>
+      </section>
+
+      {/*  HOW IT WORKS  */}
+      <section className="bg-white py-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-14">
+            <p className="text-xs font-semibold uppercase tracking-widest text-emerald-600 mb-3">The Process</p>
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">From Discovery to Production in Weeks</h2>
+            <p className="mt-3 text-gray-500 max-w-xl mx-auto">No months-long waterfall projects. We move fast, with a clear three-phase delivery model.</p>
+          </div>
+          <div className="relative">
+            {/* Connector line (desktop) */}
+            <div className="hidden md:block absolute top-10 left-[16.66%] right-[16.66%] h-0.5 bg-gradient-to-r from-emerald-200 via-emerald-400 to-emerald-200" aria-hidden />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+              {[
+                {
+                  step: "01",
+                  title: "Discovery Call",
+                  desc: "A 30-minute session where we map your support workflows, query volumes, escalation paths, and compliance constraints. No slide decks — just real engineering questions.",
+                  icon: <Users size={22} className="text-emerald-500" />,
+                  time: "Week 1",
+                },
+                {
+                  step: "02",
+                  title: "Agent Design & Build",
+                  desc: "Our ML engineers design and build your agent on Claude + LangGraph + RAG, trained on your knowledge base. You review and approve at every milestone.",
+                  icon: <Bot size={22} className="text-emerald-500" />,
+                  time: "Weeks 2–5",
+                },
+                {
+                  step: "03",
+                  title: "Deploy & Optimise",
+                  desc: "Agent goes live with full SLA dashboards, cost-per-query metrics, and L1 deflection tracking. We tune continuously — you see ROI from day one.",
+                  icon: <TrendingUp size={22} className="text-emerald-500" />,
+                  time: "Week 6+",
+                },
+              ].map((phase) => (
+                <div key={phase.step} className="relative flex flex-col items-center text-center">
+                  <div className="w-20 h-20 rounded-full bg-emerald-50 border-2 border-emerald-200 flex items-center justify-center mb-6 z-10 relative">
+                    {phase.icon}
+                    <span className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-emerald-500 text-white text-xs font-bold flex items-center justify-center">{phase.step}</span>
+                  </div>
+                  <span className="text-xs font-semibold text-emerald-600 tracking-widest uppercase mb-2">{phase.time}</span>
+                  <h3 className="text-lg font-bold text-gray-900 mb-3">{phase.title}</h3>
+                  <p className="text-gray-500 text-sm leading-relaxed max-w-xs">{phase.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="text-center mt-12">
+            <Link href="/book" className="inline-flex items-center gap-2 px-7 py-3.5 rounded-lg text-base font-semibold text-white bg-emerald-500 hover:bg-emerald-600 transition-colors">
+              Start with a Discovery Call <ArrowRight size={15} />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/*  COMPARISON TABLE  */}
+      <section style={{ backgroundColor: "#0A192F" }} className="py-20">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <p className="text-xs font-semibold uppercase tracking-widest text-emerald-500 mb-3">Why SupraCloud</p>
+            <h2 className="text-3xl font-bold text-white">SupraCloud vs. Your Alternatives</h2>
+          </div>
+          <div className="overflow-x-auto rounded-2xl border border-slate-700/50">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-slate-700">
+                  <th className="py-4 px-6 text-left text-slate-400 font-semibold">Capability</th>
+                  <th className="py-4 px-6 text-center text-emerald-400 font-bold">SupraCloud</th>
+                  <th className="py-4 px-6 text-center text-slate-400 font-semibold">Build In-House</th>
+                  <th className="py-4 px-6 text-center text-slate-400 font-semibold">Generic AI Consulting</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  ["Time to production", "4–8 weeks", "6–18 months", "3–12 months"],
+                  ["Banking/retail expertise", "Specialist", "You hire it", "Generic"],
+                  ["Compliance-aware build", "Built in", "You build it", "Extra cost"],
+                  ["Ongoing SLA monitoring", "Included", "You build it", "Not included"],
+                  ["Cost-per-query dashboards", "Included", "Custom build", "Not standard"],
+                  ["Continuous optimisation", "Included", "Your team's time", "Day-rate extra"],
+                  ["Agent + staffing + talent", "One partner", "Multiple vendors", "Multiple vendors"],
+                ].map(([cap, sc, inhouse, consult], i) => (
+                  <tr key={cap} className={`border-b border-slate-800 ${i % 2 === 0 ? "bg-slate-800/20" : ""}`}>
+                    <td className="py-3.5 px-6 text-slate-300 font-medium">{cap}</td>
+                    <td className="py-3.5 px-6 text-center">
+                      <span className="inline-flex items-center gap-1.5 text-emerald-400 font-semibold">
+                        <CheckCircle size={14} className="shrink-0" /> {sc}
+                      </span>
+                    </td>
+                    <td className="py-3.5 px-6 text-center text-slate-500">{inhouse}</td>
+                    <td className="py-3.5 px-6 text-center text-slate-500">{consult}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </section>

@@ -1,10 +1,14 @@
 "use client";
 
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useVoiceAgent } from "./useVoiceAgent";
 import { useRouteAnnouncer } from "./useRouteAnnouncer";
 import styles from "./VoiceAgentWidget.module.css";
 import { AGENT_NAME } from "./agentPersonality";
+
+const EMAIL_STEP = 5;
+const TOTAL_LEAD_STEPS = 6;
+const PROACTIVE_DELAY_MS = 35_000; // 35s on page before Aria auto-opens
 
 function MicIcon() {
   return (
@@ -71,23 +75,118 @@ function WaveformIcon() {
   );
 }
 
+// Animated waveform bars shown while listening
+function ListeningWave() {
+  return (
+    <span className={styles.listeningWave} aria-hidden>
+      <span className={styles.bar} />
+      <span className={styles.bar} />
+      <span className={styles.bar} />
+      <span className={styles.bar} />
+      <span className={styles.bar} />
+    </span>
+  );
+}
+
 export default function VoiceAgentWidget() {
   const {
     isOpen, isSpeaking, isListening, isMuted, isThinking,
-    messages, visitorName, stage,
+    messages, visitorName, stage, leadStep,
     open, close, toggleMute,
     startListening, stopListening,
-    announceRoute,
+    announceRoute, submitEmailFromText, interruptSpeech,
   } = useVoiceAgent();
 
-  const messagesEndRef = useRef(null);
+  const messagesEndRef  = useRef(null);
+  const prevSpeakingRef = useRef(false);
+  const proactiveRef    = useRef(null);
+  const [emailDraft, setEmailDraft] = useState("");
 
+  // Auto-scroll messages
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isThinking]);
 
+  // Jarvis mode: auto-listen after Aria finishes speaking
+  useEffect(() => {
+    const wasJustSpeaking = prevSpeakingRef.current && !isSpeaking;
+    prevSpeakingRef.current = isSpeaking;
+    if (!wasJustSpeaking) return;
+    if (!isOpen || isMuted || isThinking || isListening || messages.length === 0) return;
+    if (stage === "lead_capture" && leadStep === EMAIL_STEP) return;
+    const t = setTimeout(() => startListening(), 500);
+    return () => clearTimeout(t);
+  }, [isSpeaking, isOpen, isMuted, isThinking, isListening, messages.length, stage, leadStep, startListening]);
+
+  // Proactive trigger: auto-open after 35s if user hasn't interacted
+  useEffect(() => {
+    const alreadyInteracted = (() => {
+      try { return sessionStorage.getItem("aria_has_interacted") === "1"; } catch { return false; }
+    })();
+    if (alreadyInteracted || isOpen) return;
+    proactiveRef.current = setTimeout(() => {
+      if (!isOpen) open();
+    }, PROACTIVE_DELAY_MS);
+    return () => clearTimeout(proactiveRef.current);
+  }, []); // eslint-disable-line
+
+  // Clear proactive timer once user manually opens
+  useEffect(() => {
+    if (isOpen) clearTimeout(proactiveRef.current);
+  }, [isOpen]);
+
+  // Keyboard shortcut: press 'a' to toggle Aria (when not typing in an input)
+  useEffect(() => {
+    function onKey(e) {
+      if (e.key.toLowerCase() !== "a") return;
+      const tag = document.activeElement?.tagName;
+      if (tag === "INPUT" || tag === "TEXTAREA" || document.activeElement?.isContentEditable) return;
+      isOpen ? close() : open();
+    }
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [isOpen, open, close]);
+
+  // PostHog tracking
+  useEffect(() => {
+    if (typeof window === "undefined" || !window.posthog) return;
+    if (isOpen) window.posthog.capture("aria_opened", { page: window.location.pathname });
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (typeof window === "undefined" || !window.posthog) return;
+    if (stage === "lead_capture" && leadStep === 0) {
+      window.posthog.capture("aria_lead_started", { name: visitorName });
+    }
+    if (stage === "done") {
+      window.posthog.capture("aria_lead_completed", { name: visitorName });
+    }
+  }, [stage, leadStep, visitorName]);
+
   const handleRouteChange = useCallback((pathname) => { announceRoute(pathname); }, [announceRoute]);
   useRouteAnnouncer(handleRouteChange);
+
+  const handleEmailSubmit = useCallback(async (e) => {
+    e.preventDefault();
+    if (!emailDraft.trim()) return;
+    const email = emailDraft.trim();
+    setEmailDraft("");
+    await submitEmailFromText(email);
+  }, [emailDraft, submitEmailFromText]);
+
+  // Mic button click: interrupt if Aria is speaking, otherwise start/stop
+  const handleMicClick = useCallback(() => {
+    if (isSpeaking) {
+      interruptSpeech();
+      setTimeout(() => startListening(), 300);
+      return;
+    }
+    isListening ? stopListening() : startListening();
+  }, [isSpeaking, isListening, interruptSpeech, startListening, stopListening]);
+
+  const progressPct = stage === "lead_capture"
+    ? Math.round((leadStep / TOTAL_LEAD_STEPS) * 100)
+    : 0;
 
   const statusText = isListening
     ? "Listening..."
@@ -98,12 +197,14 @@ export default function VoiceAgentWidget() {
     : stage === "ask_name"
     ? "Tell me your name"
     : stage === "lead_capture"
-    ? "Taking your details"
+    ? `Step ${leadStep + 1} of ${TOTAL_LEAD_STEPS}`
     : visitorName
     ? `Here for you, ${visitorName}`
     : "Ask me anything";
 
-  const micLabel = isListening
+  const micLabel = isSpeaking
+    ? "Interrupt"
+    : isListening
     ? "Tap to stop"
     : stage === "ask_name"
     ? "Say your name"
@@ -114,16 +215,25 @@ export default function VoiceAgentWidget() {
   return (
     <>
       <button
-        className={`${styles.trigger} ${isSpeaking ? styles.speaking : ""}`}
+        className={`${styles.trigger} ${isSpeaking ? styles.speaking : ""} ${isListening ? styles.triggerListening : ""}`}
         onClick={isOpen ? close : open}
-        aria-label={isOpen ? `Close ${AGENT_NAME}` : `Open ${AGENT_NAME} voice assistant`}
+        aria-label={isOpen ? `Close ${AGENT_NAME}` : `Open ${AGENT_NAME} — press A`}
         aria-expanded={isOpen}
+        title={isOpen ? "Close Aria" : "Open Aria (press A)"}
       >
         {isOpen ? <CloseIcon /> : <WaveformIcon />}
       </button>
 
       {isOpen && (
         <div className={styles.panel} role="dialog" aria-label={`${AGENT_NAME} voice assistant`}>
+
+          {/* Progress bar for lead capture */}
+          {stage === "lead_capture" && (
+            <div className={styles.progressTrack}>
+              <div className={styles.progressBar} style={{ width: `${progressPct}%` }} />
+            </div>
+          )}
+
           <div className={styles.header}>
             <div className={styles.avatar} aria-hidden>
               {visitorName ? visitorName.charAt(0).toUpperCase() : "AI"}
@@ -173,20 +283,42 @@ export default function VoiceAgentWidget() {
           </div>
 
           <div className={styles.footer}>
-            <button
-              className={`${styles.micBtn} ${isListening ? styles.listening : ""}`}
-              onClick={isListening ? stopListening : startListening}
-              disabled={isSpeaking || isThinking}
-              aria-label={isListening ? "Stop listening" : "Start speaking"}
-            >
-              {isListening ? <MicOffIcon /> : <MicIcon />}
-              {micLabel}
-            </button>
+            {stage === "lead_capture" && leadStep === EMAIL_STEP ? (
+              <form className={styles.emailForm} onSubmit={handleEmailSubmit}>
+                <input
+                  className={styles.emailInput}
+                  type="email"
+                  placeholder="your@email.com"
+                  value={emailDraft}
+                  onChange={(e) => setEmailDraft(e.target.value)}
+                  autoFocus
+                  aria-label="Enter your email address"
+                />
+                <button
+                  className={styles.emailSend}
+                  type="submit"
+                  disabled={!emailDraft.trim()}
+                  aria-label="Send email"
+                >
+                  Send
+                </button>
+              </form>
+            ) : (
+              <button
+                className={`${styles.micBtn} ${isListening ? styles.listening : ""} ${isSpeaking ? styles.interrupt : ""}`}
+                onClick={handleMicClick}
+                aria-label={isSpeaking ? "Interrupt Aria" : isListening ? "Stop listening" : "Start speaking"}
+              >
+                {isListening ? <ListeningWave /> : <MicIcon />}
+                {micLabel}
+              </button>
+            )}
           </div>
+
           <p className={styles.hint}>
             {stage === "lead_capture"
               ? "Your answers go securely to the SupraCloud team"
-              : "Powered by SupraCloud AI"}
+              : "Powered by SupraCloud AI · Press A to toggle"}
           </p>
         </div>
       )}

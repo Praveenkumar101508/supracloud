@@ -198,7 +198,7 @@ export default function Navbar() {
           </Link>
           <Link
             href="/contact"
-            className="text-sm font-semibold px-4 py-2 rounded-md border border-slate-600 text-slate-200 hover:border-emerald-500 hover:text-white transition-colors"
+            className="text-sm font-semibold px-4 py-2 rounded-md border border-white/30 text-white bg-white/5 hover:border-emerald-400 hover:bg-white/10 transition-colors"
           >
             Submit a Brief
           </Link>

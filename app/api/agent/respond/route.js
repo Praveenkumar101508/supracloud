@@ -22,12 +22,13 @@ export async function POST(request) {
     );
   }
 
-  let question, pathname, visitorName;
+  let question, pathname, visitorName, history;
   try {
     const body = await request.json();
     question    = (body.question    || "").slice(0, 500);
     pathname    = body.pathname     || "/";
     visitorName = (body.visitorName || "").slice(0, 40);
+    history     = Array.isArray(body.history) ? body.history.slice(-14) : [];
   } catch {
     return NextResponse.json({ answer: "I didn't catch that - could you rephrase?" });
   }
@@ -37,11 +38,33 @@ export async function POST(request) {
   }
 
   const ctxLines = [
-    visitorName ? `[Visitor's name: ${visitorName} - address them by name in your reply]` : null,
-    pathname && pathname !== "/" ? `[Visitor is on page: ${pathname}]` : null,
+    visitorName ? `[Visitor's name: ${visitorName} — address them by first name]` : null,
+    pathname && pathname !== "/" ? `[Visitor is browsing: ${pathname}]` : null,
   ].filter(Boolean).join("\n");
 
   const userMessage = ctxLines ? `${ctxLines}\n\nQuestion: ${question}` : `Question: ${question}`;
+
+  // Build full conversation history for Claude
+  const conversationMessages = [];
+  for (const msg of history) {
+    if (msg.role && msg.text) {
+      conversationMessages.push({
+        role: msg.role === "aria" ? "assistant" : "user",
+        content: msg.text.slice(0, 400),
+      });
+    }
+  }
+  // Ensure valid alternating pattern (Claude requires user/assistant/user...)
+  const validMessages = [];
+  let lastRole = null;
+  for (const m of conversationMessages) {
+    if (m.role !== lastRole) { validMessages.push(m); lastRole = m.role; }
+  }
+  // Current question must be last and role "user"
+  if (validMessages.length > 0 && validMessages[validMessages.length - 1].role === "user") {
+    validMessages.push({ role: "assistant", content: "Understood." });
+  }
+  validMessages.push({ role: "user", content: userMessage });
 
   try {
     const res = await fetch("https://api.anthropic.com/v1/messages", {
@@ -52,10 +75,10 @@ export async function POST(request) {
         "anthropic-version": "2023-06-01",
       },
       body: JSON.stringify({
-        model: "claude-sonnet-4-20250514",
-        max_tokens: 200,
+        model: "claude-sonnet-4-6",
+        max_tokens: 220,
         system: SYSTEM_PROMPT,
-        messages: [{ role: "user", content: userMessage }],
+        messages: validMessages,
       }),
     });
 

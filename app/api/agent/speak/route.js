@@ -32,11 +32,11 @@ export async function POST(request) {
       },
       body: JSON.stringify({
         text,
-        model_id: "eleven_turbo_v2",
+        model_id: "eleven_flash_v2_5",
         voice_settings: {
-          stability: 0.55,
-          similarity_boost: 0.75,
-          style: 0.1,
+          stability: 0.42,
+          similarity_boost: 0.82,
+          style: 0.28,
           use_speaker_boost: true,
         },
       }),

@@ -1,3 +1,17 @@
+/* ── Lead capture progress bar ── */
+.progressTrack {
+  height: 3px;
+  background: #e2e8f0;
+  width: 100%;
+  flex-shrink: 0;
+}
+.progressBar {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981, #059669);
+  transition: width 0.5s ease;
+  border-radius: 0 2px 2px 0;
+}
+
 /* ── Floating trigger button ── */
 .trigger {
   position: fixed;
@@ -31,6 +45,11 @@
 }
 
 /* Pulse ring when speaking */
+.triggerListening {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+  box-shadow: 0 4px 24px rgba(239, 68, 68, 0.45), 0 2px 8px rgba(0,0,0,0.18) !important;
+}
+
 .trigger.speaking::before {
   content: "";
   position: absolute;
@@ -267,10 +286,82 @@
 }
 .micBtn svg { width: 16px; height: 16px; }
 
+/* Interrupt state — red, pulsing */
+.micBtn.interrupt {
+  border-color: #ef4444;
+  background: #fef2f2;
+  color: #dc2626;
+  animation: listenPulse 1s ease infinite;
+}
+
+/* ── Listening waveform bars ── */
+.listeningWave {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  height: 16px;
+}
+.bar {
+  width: 3px;
+  border-radius: 2px;
+  background: #dc2626;
+  animation: barBounce 0.9s ease-in-out infinite;
+}
+.bar:nth-child(1) { height: 4px;  animation-delay: 0s; }
+.bar:nth-child(2) { height: 10px; animation-delay: 0.1s; }
+.bar:nth-child(3) { height: 14px; animation-delay: 0.2s; }
+.bar:nth-child(4) { height: 10px; animation-delay: 0.3s; }
+.bar:nth-child(5) { height: 5px;  animation-delay: 0.4s; }
+@keyframes barBounce {
+  0%, 100% { transform: scaleY(1); }
+  50%       { transform: scaleY(0.35); }
+}
+
 .hint {
   font-size: 10px;
   color: #94a3b8;
   text-align: center;
   margin-top: 6px;
   padding: 0 4px;
+}
+
+/* ── Email input (lead capture step) ── */
+.emailForm {
+  flex: 1;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.emailInput {
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 2px solid #e2e8f0;
+  background: #f8fafc;
+  font-size: 13px;
+  color: #1e293b;
+  outline: none;
+  transition: border-color 0.18s ease;
+}
+.emailInput:focus {
+  border-color: #10b981;
+  background: #f0fdf4;
+}
+.emailSend {
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.18s ease;
+}
+.emailSend:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.emailSend:not(:disabled):hover {
+  opacity: 0.88;
 }
