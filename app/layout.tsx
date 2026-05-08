@@ -1,10 +1,11 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import CookieBanner from "./components/CookieBanner";
 import { Providers } from "./providers";
+import VoiceAgentLoader from "./components/VoiceAgentLoader";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -119,6 +120,7 @@ export default function RootLayout({
           <main className="flex-1">{children}</main>
           <Footer />
           <CookieBanner />
+          <VoiceAgentLoader />
         </Providers>
       </body>
     </html>

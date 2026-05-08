@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { Mail, MessageCircle } from "lucide-react";
 import Logo from "./Logo";
 
@@ -117,7 +117,7 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div className="mt-12 pt-6 border-t border-slate-700 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
-          <p>© 2026 SupraCloud Ltd. All rights reserved. Registered in England & Wales.</p>
+          <p> 2026 SupraCloud Ltd. All rights reserved. Registered in England & Wales.</p>
           <div className="flex gap-4">
             <Link href="/privacy" className="hover:text-slate-300 transition-colors">Privacy Policy</Link>
             <Link href="/terms" className="hover:text-slate-300 transition-colors">Terms of Service</Link>

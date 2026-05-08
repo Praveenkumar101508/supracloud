@@ -1,4 +1,4 @@
-export const metadata = { title: "Mock Interviews" };
+﻿export const metadata = { title: "Mock Interviews" };
 
 export default function MockInterviewsPage() {
   return (

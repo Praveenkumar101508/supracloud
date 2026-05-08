@@ -50,7 +50,7 @@ const process = [
 export default function StaffingPage() {
   return (
     <div className="bg-slate-50">
-      {/* ── HERO ── */}
+      {/*  HERO  */}
       <section style={{ backgroundColor: "#0A192F" }} className="relative overflow-hidden py-24">
         <div
           aria-hidden
@@ -89,7 +89,7 @@ export default function StaffingPage() {
         </div>
       </section>
 
-      {/* ── STAT BAR ── */}
+      {/*  STAT BAR  */}
       <section className="border-b border-slate-200 py-5 bg-white">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
@@ -108,7 +108,7 @@ export default function StaffingPage() {
         </div>
       </section>
 
-      {/* ── ENGAGEMENT MODELS ── */}
+      {/*  ENGAGEMENT MODELS  */}
       <section className="bg-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-14">
@@ -139,7 +139,7 @@ export default function StaffingPage() {
         </div>
       </section>
 
-      {/* ── DISCIPLINES ── */}
+      {/*  DISCIPLINES  */}
       <section className="bg-slate-50 py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -168,7 +168,7 @@ export default function StaffingPage() {
         </div>
       </section>
 
-      {/* ── PROCESS ── */}
+      {/*  PROCESS  */}
       <section className="bg-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-14">
@@ -187,7 +187,7 @@ export default function StaffingPage() {
         </div>
       </section>
 
-      {/* ── WHY US ── */}
+      {/*  WHY US  */}
       <section className="bg-slate-50 py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-2xl font-bold text-gray-900 text-center mb-8">Why SupraCloud Staffing</h2>
@@ -206,7 +206,7 @@ export default function StaffingPage() {
         </div>
       </section>
 
-      {/* ── CTA ── */}
+      {/*  CTA  */}
       <section style={{ backgroundColor: "#0A192F" }} className="py-20 text-center">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-4">Tell us what you need</h2>

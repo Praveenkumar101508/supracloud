@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+﻿import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -10,7 +10,7 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://supracloud.co.uk";
 // e.g. MEET_LINK=https://meet.google.com/xxx-xxxx-xxx
 const MEET_LINK = process.env.MEET_LINK || "https://meet.google.com/";
 
-// ── Client confirmation email ──────────────────────────────────────────────
+//  Client confirmation email 
 function clientHtml(d: {
   name: string;
   firstName: string;
@@ -146,7 +146,7 @@ function clientHtml(d: {
 </html>`;
 }
 
-// ── Owner notification email ───────────────────────────────────────────────
+//  Owner notification email 
 function ownerHtml(d: {
   name: string;
   company: string;
@@ -229,7 +229,7 @@ function ownerHtml(d: {
 </html>`;
 }
 
-// ── Route handler ──────────────────────────────────────────────────────────
+//  Route handler 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
@@ -261,7 +261,7 @@ export async function POST(req: NextRequest) {
       from: FROM_EMAIL,
       to: OWNER_EMAIL,
       replyTo: email,
-      subject: `📅 New booking: ${name}${company ? ` (${company})` : ""} — ${inquiryType}`,
+      subject: ` New booking: ${name}${company ? ` (${company})` : ""} — ${inquiryType}`,
       html: ownerHtml({
         name,
         company: company || "",

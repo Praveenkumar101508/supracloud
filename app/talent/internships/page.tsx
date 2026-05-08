@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Link from "next/link";
 import { CheckCircle, ArrowRight, GraduationCap, Code2, Calendar, MapPin } from "lucide-react";
 
@@ -27,7 +27,7 @@ const whatYouGet = [
 export default function InternshipsPage() {
   return (
     <div className="bg-slate-50">
-      {/* ── HERO ── */}
+      {/*  HERO  */}
       <section style={{ backgroundColor: "#0A192F" }} className="relative overflow-hidden py-24">
         <div aria-hidden className="pointer-events-none absolute inset-0 opacity-[0.035]"
           style={{ backgroundImage: "linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)", backgroundSize: "48px 48px" }} />
@@ -48,7 +48,7 @@ export default function InternshipsPage() {
         </div>
       </section>
 
-      {/* ── ROLES ── */}
+      {/*  ROLES  */}
       <section className="bg-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-14">
@@ -77,7 +77,7 @@ export default function InternshipsPage() {
         </div>
       </section>
 
-      {/* ── WHAT YOU GET ── */}
+      {/*  WHAT YOU GET  */}
       <section className="bg-slate-50 py-16">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-10">
@@ -95,7 +95,7 @@ export default function InternshipsPage() {
         </div>
       </section>
 
-      {/* ── CTA ── */}
+      {/*  CTA  */}
       <section style={{ backgroundColor: "#0A192F" }} className="py-20 text-center">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-white mb-4">Ready to start your engineering career?</h2>

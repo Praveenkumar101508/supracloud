@@ -1,4 +1,4 @@
-import MarketingLayout from "@/app/components/marketing/MarketingLayout";
+﻿import MarketingLayout from "@/app/components/marketing/MarketingLayout";
 import BookingSystem from "@/app/components/BookingSystem";
 
 export const metadata = {

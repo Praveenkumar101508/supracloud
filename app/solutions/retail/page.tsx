@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Link from "next/link";
 import { CheckCircle, ArrowRight, Zap, Cpu, ShoppingCart, Package, Clock, TrendingUp } from "lucide-react";
 import BookingSystem from "@/app/components/BookingSystem";
@@ -52,7 +52,7 @@ const deliverySteps = [
   {
     num: "03",
     title: "Load Testing & QA",
-    desc: "Peak-load simulation at 10× normal throughput. E2E validation across all critical customer journeys.",
+    desc: "Peak-load simulation at 10 normal throughput. E2E validation across all critical customer journeys.",
   },
   {
     num: "04",
@@ -64,7 +64,7 @@ const deliverySteps = [
 export default function RetailPage() {
   return (
     <div className="bg-slate-50">
-      {/* ── HERO ── */}
+      {/*  HERO  */}
       <section style={{ backgroundColor: "#0A192F" }} className="relative overflow-hidden py-24">
         <div
           aria-hidden
@@ -110,12 +110,12 @@ export default function RetailPage() {
         </div>
       </section>
 
-      {/* ── STAT BAR ── */}
+      {/*  STAT BAR  */}
       <section className="border-b border-slate-200 py-5 bg-white">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
             {[
-              { value: "10×", label: "Peak-load scalability" },
+              { value: "10", label: "Peak-load scalability" },
               { value: "< 0.6s", label: "Order query response time" },
               { value: "24/7", label: "Coverage — including bank holidays" },
               { value: "0", label: "Seasonal headcount increase needed" },
@@ -129,7 +129,7 @@ export default function RetailPage() {
         </div>
       </section>
 
-      {/* ── L1 / L2 CAPABILITIES ── */}
+      {/*  L1 / L2 CAPABILITIES  */}
       <section className="bg-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-14">
@@ -182,7 +182,7 @@ export default function RetailPage() {
         </div>
       </section>
 
-      {/* ── USE CASES ── */}
+      {/*  USE CASES  */}
       <section className="bg-slate-50 py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-14">
@@ -217,7 +217,7 @@ export default function RetailPage() {
         </div>
       </section>
 
-      {/* ── TECH STACK ── */}
+      {/*  TECH STACK  */}
       <section className="bg-white py-16">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-2xl font-bold text-gray-900 mb-3">Technical Architecture</h2>
@@ -235,7 +235,7 @@ export default function RetailPage() {
         </div>
       </section>
 
-      {/* ── DELIVERY PROCESS ── */}
+      {/*  DELIVERY PROCESS  */}
       <section className="bg-slate-50 py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-14">
@@ -254,7 +254,7 @@ export default function RetailPage() {
         </div>
       </section>
 
-      {/* ── BOOKING ── */}
+      {/*  BOOKING  */}
       <section style={{ backgroundColor: "#0A192F" }} className="py-20">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-10">

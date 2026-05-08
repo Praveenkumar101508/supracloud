@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useId } from "react";
 
@@ -29,10 +29,10 @@ const TEXT_CLS: Record<string, string> = {
  * bottom-left to top-right, joined by transitional nodes.
  *
  * Symbolism:
- *   • Ascending layers  → "Supra" (above & beyond)
- *   • Gradient bars     → Cloud architecture tiers (Infra → Platform → Intelligence)
- *   • Connecting nodes  → Interconnected services / founding trio S · P · U
- *   • Cyan → Emerald    → From established depth to active growth
+ *    Ascending layers  → "Supra" (above & beyond)
+ *    Gradient bars     → Cloud architecture tiers (Infra → Platform → Intelligence)
+ *    Connecting nodes  → Interconnected services / founding trio S · P · U
+ *    Cyan → Emerald    → From established depth to active growth
  */
 export default function Logo({
   variant = "light",
@@ -51,16 +51,16 @@ export default function Logo({
   return (
     <div className={`flex items-center gap-2.5 select-none ${className}`}>
 
-      {/* ── GEOMETRIC MARK ─────────────────────────────────────────── */}
+      {/*  GEOMETRIC MARK  */}
       {/*
-        ViewBox 40 × 40
-        ┌────────────────────────────────────┐
-        │                    ███████████████ │  Bar 3 (y=5)  — brightest
-        │                  ●                │  Node 2 (y=14.5)
-        │         ███████████████           │  Bar 2 (y=17) — mid
-        │       ●                           │  Node 1 (y=26.5)
-        │ ███████████████                   │  Bar 1 (y=29)  — receded
-        └────────────────────────────────────┘
+        ViewBox 40  40
+        
+                               Bar 3 (y=5)  — brightest
+                                            Node 2 (y=14.5)
+                              Bar 2 (y=17) — mid
+                                            Node 1 (y=26.5)
+                              Bar 1 (y=29)  — receded
+        
         Each bar is 22 px wide, 7 px tall, rx 3.5 (fully rounded ends).
         Each bar shifts 9 px right and 12 px up → staircase rising S-path.
       */}
@@ -108,7 +108,7 @@ export default function Logo({
           fill="#10B981" opacity="0.80" />
       </svg>
 
-      {/* ── WORDMARK ───────────────────────────────────────────────── */}
+      {/*  WORDMARK  */}
       {showWordmark && (
         <span
           className={`font-bold tracking-tight leading-none ${TEXT_CLS[size]}`}

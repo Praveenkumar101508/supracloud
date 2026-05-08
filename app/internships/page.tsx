@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Link from "next/link";
 import { CheckCircle, GraduationCap, Cloud, Bot } from "lucide-react";
 
@@ -41,7 +41,7 @@ const forWho = [
 export default function InternshipsPage() {
   return (
     <div className="bg-slate-50">
-      {/* ── HERO ── */}
+      {/*  HERO  */}
       <section style={{ backgroundColor: "#0A192F" }} className="relative overflow-hidden py-24">
         <div
           aria-hidden
@@ -72,7 +72,7 @@ export default function InternshipsPage() {
         </div>
       </section>
 
-      {/* ── THREE TRACKS ── */}
+      {/*  THREE TRACKS  */}
       <section className="bg-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-14">
@@ -110,7 +110,7 @@ export default function InternshipsPage() {
         </div>
       </section>
 
-      {/* ── WHO IT'S FOR ── */}
+      {/*  WHO IT'S FOR  */}
       <section className="bg-slate-50 py-16">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-10">
@@ -127,7 +127,7 @@ export default function InternshipsPage() {
         </div>
       </section>
 
-      {/* ── PLACEMENT YEAR ── */}
+      {/*  PLACEMENT YEAR  */}
       <section className="bg-white py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-slate-50 rounded-xl p-10 border border-slate-100 text-center">
@@ -146,7 +146,7 @@ export default function InternshipsPage() {
         </div>
       </section>
 
-      {/* ── BOTTOM CTA ── */}
+      {/*  BOTTOM CTA  */}
       <section style={{ backgroundColor: "#0A192F" }} className="py-16 text-center">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">

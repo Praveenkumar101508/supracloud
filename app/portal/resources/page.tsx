@@ -1,4 +1,4 @@
-import { FileText, GitBranch, Star, Download } from "lucide-react";
+﻿import { FileText, GitBranch, Star, Download } from "lucide-react";
 
 const resources = [
   {

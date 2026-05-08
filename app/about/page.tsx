@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { Target, ShieldCheck, Layers } from "lucide-react";
 
 const values = [

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { Mail, MessageCircle, Clock, Bot, Briefcase, GraduationCap, Handshake } from "lucide-react";
@@ -65,7 +65,7 @@ function ContactForm({ inquiryType }: { inquiryType: InquiryType }) {
     return (
       <div className="text-center py-14">
         <div className="w-14 h-14 rounded-full bg-emerald-50 border border-emerald-200 flex items-center justify-center mx-auto mb-4">
-          <span className="text-emerald-600 text-2xl font-bold">✓</span>
+          <span className="text-emerald-600 text-2xl font-bold"></span>
         </div>
         <p className="text-lg font-bold text-gray-900">Message received.</p>
         <p className="text-sm text-gray-500 mt-2">We&apos;ll respond within 1 business day.</p>
@@ -151,7 +151,7 @@ export default function ContactPage() {
 
   return (
     <div className="bg-slate-50">
-      {/* ── HEADER ── */}
+      {/*  HEADER  */}
       <section style={{ backgroundColor: "#0A192F" }} className="relative py-20 text-center overflow-hidden">
         <div
           aria-hidden
@@ -173,7 +173,7 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* ── INQUIRY TYPE SELECTOR ── */}
+      {/*  INQUIRY TYPE SELECTOR  */}
       <section className="py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-center text-sm font-semibold text-gray-700 mb-6">What best describes your enquiry?</p>

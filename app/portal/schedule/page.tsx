@@ -1,4 +1,4 @@
-export const metadata = { title: "Schedule" };
+﻿export const metadata = { title: "Schedule" };
 
 export default function SchedulePage() {
   return (

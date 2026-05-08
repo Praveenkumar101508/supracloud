@@ -1,10 +1,10 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { Bot, Briefcase, GraduationCap, CheckCircle, ArrowRight, Building2, ShoppingCart, Zap, Shield, TrendingUp, Users, ChevronRight } from "lucide-react";
 
-/* ── Terminal animation ── */
+/*  Terminal animation  */
 const TERMINAL_LINES = [
   "$ initialising SupraCloud enterprise runtime...",
   "$ deploying banking-ai-agent v3.2.1 → production",
@@ -12,7 +12,7 @@ const TERMINAL_LINES = [
   "$ L1_deflection_rate: 63% ↑ | SLA: 99.97%",
   "$ retail-ai-agent: processing 2,400 concurrent queries",
   "$ rag_pipeline: 14ms avg latency | accuracy: 94.2%",
-  "$ all systems operational ✓",
+  "$ all systems operational ",
 ];
 
 function TerminalHero() {
@@ -65,7 +65,7 @@ function TerminalHero() {
   );
 }
 
-/* ── Industry Solution Matrix ── */
+/*  Industry Solution Matrix  */
 const matrix = {
   banking: {
     label: "Banking",
@@ -176,11 +176,11 @@ function IndustryMatrix() {
   );
 }
 
-/* ── Page ── */
+/*  Page  */
 export default function Home() {
   return (
     <>
-      {/* ── HERO ── */}
+      {/*  HERO  */}
       <section style={{ backgroundColor: "#0A192F" }} className="relative overflow-hidden">
         <div
           aria-hidden
@@ -243,7 +243,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── STATS BAR ── */}
+      {/*  STATS BAR  */}
       <section className="bg-slate-800/40 border-y border-slate-700/40 py-4" style={{ backgroundColor: "#071527" }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-2 text-sm font-semibold text-slate-300">
@@ -255,14 +255,14 @@ export default function Home() {
             ].map((stat, i) => (
               <span key={i} className="flex items-center gap-2">
                 {i > 0 && <span className="hidden sm:inline text-slate-700">·</span>}
-                <span className="text-emerald-500">✓</span> {stat}
+                <span className="text-emerald-500"></span> {stat}
               </span>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── THREE PILLARS ── */}
+      {/*  THREE PILLARS  */}
       <section className="bg-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-14">
@@ -330,7 +330,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── INDUSTRY SOLUTION MATRIX ── */}
+      {/*  INDUSTRY SOLUTION MATRIX  */}
       <section style={{ backgroundColor: "#0A192F" }} className="relative py-24 overflow-hidden">
         <div
           aria-hidden
@@ -355,7 +355,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── WHY SUPRACLOUD ── */}
+      {/*  WHY SUPRACLOUD  */}
       <section className="bg-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
@@ -435,7 +435,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── FINAL CTA ── */}
+      {/*  FINAL CTA  */}
       <section style={{ backgroundColor: "#071527" }} className="py-24 relative overflow-hidden">
         <div
           aria-hidden

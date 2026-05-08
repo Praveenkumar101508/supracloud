@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import { CheckCircle, Plus } from "lucide-react";
 
 const tiers = [
@@ -45,7 +45,7 @@ const tiers = [
       "Technical interview preparation (SQL, Python, Cloud, ML concepts)",
       "System design sessions for senior/lead roles",
       "Behavioural coaching using the STAR framework",
-      "2× live mock interviews with written feedback reports",
+      "2 live mock interviews with written feedback reports",
       "1:1 weekly coaching sessions (Mon–Thu schedule)",
       "Dedicated training path tailored to your target role",
       "Salary negotiation guidance",

@@ -1,4 +1,4 @@
-import { GitBranch, Box, BarChart2, Cloud, Bot } from "lucide-react";
+﻿import { GitBranch, Box, BarChart2, Cloud, Bot } from "lucide-react";
 
 const projects = [
   {
@@ -112,7 +112,7 @@ export default function ProjectsPage() {
                   <ul className="space-y-2">
                     {project.builds.map((b) => (
                       <li key={b} className="text-sm text-gray-600 flex items-start gap-2">
-                        <span className="text-emerald-400 mt-1">›</span>
+                        <span className="text-emerald-400 mt-1"></span>
                         {b}
                       </li>
                     ))}
@@ -134,7 +134,7 @@ export default function ProjectsPage() {
                   <ul className="space-y-2">
                     {project.skills.map((s) => (
                       <li key={s} className="text-sm text-gray-600 flex items-start gap-2">
-                        <span className="text-emerald-400 mt-1">›</span>
+                        <span className="text-emerald-400 mt-1"></span>
                         {s}
                       </li>
                     ))}

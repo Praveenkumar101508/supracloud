@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Link from "next/link";
 import { CheckCircle, Users, Briefcase, Code2, Lightbulb, RefreshCw, Bot } from "lucide-react";
 
@@ -53,7 +53,7 @@ const whyPoints = [
 export default function ITServicesPage() {
   return (
     <div className="bg-slate-50">
-      {/* ── HERO ── */}
+      {/*  HERO  */}
       <section style={{ backgroundColor: "#0A192F" }} className="relative overflow-hidden py-24">
         <div
           aria-hidden
@@ -84,7 +84,7 @@ export default function ITServicesPage() {
         </div>
       </section>
 
-      {/* ── IT STAFFING ── */}
+      {/*  IT STAFFING  */}
       <section className="bg-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-14">
@@ -116,7 +116,7 @@ export default function ITServicesPage() {
         </div>
       </section>
 
-      {/* ── IT CONSULTATION ── */}
+      {/*  IT CONSULTATION  */}
       <section className="bg-slate-50 py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-14">
@@ -148,7 +148,7 @@ export default function ITServicesPage() {
         </div>
       </section>
 
-      {/* ── WHY SUPRACLOUD ── */}
+      {/*  WHY SUPRACLOUD  */}
       <section className="bg-white py-16">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-10">
@@ -165,7 +165,7 @@ export default function ITServicesPage() {
         </div>
       </section>
 
-      {/* ── BOTTOM CTA ── */}
+      {/*  BOTTOM CTA  */}
       <section style={{ backgroundColor: "#0A192F" }} className="py-16 text-center">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">

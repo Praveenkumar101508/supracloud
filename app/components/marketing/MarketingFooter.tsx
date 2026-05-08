@@ -1,4 +1,4 @@
-import Link from "next/link";
+﻿import Link from "next/link";
 import Image from "next/image";
 
 export default function MarketingFooter() {
@@ -21,7 +21,7 @@ export default function MarketingFooter() {
         <div><p className="foot-col-heading">Talent Hub</p><ul><li><Link href="/careers/internships">Internships</Link></li><li><Link href="/careers/training">Training</Link></li></ul></div>
         <div><p className="foot-col-heading">Engagement</p><ul><li><Link href="/book">Book a Demo</Link></li><li><Link href="/portal">Client Portal</Link></li></ul></div>
       </div>
-      <div className="container foot-base">© 2026 SupraCloud Ltd · Registered in England &amp; Wales</div>
+      <div className="container foot-base"> 2026 SupraCloud Ltd · Registered in England &amp; Wales</div>
     </footer>
   );
 }

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Link from "next/link";
 import { CheckCircle, ArrowRight, Zap, PhoneCall, Cpu } from "lucide-react";
 
@@ -54,7 +54,7 @@ const techStack = [
 export default function AIAgentsPage() {
   return (
     <div className="bg-slate-50">
-      {/* ── HERO ── */}
+      {/*  HERO  */}
       <section style={{ backgroundColor: "#0A192F" }} className="relative overflow-hidden py-24">
         <div
           aria-hidden
@@ -85,7 +85,7 @@ export default function AIAgentsPage() {
         </div>
       </section>
 
-      {/* ── HOW IT WORKS ── */}
+      {/*  HOW IT WORKS  */}
       <section className="bg-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-14">
@@ -103,7 +103,7 @@ export default function AIAgentsPage() {
         </div>
       </section>
 
-      {/* ── BANKING AGENTS ── */}
+      {/*  BANKING AGENTS  */}
       <section className="bg-slate-50 py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
@@ -158,7 +158,7 @@ export default function AIAgentsPage() {
         </div>
       </section>
 
-      {/* ── SUPERMARKET AGENTS ── */}
+      {/*  SUPERMARKET AGENTS  */}
       <section className="bg-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
@@ -211,7 +211,7 @@ export default function AIAgentsPage() {
         </div>
       </section>
 
-      {/* ── TECH STACK ── */}
+      {/*  TECH STACK  */}
       <section className="bg-slate-50 py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Built on proven production technology</h2>
@@ -228,7 +228,7 @@ export default function AIAgentsPage() {
         </div>
       </section>
 
-      {/* ── BOTTOM CTA ── */}
+      {/*  BOTTOM CTA  */}
       <section style={{ backgroundColor: "#0A192F" }} className="py-16 text-center">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">
