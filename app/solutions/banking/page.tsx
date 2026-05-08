@@ -1,7 +1,7 @@
 ﻿import MarketingLayout from "@/app/components/marketing/MarketingLayout";
 
 export const metadata = {
-  title: "Banking AI â€” SupraCloud",
+  title: “Banking AI Agents”,
   description: "Autonomous L1 / L2 AI agents for global banking operations.",
 };
 

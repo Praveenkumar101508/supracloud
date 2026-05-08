@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Link from "next/link";
 import { CheckCircle, ArrowRight, Handshake, GraduationCap, Building2, Calendar } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Placement Year Partnerships | SupraCloud Talent",
+  title: "Placement Year Partnerships",
   description:
     "University placement year partnerships connecting students with enterprise AI and data engineering hosts. Structured programmes with mentoring, real project delivery, and graduate conversion pathways.",
 };

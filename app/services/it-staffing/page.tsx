@@ -1,7 +1,7 @@
-import MarketingLayout from "@/app/components/marketing/MarketingLayout";
+﻿import MarketingLayout from "@/app/components/marketing/MarketingLayout";
 
 export const metadata = {
-  title: "IT Staffing — SupraCloud",
+  title: "IT Staffing ",
   description: "Pre-vetted, SupraCloud-trained engineering resources for AI, data, and cloud.",
 };
 

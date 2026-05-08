@@ -1,7 +1,7 @@
 ﻿import MarketingLayout from "@/app/components/marketing/MarketingLayout";
 
 export const metadata = {
-  title: "Training â€” SupraCloud",
+  title: "Industry Training Programs",
   description: "Live cohort-based AI training, 12 weeks, ship to production.",
 };
 

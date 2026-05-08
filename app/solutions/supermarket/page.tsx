@@ -1,7 +1,7 @@
 ﻿import MarketingLayout from "@/app/components/marketing/MarketingLayout";
 
 export const metadata = {
-  title: "Supermarket AI â€” SupraCloud",
+  title: "Supermarket AI Agents",
   description: "Retail automation, inventory intelligence, and shopper experience agents.",
 };
 

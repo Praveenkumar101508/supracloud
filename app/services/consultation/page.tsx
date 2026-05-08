@@ -1,7 +1,7 @@
 ﻿import MarketingLayout from "@/app/components/marketing/MarketingLayout";
 
 export const metadata = {
-  title: "Consultation â€” SupraCloud",
+  title: "Enterprise IT Consultation",
   description: "Engineer-led advisory for AI, data, and cloud transformation.",
 };
 

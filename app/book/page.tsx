@@ -2,7 +2,7 @@ import MarketingLayout from "@/app/components/marketing/MarketingLayout";
 import BookingSystem from "@/app/components/BookingSystem";
 
 export const metadata = {
-  title: "Book a Demo — SupraCloud",
+  title: "Book a Demo",
   description: "Schedule a strategy session with our solutions engineers.",
 };
 

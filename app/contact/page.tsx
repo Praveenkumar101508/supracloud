@@ -80,32 +80,32 @@ function ContactForm({ inquiryType }: { inquiryType: InquiryType }) {
     <form onSubmit={handleSubmit} className="space-y-5">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Your Name *</label>
-          <input name="name" required className="w-full px-4 py-2.5 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400" />
+          <label htmlFor="contact-name" className="block text-sm font-medium text-gray-700 mb-1">Your Name *</label>
+          <input id="contact-name" name="name" required className="w-full px-4 py-2.5 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400" />
         </div>
         {isClientOrPartnership && (
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Company / Organisation</label>
-            <input name="company" className="w-full px-4 py-2.5 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400" />
+            <label htmlFor="contact-company" className="block text-sm font-medium text-gray-700 mb-1">Company / Organisation</label>
+            <input id="contact-company" name="company" className="w-full px-4 py-2.5 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400" />
           </div>
         )}
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Email *</label>
-          <input name="email" type="email" required className="w-full px-4 py-2.5 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400" />
+          <label htmlFor="contact-email" className="block text-sm font-medium text-gray-700 mb-1">Email *</label>
+          <input id="contact-email" name="email" type="email" required className="w-full px-4 py-2.5 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400" />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Phone (optional)</label>
-          <input name="phone" type="tel" className="w-full px-4 py-2.5 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400" />
+          <label htmlFor="contact-phone" className="block text-sm font-medium text-gray-700 mb-1">Phone (optional)</label>
+          <input id="contact-phone" name="phone" type="tel" className="w-full px-4 py-2.5 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400" />
         </div>
       </div>
       {serviceOptions.length > 0 && (
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="contact-service" className="block text-sm font-medium text-gray-700 mb-1">
             {isClientOrPartnership ? "Service / Interest *" : "Programme Interest *"}
           </label>
-          <select name="service" required className="w-full px-4 py-2.5 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400 bg-white">
+          <select id="contact-service" name="service" required className="w-full px-4 py-2.5 rounded-lg border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400 bg-white">
             <option value="">Select an option…</option>
             {serviceOptions.map((opt) => (
               <option key={opt} value={opt}>{opt}</option>
@@ -114,10 +114,11 @@ function ContactForm({ inquiryType }: { inquiryType: InquiryType }) {
         </div>
       )}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label htmlFor="contact-message" className="block text-sm font-medium text-gray-700 mb-1">
           {isClientOrPartnership ? "Describe your requirements *" : "Tell us about yourself *"}
         </label>
         <textarea
+          id="contact-message"
           name="message"
           required
           rows={5}

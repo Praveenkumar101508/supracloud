@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Link from "next/link";
 import { CheckCircle, ArrowRight, Briefcase, Users, Code2, Shield, Clock, Building2 } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "IT Staffing & Resource Outsourcing | SupraCloud",
+  title: "IT Staffing & Resource Outsourcing",
   description:
     "Engineer-vetted IT staffing for contract, permanent, and project-based roles across Data, Cloud, and AI. UK-focused, IR35-compliant, fast turnaround.",
 };
