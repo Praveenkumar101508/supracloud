@@ -1,41 +1,16 @@
 ﻿"use client";
 
 import Link from "next/link";
-import { useState, useEffect, useRef } from "react";
-import { Bot, Briefcase, GraduationCap, CheckCircle, ArrowRight, Building2, ShoppingCart, Zap, Shield, TrendingUp, Users, ChevronRight, X } from "lucide-react";
+import dynamic from "next/dynamic";
+import { useState, useEffect } from "react";
+import { Bot, Briefcase, GraduationCap, CheckCircle, ArrowRight, Building2, ShoppingCart, Zap, Shield, TrendingUp, Users, ChevronRight } from "lucide-react";
 
-/* Animated counter hook */
-function useCountUp(target: number, duration = 1600) {
-  const [count, setCount] = useState(0);
-  const ref = useRef<HTMLDivElement>(null);
-  const started = useRef(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting && !started.current) {
-        started.current = true;
-        const start = performance.now();
-        const tick = (now: number) => {
-          const p = Math.min((now - start) / duration, 1);
-          setCount(Math.floor(p * p * target));
-          if (p < 1) requestAnimationFrame(tick);
-          else setCount(target);
-        };
-        requestAnimationFrame(tick);
-      }
-    }, { threshold: 0.3 });
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, [target, duration]);
-  return { count, ref };
-}
+const ROICalculator = dynamic(() => import("./components/ROICalculator"), { ssr: false });
 
-function AnimatedStat({ value, suffix = "", label }: { value: number; suffix?: string; label: string }) {
-  const { count, ref } = useCountUp(value);
+function StatCard({ value, label }: { value: string; label: string }) {
   return (
-    <div ref={ref} className="bg-white rounded-2xl p-6 border border-slate-100 text-center hover-lift">
-      <p className="text-3xl font-extrabold text-emerald-600">{count}{suffix}</p>
+    <div className="bg-white rounded-2xl p-6 border border-slate-100 text-center hover-lift">
+      <p className="text-3xl font-extrabold text-emerald-600">{value}</p>
       <p className="text-xs text-gray-500 mt-2 leading-relaxed">{label}</p>
     </div>
   );
@@ -244,10 +219,13 @@ export default function Home() {
               <p className="animate-fade-up inline-flex items-center gap-2 mb-5 text-xs font-semibold tracking-widest uppercase text-emerald-400 border border-emerald-700/50 rounded-full px-3 py-1.5">
                 <Zap size={11} /> Enterprise AI · UK-Based · Production-Grade
               </p>
-              <h1 className="animate-fade-up-1 text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-[1.1] mb-6">
+              <h1 className="animate-fade-up-1 text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-[1.1] mb-4">
                 Autonomous AI Agents for{" "}
                 <span className="gradient-text">Global Enterprise</span>
               </h1>
+              <p className="animate-fade-up-1 text-xs text-slate-500 mb-5">
+                Built on the same stack IBM uses for enterprise ML production systems.
+              </p>
               <p className="animate-fade-up-2 text-lg text-slate-400 leading-relaxed mb-8 max-w-lg">
                 We design, build and deploy production-grade AI agents for banking and retail — slashing support costs and handling L1/L2 queries at scale, 24/7.
               </p>
@@ -375,10 +353,10 @@ export default function Home() {
             <h2 className="text-2xl font-bold text-gray-900">Numbers That Matter</h2>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            <AnimatedStat value={60} suffix="%+" label="Target L1 deflection (target SLA)" />
-            <AnimatedStat value={14} suffix="ms" label="Average agent response latency" />
-            <AnimatedStat value={99} suffix="%" label="Agent uptime SLA guaranteed" />
-            <AnimatedStat value={5} suffix="+" label="Years enterprise AI delivery" />
+            <StatCard value="60%+" label="Target L1 deflection" />
+            <StatCard value="<400ms" label="Avg agent response latency" />
+            <StatCard value="99.9%" label="Agent uptime SLA" />
+            <StatCard value="5+" label="Years enterprise AI delivery" />
           </div>
         </div>
       </section>
@@ -482,6 +460,13 @@ export default function Home() {
         </div>
       </section>
 
+      {/*  ROI CALCULATOR  */}
+      <section style={{ backgroundColor: "#0A192F" }} className="py-20">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <ROICalculator />
+        </div>
+      </section>
+
       {/*  INDUSTRY SOLUTION MATRIX  */}
       <section style={{ backgroundColor: "#0A192F" }} className="relative py-24 overflow-hidden">
         <div
@@ -535,6 +520,11 @@ export default function Home() {
                     icon: <Users size={18} className="text-emerald-500" />,
                     title: "Founder-Led with Specialist Network",
                     desc: "Senior ML engineers, backend developers, and QA specialists engaged per project — not just a solo consultant.",
+                  },
+                  {
+                    icon: <Shield size={18} className="text-emerald-500" />,
+                    title: "Compliance-Native, Not Compliance-Bolted-On",
+                    desc: "Financial regulation and data protection aren't afterthoughts. We architect for UK GDPR, PCI DSS awareness, and FCA operational resilience from the first commit — not in a pre-launch scramble.",
                   },
                 ].map((point) => (
                   <div key={point.title} className="flex items-start gap-4 p-5 rounded-xl bg-slate-50 border border-slate-100">

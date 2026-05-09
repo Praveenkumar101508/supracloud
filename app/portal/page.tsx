@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { Mail, Lock, ArrowRight } from "lucide-react";
+import { Lock, BarChart2, FileText, DollarSign } from "lucide-react";
+import PortalLoginForm from "@/app/components/PortalLoginForm";
 
 export const metadata: Metadata = {
   title: "Client Portal | SupraCloud",
-  description: "SupraCloud Client Portal — secure delivery dashboard for active engagements. Coming soon.",
+  description: "SupraCloud Client Portal — SLA dashboards, deployment logs, QA reports, and cost-per-query analytics.",
   openGraph: {
     title: "Client Portal | SupraCloud",
-    description: "Secure delivery dashboard for SupraCloud clients. Contact us to access your engagement portal.",
+    description: "Secure delivery dashboard for SupraCloud clients. SLA dashboards, agent QA reports, and cost analytics.",
     url: "https://supracloud.co.uk/portal",
     siteName: "SupraCloud",
     locale: "en_GB",
@@ -16,72 +16,111 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
+const features = [
+  {
+    icon: <BarChart2 size={22} className="text-emerald-400" />,
+    title: "Live SLA Dashboards",
+    desc: "Real-time L1 deflection rates, agent uptime, and response latency — tracked against your agreed SLAs.",
+  },
+  {
+    icon: <FileText size={22} className="text-emerald-400" />,
+    title: "Agent QA Replay Reports",
+    desc: "Full Playwright-generated QA reports with conversation traces, tool call logs, and regression history.",
+  },
+  {
+    icon: <DollarSign size={22} className="text-emerald-400" />,
+    title: "Cost-per-Query Analytics",
+    desc: "Granular cost attribution per query type, channel, and agent — so you always know your unit economics.",
+  },
+];
+
 export default function PortalPage() {
   return (
-    <div className="bg-slate-50 min-h-[80vh] flex items-center justify-center py-24 px-4">
-      <div className="max-w-lg w-full text-center">
-        {/* Icon */}
-        <div className="mx-auto w-16 h-16 rounded-2xl bg-slate-100 border border-slate-200 flex items-center justify-center mb-6 shadow-sm">
-          <Lock size={28} className="text-slate-500" />
+    <div style={{ backgroundColor: "#0A192F" }} className="min-h-screen">
+      {/* Header */}
+      <section className="relative py-20 text-center overflow-hidden">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 opacity-[0.035]"
+          style={{
+            backgroundImage:
+              "linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)",
+            backgroundSize: "48px 48px",
+          }}
+        />
+        <div className="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="w-14 h-14 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mx-auto mb-6">
+            <Lock size={24} className="text-emerald-400" />
+          </div>
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-white mb-4">
+            SupraCloud Client Portal
+          </h1>
+          <p className="text-slate-400 text-lg max-w-xl mx-auto leading-relaxed">
+            SLA dashboards, deployment logs, QA reports, and cost-per-query analytics — all in one place.
+          </p>
         </div>
+      </section>
 
-        {/* Badge */}
-        <p className="inline-flex items-center gap-2 mb-5 text-xs font-semibold tracking-widest uppercase text-emerald-600 border border-emerald-200 rounded-full px-3 py-1.5 bg-emerald-50">
-          Client Portal
-        </p>
+      {/* Login + features */}
+      <section className="pb-20">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+            {/* Login form */}
+            <PortalLoginForm />
 
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4">
-          Delivery Portal Coming Soon
-        </h1>
-
-        <p className="text-gray-500 leading-relaxed mb-8 max-w-sm mx-auto">
-          The SupraCloud Client Portal — your private dashboard for QA reports, agent traces, SLA metrics, and engagement progress — is currently in development.
-        </p>
-
-        {/* Card */}
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-8 mb-8 text-left">
-          <p className="text-sm font-semibold text-gray-800 mb-4">Active clients:</p>
-          <div className="flex items-start gap-3 mb-5">
-            <div className="w-8 h-8 rounded-lg bg-emerald-50 border border-emerald-100 flex items-center justify-center shrink-0 mt-0.5">
-              <Mail size={14} className="text-emerald-600" />
-            </div>
-            <div>
-              <p className="text-sm text-gray-700 leading-relaxed">
-                To access your delivery reports and engagement data, contact{" "}
-                <a
-                  href="mailto:rk@supracloud.co.uk"
-                  className="text-emerald-600 font-semibold hover:underline"
-                >
-                  rk@supracloud.co.uk
-                </a>{" "}
-                and we&rsquo;ll share your reports directly.
+            {/* Feature cards */}
+            <div className="space-y-5">
+              <p className="text-xs font-semibold uppercase tracking-widest text-emerald-500 mb-4">
+                What&apos;s inside
               </p>
-              <p className="text-xs text-gray-400 mt-2">We respond within 1 business day.</p>
+              {features.map((f) => (
+                <div
+                  key={f.title}
+                  className="flex items-start gap-4 rounded-xl p-5"
+                  style={{
+                    backgroundColor: "#112240",
+                    border: "1px solid rgba(255,255,255,0.06)",
+                  }}
+                >
+                  <div
+                    className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0"
+                    style={{
+                      backgroundColor: "rgba(16,185,129,0.1)",
+                      border: "1px solid rgba(16,185,129,0.2)",
+                    }}
+                  >
+                    {f.icon}
+                  </div>
+                  <div>
+                    <p className="font-semibold text-white text-sm mb-1">{f.title}</p>
+                    <p className="text-slate-400 text-xs leading-relaxed">{f.desc}</p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
 
-          <div className="border-t border-slate-100 pt-5">
-            <p className="text-xs text-gray-400 leading-relaxed">
-              The portal will provide: live SLA dashboards, QA Playwright reports, agent conversation traces, delivery milestone tracking, and billing history.
+          {/* Bottom CTA */}
+          <div
+            className="mt-12 rounded-2xl p-6 text-center"
+            style={{
+              backgroundColor: "#112240",
+              border: "1px solid rgba(255,255,255,0.06)",
+            }}
+          >
+            <p className="text-slate-400 text-sm">
+              Already a client?{" "}
+              <a
+                href="mailto:rk@supracloud.co.uk"
+                className="text-emerald-400 font-semibold hover:underline"
+              >
+                Email rk@supracloud.co.uk
+              </a>{" "}
+              to request portal access.
             </p>
           </div>
         </div>
-
-        <div className="flex flex-col sm:flex-row gap-3 justify-center">
-          <a
-            href="mailto:rk@supracloud.co.uk"
-            className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg text-sm font-semibold text-white bg-emerald-500 hover:bg-emerald-600 transition-colors"
-          >
-            Email Us <Mail size={14} />
-          </a>
-          <Link
-            href="/contact"
-            className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg text-sm font-semibold text-gray-700 border border-slate-200 hover:border-slate-400 transition-colors"
-          >
-            Contact Page <ArrowRight size={14} />
-          </Link>
-        </div>
-      </div>
+      </section>
     </div>
   );
 }

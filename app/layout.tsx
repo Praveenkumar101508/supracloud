@@ -6,6 +6,8 @@ import Footer from "./components/Footer";
 import CookieBanner from "./components/CookieBanner";
 import { Providers } from "./providers";
 import VoiceAgentLoader from "./components/VoiceAgentLoader";
+import StickyBookingBar from "./components/StickyBookingBar";
+import BackToTop from "./components/BackToTop";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -121,6 +123,8 @@ export default function RootLayout({
           <Footer />
           <CookieBanner />
           <VoiceAgentLoader />
+          <StickyBookingBar />
+          <BackToTop />
         </Providers>
       </body>
     </html>

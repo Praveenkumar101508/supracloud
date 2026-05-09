@@ -144,6 +144,61 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* Timeline */}
+      <section style={{ backgroundColor: "#0A192F" }} className="py-20">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-14">
+            <p className="text-xs font-semibold uppercase tracking-widest text-emerald-500 mb-3">Journey</p>
+            <h2 className="text-2xl sm:text-3xl font-bold text-white">How We Got Here</h2>
+          </div>
+          <div className="relative">
+            {/* Vertical line */}
+            <div className="absolute left-6 top-2 bottom-2 w-0.5 bg-gradient-to-b from-emerald-500/60 via-emerald-500/30 to-transparent hidden sm:block" aria-hidden />
+            <div className="space-y-8">
+              {[
+                {
+                  year: "2019",
+                  event: "Joined Capgemini — first enterprise data engineering projects",
+                },
+                {
+                  year: "2020",
+                  event: "Moved to IBM — building production ML pipelines for regulated industries",
+                },
+                {
+                  year: "2023",
+                  event: "MSc Data Science, University of Essex — specialisation in LLM applications",
+                },
+                {
+                  year: "2024",
+                  event: "Left IBM — founded SupraCloud to apply enterprise ML rigour to AI agent deployment",
+                },
+                {
+                  year: "2025",
+                  event: "First production banking agent deployed — 58% L1 deflection in 90 days",
+                },
+                {
+                  year: "2026",
+                  event: "SupraCloud expanding — retail, staffing, and talent pipeline live",
+                },
+              ].map((item) => (
+                <div key={item.year} className="flex items-start gap-6 sm:pl-16 relative">
+                  {/* Dot */}
+                  <div className="hidden sm:flex absolute left-0 w-12 h-12 rounded-full bg-slate-800 border-2 border-emerald-500/40 items-center justify-center shrink-0">
+                    <span className="text-xs font-extrabold text-emerald-400">{item.year.slice(2)}</span>
+                  </div>
+                  <div className="flex-1 bg-slate-800/60 rounded-xl p-5 border border-slate-700/40">
+                    <span className="inline-block text-xs font-bold text-emerald-400 tracking-widest mb-2">
+                      {item.year}
+                    </span>
+                    <p className="text-sm text-slate-300 leading-relaxed">{item.event}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Mission */}
       <section className="bg-slate-50 py-16">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">

@@ -22,6 +22,7 @@ const talentLinks = [
 
 const companyLinks = [
   { label: "About", href: "/about" },
+  { label: "Case Studies", href: "/case-studies" },
   { label: "Contact", href: "/contact" },
   { label: "Client Portal", href: "/portal" },
   { label: "Privacy Policy", href: "/privacy" },
