@@ -2,11 +2,11 @@
 
 import dynamic from "next/dynamic";
 
-const VoiceAgentWidget = dynamic(
-  () => import("./VoiceAgent/VoiceAgentWidget"),
+const VoiceAgent = dynamic(
+  () => import("./VoiceAgent"),
   { ssr: false }
 );
 
 export default function VoiceAgentLoader() {
-  return <VoiceAgentWidget />;
+  return <VoiceAgent />;
 }
