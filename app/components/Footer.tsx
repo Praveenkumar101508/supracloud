@@ -17,6 +17,7 @@ const talentLinks = [
   { label: "Industry Training Programs", href: "/careers/training" },
   { label: "Placement Year Partnerships", href: "/talent/partnerships" },
   { label: "Graduate Internships", href: "/careers/internships" },
+  { label: "Success Stories", href: "/success-stories" },
 ];
 
 const companyLinks = [
