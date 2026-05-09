@@ -1,15 +1,32 @@
 "use client";
 
+import { useState, useEffect } from "react";
+
 export default function BankingROISidebar() {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    function onScroll() {
+      setVisible(window.scrollY > 450);
+    }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
     <aside
+      className="hidden lg:block"
       style={{
-        position: "sticky",
-        top: "100px",
-        width: "300px",
-        flexShrink: 0,
+        position: "fixed",
+        right: "20px",
+        top: "50%",
+        transform: "translateY(-50%)",
+        width: "210px",
+        zIndex: 40,
+        opacity: visible ? 1 : 0,
+        pointerEvents: visible ? "auto" : "none",
+        transition: "opacity 0.3s ease",
       }}
-      className="hidden md:block"
     >
       <div
         style={{

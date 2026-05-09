@@ -19,23 +19,8 @@ const BODY = "<section class=\"hero\">\n    <div class=\"container hero-center\"
 export default function Page() {
   return (
     <MarketingLayout>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "flex-start",
-          maxWidth: "1400px",
-          margin: "0 auto",
-          gap: "40px",
-          padding: "0 24px",
-        }}
-      >
-        {/* Main content */}
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <div dangerouslySetInnerHTML={{ __html: BODY }} />
-        </div>
-        {/* Sidebar */}
-        <BankingROISidebar />
-      </div>
+      <div dangerouslySetInnerHTML={{ __html: BODY }} />
+      <BankingROISidebar />
     </MarketingLayout>
   );
 }
