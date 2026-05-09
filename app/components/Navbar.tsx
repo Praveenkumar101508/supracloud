@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
-import { Menu, X, ChevronDown, Bot, Building2, GraduationCap, Briefcase, Lightbulb, Users, BookOpen, Handshake } from "lucide-react";
+import { Menu, X, ChevronDown, Bot, Building2, GraduationCap, Briefcase, Lightbulb, Users, BookOpen, Handshake, TrendingUp } from "lucide-react";
 import Logo from "./Logo";
 
 type NavItem = { label: string; href: string; desc: string; icon: React.ReactNode };
@@ -19,6 +19,12 @@ const solutionsLinks: NavItem[] = [
     href: "/solutions/supermarket",
     desc: "Inventory, order and customer support automation",
     icon: <Bot size={16} className="text-emerald-400 shrink-0" />,
+  },
+  {
+    label: "Case Studies",
+    href: "/case-studies",
+    desc: "Production deployment results and client outcomes",
+    icon: <TrendingUp size={16} className="text-emerald-400 shrink-0" />,
   },
 ];
 
