@@ -10,12 +10,12 @@ import {
 } from "./VoiceAgent/agentPersonality";
 
 const INTENT_MAP = [
-  { keywords: ["internship", "intern", "graduate intern"], path: "/talent/internships", response: "Taking you to our internship programme now." },
-  { keywords: ["training programme", "training program", "talent programme", "upskill"], path: "/talent/programs", response: "Opening our training programmes for you." },
+  { keywords: ["internship", "intern", "graduate intern"], path: "/careers/internships", response: "Taking you to our internship programme now." },
+  { keywords: ["training programme", "training program", "talent programme", "upskill"], path: "/careers/training", response: "Opening our training programmes for you." },
   { keywords: ["university partner", "placement year partner", "partnership"], path: "/talent/partnerships", response: "Here's our placement year partnership page." },
   { keywords: ["banking", "financial services", "bank agent", "l1 deflection"], path: "/solutions/banking", response: "Showing you our banking AI agent solution." },
-  { keywords: ["retail", "supermarket", "ecommerce agent", "e-commerce agent"], path: "/solutions/retail", response: "Opening our retail agent solution." },
-  { keywords: ["staffing", "hire engineers", "hiring", "contract staff", "recruit"], path: "/services/staffing", response: "Taking you to IT staffing." },
+  { keywords: ["retail", "supermarket", "ecommerce agent", "e-commerce agent", "inventory agent"], path: "/solutions/supermarket", response: "Opening our supermarket AI agent solution." },
+  { keywords: ["staffing", "hire engineers", "hiring", "contract staff", "recruit"], path: "/services/it-staffing", response: "Taking you to IT staffing." },
   { keywords: ["consultation", "consulting", "advisory", "architecture advice", "strategy session"], path: "/services/consultation", response: "Opening our consultation services." },
   { keywords: ["book", "booking", "discovery call", "arrange a call", "schedule a call", "demo"], path: "/book", response: "Let me take you to our booking page." },
   { keywords: ["about supracloud", "about you", "who are you", "the team", "founder", "praveen"], path: "/about", response: "Here's our about page." },

@@ -15,9 +15,9 @@ const solutionsLinks: NavItem[] = [
     icon: <Building2 size={16} className="text-emerald-400 shrink-0" />,
   },
   {
-    label: "Retail AI Agents",
-    href: "/solutions/retail",
-    desc: "Order, inventory and customer support agents",
+    label: "Supermarket AI Agents",
+    href: "/solutions/supermarket",
+    desc: "Inventory, order and customer support automation",
     icon: <Bot size={16} className="text-emerald-400 shrink-0" />,
   },
 ];
@@ -25,7 +25,7 @@ const solutionsLinks: NavItem[] = [
 const servicesLinks: NavItem[] = [
   {
     label: "IT Staffing & Outsourcing",
-    href: "/services/staffing",
+    href: "/services/it-staffing",
     desc: "Vetted engineers for contract and permanent roles",
     icon: <Briefcase size={16} className="text-emerald-400 shrink-0" />,
   },
@@ -40,7 +40,7 @@ const servicesLinks: NavItem[] = [
 const talentLinks: NavItem[] = [
   {
     label: "Industry Training Programs",
-    href: "/talent/programs",
+    href: "/careers/training",
     desc: "Structured pathways for Data, Cloud & AI",
     icon: <BookOpen size={16} className="text-emerald-400 shrink-0" />,
   },
@@ -52,7 +52,7 @@ const talentLinks: NavItem[] = [
   },
   {
     label: "Graduate Internships",
-    href: "/talent/internships",
+    href: "/careers/internships",
     desc: "Paid technical internships across the UK",
     icon: <GraduationCap size={16} className="text-emerald-400 shrink-0" />,
   },

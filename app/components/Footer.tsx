@@ -4,19 +4,19 @@ import Logo from "./Logo";
 
 const solutionLinks = [
   { label: "Banking AI Agents", href: "/solutions/banking" },
-  { label: "Retail AI Agents", href: "/solutions/retail" },
+  { label: "Supermarket AI Agents", href: "/solutions/supermarket" },
 ];
 
 const serviceLinks = [
-  { label: "IT Staffing & Outsourcing", href: "/services/staffing" },
+  { label: "IT Staffing & Outsourcing", href: "/services/it-staffing" },
   { label: "Enterprise IT Consultation", href: "/services/consultation" },
   { label: "Book a Discovery Call", href: "/book" },
 ];
 
 const talentLinks = [
-  { label: "Industry Training Programs", href: "/talent/programs" },
+  { label: "Industry Training Programs", href: "/careers/training" },
   { label: "Placement Year Partnerships", href: "/talent/partnerships" },
-  { label: "Graduate Internships", href: "/talent/internships" },
+  { label: "Graduate Internships", href: "/careers/internships" },
 ];
 
 const companyLinks = [
