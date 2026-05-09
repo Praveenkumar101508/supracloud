@@ -79,41 +79,8 @@ export default function AboutPage() {
       {/* Founder Story */}
       <section className="bg-white py-24">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            {/* Founder card */}
-            <div className="bg-slate-900 rounded-2xl p-8 border border-slate-700/60 shadow-xl">
-              <div className="flex items-start gap-5 mb-6">
-                <div className="w-16 h-16 rounded-full bg-slate-700 border-2 border-emerald-500/40 flex items-center justify-center shrink-0 text-xl font-extrabold text-emerald-400 select-none">
-                  PK
-                </div>
-                <div>
-                  <p className="font-bold text-white text-lg">Praveen Kumar</p>
-                  <p className="text-emerald-400 text-sm font-semibold">Founder · AI/ML Engineer</p>
-                  <p className="text-slate-400 text-xs mt-1">ex-IBM · MSc Data Science, University of Essex</p>
-                </div>
-              </div>
-              <div className="grid grid-cols-2 gap-3">
-                {[
-                  { v: "5+", l: "Years enterprise AI delivery" },
-                  { v: "MSc", l: "Data Science, Univ. of Essex" },
-                  { v: "IBM", l: "Production ML systems built" },
-                  { v: "UK", l: "Based, serving global enterprise" },
-                ].map((s) => (
-                  <div key={s.l} className="bg-slate-800 rounded-xl p-4 border border-slate-700/40">
-                    <p className="text-xl font-extrabold text-emerald-400">{s.v}</p>
-                    <p className="text-xs text-slate-400 mt-1 leading-snug">{s.l}</p>
-                  </div>
-                ))}
-              </div>
-              <div className="mt-6 bg-slate-800 rounded-xl p-4 border border-slate-700/40 font-mono text-xs text-emerald-300/80 leading-relaxed">
-                <p className="text-slate-500 mb-2"># career summary</p>
-                <p>IBM → MSc Data Science → SupraCloud</p>
-                <p className="text-slate-500 mt-1">5yr building production RAG + ML pipelines</p>
-                <p className="text-slate-500">→ now deploying them for enterprise clients</p>
-              </div>
-            </div>
-
-            {/* Bio text */}
+          {/* Bio text */}
+          <div className="max-w-2xl">
             <div>
               <p className="text-xs font-semibold uppercase tracking-widest text-emerald-600 mb-3">Founder Story</p>
               <h2 className="text-3xl font-bold text-gray-900 mb-5">Why SupraCloud Was Built</h2>

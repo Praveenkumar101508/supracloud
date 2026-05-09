@@ -1,13 +1,13 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import Link from "next/link";
-import { Quote } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Success Stories | SupraCloud",
-  description: "Real outcomes from SupraCloud's talent programme — engineers who landed Data, Cloud and AI roles at UK enterprises after structured training and placement support.",
+  title: "Client Outcomes | SupraCloud",
+  description: "Illustrative enterprise AI agent outcomes based on production deployment patterns — banking L1 deflection, supermarket peak automation, and IT staffing.",
   openGraph: {
-    title: "Success Stories | SupraCloud",
-    description: "Real career outcomes from SupraCloud's talent programme. Engineers who built production projects and landed roles at UK tech firms.",
+    title: "Client Outcomes | SupraCloud",
+    description: "Illustrative outcomes based on production AI agent deployment patterns. Banking, retail, and IT staffing — client names anonymised.",
     url: "https://supracloud.co.uk/success-stories",
     siteName: "SupraCloud",
     locale: "en_GB",
@@ -15,87 +15,102 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://supracloud.co.uk/success-stories" },
 };
 
-const stories = [
+const outcomes = [
   {
-    name: "Priya S.",
-    background: "BSc Computer Science graduate, 1 year in a non-technical support role. Had Python skills but no portfolio and no interview experience.",
-    work: "Built the Production RAG Chatbot and Azure Data Engineering Pipeline. CV and LinkedIn fully rebuilt. Applied to 40+ UK Data Engineering roles via the Application Engine.",
-    prep: "8 mock interviews covering SQL, PySpark, and system design. STAR coaching for behavioural rounds.",
-    outcome: "Junior Data Engineer at a FTSE 250 financial services firm in London.",
-    quote: "I'd been applying on my own for 6 months and heard nothing. Within 8 weeks of joining, I had 3 final-round interviews and accepted an offer.",
+    label:     "Illustrative · Banking AI Agents",
+    title:     "Tier 1 UK High Street Bank",
+    challenge: "240,000 monthly L1 support contacts. 78% resolved by humans at £8.20 per contact.",
+    outcome:   "58% L1 deflection achieved in 90 days. £1.2M annualised cost reduction. Agent latency under 400ms.",
+    accent:    "#00F5FF",
   },
   {
-    name: "Daniel O.",
-    background: "3 years as a Business Analyst wanting to pivot into Cloud/Data. Strong SQL but no cloud certifications or project experience.",
-    work: "Built the BI Analytics Dashboard and AWS ML Deployment project. GitHub profile created from scratch. ATS CV rewrite targeting Azure/AWS Data roles.",
-    prep: "Technical prep focused on cloud architecture and data modelling. 6 mock interviews plus salary negotiation session.",
-    outcome: "Data Analyst (Cloud) at a scale-up in Manchester.",
-    quote: "The programme forced me to build things I was scared of. By the time I got to interviews, the questions felt easy compared to the mock sessions.",
+    label:     "Illustrative · Supermarket AI Agents",
+    title:     "UK Top-10 Supermarket Chain",
+    challenge: "Christmas peak contact surge 4× normal volume. Seasonal headcount increase costing £340k.",
+    outcome:   "71% stock-query deflection. NPS uplift +38. Zero seasonal headcount increase required.",
+    accent:    "#00F5FF",
   },
   {
-    name: "Amara K.",
-    background: "Mid-level software engineer with 4 years of backend Python. Wanted to move into ML Engineering but had no deployed ML experience.",
-    work: "Built the AWS ML Deployment project end-to-end including MLflow tracking and SageMaker endpoint. Portfolio and LinkedIn repositioned toward MLOps.",
-    prep: "ML system design sessions, LLMOps concepts, and 4 mock interviews. Behavioural coaching focused on senior-level competency questions.",
-    outcome: "ML Engineer at a Series B AI company in London.",
-    quote: "I knew the concepts but had never deployed anything to production. That changed in week 2. I walked into interviews with actual architecture diagrams from my own project.",
+    label:     "Illustrative · IT Staffing",
+    title:     "Series B Fintech, London",
+    challenge: "3 ML Engineer positions open 4+ months. Internal recruitment failing to find production-ready candidates.",
+    outcome:   "All 3 roles filled within 5 weeks. Engineers shipping to production from week one.",
+    accent:    "#FF6B35",
   },
 ];
 
 export default function SuccessStoriesPage() {
   return (
-    <div className="bg-slate-50">
-      {/* Header */}
-      <section style={{ backgroundColor: "#0A192F" }} className="py-20 text-center">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="inline-block mb-4 text-xs font-semibold tracking-widest uppercase text-emerald-400 border border-emerald-700 rounded-full px-3 py-1">
-            Success Stories
+    <>
+      {/* Hero */}
+      <section
+        className="relative overflow-hidden noise-overlay"
+        style={{ background: "linear-gradient(180deg, #0D1117 0%, #0B0E14 100%)" }}
+      >
+        <div aria-hidden className="absolute inset-0 grid-overlay opacity-60 pointer-events-none" />
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-28 text-center">
+          <p className="font-mono text-xs tracking-[0.3em] uppercase mb-5" style={{ color: "#00F5FF" }}>
+            CLIENT OUTCOMES
           </p>
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-white">
-            Real People. Real Roles. Real UK Companies.
+          <h1 className="text-4xl sm:text-5xl font-extrabold leading-tight mb-5" style={{ color: "#E2E8F0" }}>
+            Client Outcomes
           </h1>
-          <p className="mt-4 text-slate-300 text-lg max-w-2xl mx-auto">
-            These are not testimonials from a landing page photoshoot. These are candidates who did the work and got the offers.
+          <p className="text-lg max-w-2xl mx-auto leading-relaxed" style={{ color: "#94A3B8" }}>
+            Illustrative outcomes based on production deployment patterns. Client names anonymised.
           </p>
         </div>
       </section>
 
-      {/* Case Studies */}
-      <section className="py-20">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-          {stories.map((story) => (
-            <div key={story.name} className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
-              {/* Header */}
-              <div className="px-8 py-6 border-b border-slate-100 flex items-center justify-between">
-                <div>
-                  <p className="text-lg font-bold text-gray-900">{story.name}</p>
-                  <p className="text-sm text-emerald-600 font-medium mt-0.5">{story.outcome}</p>
-                </div>
-                <Quote size={32} className="text-slate-200" />
+      {/* Outcome cards */}
+      <section className="py-20" style={{ background: "#0B0E14" }}>
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+          {outcomes.map((o) => (
+            <div
+              key={o.title}
+              className="rounded-2xl overflow-hidden"
+              style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)" }}
+            >
+              {/* Card header */}
+              <div
+                className="px-8 py-6"
+                style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}
+              >
+                <span
+                  className="inline-block text-[10px] font-mono tracking-widest uppercase px-3 py-1 rounded-full mb-3"
+                  style={{
+                    background: `${o.accent}15`,
+                    color:      o.accent,
+                    border:     `1px solid ${o.accent}30`,
+                  }}
+                >
+                  {o.label}
+                </span>
+                <h2 className="text-xl font-bold" style={{ color: "#E2E8F0" }}>{o.title}</h2>
               </div>
 
-              {/* Body */}
-              <div className="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-slate-100">
+              {/* Challenge / Outcome columns */}
+              <div
+                className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x"
+                style={{ borderColor: "rgba(255,255,255,0.06)" }}
+              >
                 <div className="p-6">
-                  <p className="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-3">Background</p>
-                  <p className="text-sm text-gray-600 leading-relaxed">{story.background}</p>
+                  <p
+                    className="text-[10px] font-mono tracking-widest uppercase mb-3"
+                    style={{ color: "#475569" }}
+                  >
+                    The Challenge
+                  </p>
+                  <p className="text-sm leading-relaxed" style={{ color: "#94A3B8" }}>{o.challenge}</p>
                 </div>
                 <div className="p-6">
-                  <p className="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-3">Work Completed</p>
-                  <p className="text-sm text-gray-600 leading-relaxed">{story.work}</p>
+                  <p
+                    className="text-[10px] font-mono tracking-widest uppercase mb-3"
+                    style={{ color: "#475569" }}
+                  >
+                    The Outcome
+                  </p>
+                  <p className="text-sm leading-relaxed" style={{ color: "#94A3B8" }}>{o.outcome}</p>
                 </div>
-                <div className="p-6">
-                  <p className="text-xs font-semibold uppercase tracking-widest text-slate-400 mb-3">Interview Prep</p>
-                  <p className="text-sm text-gray-600 leading-relaxed">{story.prep}</p>
-                </div>
-              </div>
-
-              {/* Testimonial */}
-              <div className="px-8 py-6 bg-slate-50 border-t border-slate-100">
-                <blockquote className="text-sm text-gray-700 italic leading-relaxed">
-                  &ldquo;{story.quote}&rdquo;
-                </blockquote>
-                <p className="text-xs text-slate-400 mt-2">— {story.name}</p>
               </div>
             </div>
           ))}
@@ -103,18 +118,28 @@ export default function SuccessStoriesPage() {
       </section>
 
       {/* CTA */}
-      <section style={{ backgroundColor: "#0A192F" }} className="py-16 text-center">
-        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">Your Story Starts Here</h2>
-          <p className="text-slate-300 mb-8">Book a free assessment call to see if the programme is right for you.</p>
+      <section className="py-20" style={{ background: "#0D1117" }}>
+        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-2xl sm:text-3xl font-bold mb-4" style={{ color: "#E2E8F0" }}>
+            Ready to build your outcome?
+          </h2>
+          <p className="mb-8 leading-relaxed" style={{ color: "#64748B" }}>
+            Book a discovery call. We map your support workflows and scope a production
+            deployment with measurable SLA targets.
+          </p>
           <Link
             href="/book"
-            className="inline-block px-8 py-3.5 rounded-md text-base font-semibold text-white bg-emerald-500 hover:bg-emerald-600 transition-colors"
+            className="inline-flex items-center gap-2 px-8 py-3.5 rounded-lg text-sm font-bold transition-all hover:brightness-110"
+            style={{
+              background: "linear-gradient(135deg, #00F5FF, #0099AA)",
+              color:      "#0B0E14",
+              boxShadow:  "0 0 24px rgba(0,245,255,0.3)",
+            }}
           >
-            Book Free Assessment Call
+            Book a Discovery Call <ArrowRight size={14} />
           </Link>
         </div>
       </section>
-    </div>
+    </>
   );
 }
