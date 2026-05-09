@@ -1,5 +1,19 @@
-﻿import Link from "next/link";
+﻿import type { Metadata } from "next";
+import Link from "next/link";
 import { Quote } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "Success Stories | SupraCloud",
+  description: "Real outcomes from SupraCloud's talent programme — engineers who landed Data, Cloud and AI roles at UK enterprises after structured training and placement support.",
+  openGraph: {
+    title: "Success Stories | SupraCloud",
+    description: "Real career outcomes from SupraCloud's talent programme. Engineers who built production projects and landed roles at UK tech firms.",
+    url: "https://supracloud.co.uk/success-stories",
+    siteName: "SupraCloud",
+    locale: "en_GB",
+  },
+  alternates: { canonical: "https://supracloud.co.uk/success-stories" },
+};
 
 const stories = [
   {

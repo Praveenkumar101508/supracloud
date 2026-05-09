@@ -1,4 +1,18 @@
-﻿import { GitBranch, Box, BarChart2, Cloud, Bot } from "lucide-react";
+﻿import type { Metadata } from "next";
+import { GitBranch, Box, BarChart2, Cloud, Bot } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "Portfolio Projects | SupraCloud",
+  description: "Production-ready portfolio projects built by SupraCloud talent programme participants — RAG chatbots, data pipelines, ML deployments, and cloud architecture.",
+  openGraph: {
+    title: "Portfolio Projects | SupraCloud",
+    description: "Projects built during SupraCloud's training programme: RAG pipelines, Azure data engineering, BI dashboards, and ML deployments.",
+    url: "https://supracloud.co.uk/projects",
+    siteName: "SupraCloud",
+    locale: "en_GB",
+  },
+  alternates: { canonical: "https://supracloud.co.uk/projects" },
+};
 
 const projects = [
   {

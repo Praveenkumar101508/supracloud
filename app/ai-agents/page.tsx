@@ -6,6 +6,14 @@ export const metadata: Metadata = {
   title: "AI Agent Solutions for Banking & Retail | SupraCloud",
   description:
     "Custom AI agents for banking customer support and supermarket operations. Level 1 and Level 2 support automation built for UK enterprises.",
+  openGraph: {
+    title: "AI Agent Solutions for Banking & Retail | SupraCloud",
+    description: "Production-grade autonomous AI agents for banking and retail — L1/L2 deflection, inventory automation, and back-office workflows.",
+    url: "https://supracloud.co.uk/ai-agents",
+    siteName: "SupraCloud",
+    locale: "en_GB",
+  },
+  alternates: { canonical: "https://supracloud.co.uk/ai-agents" },
 };
 
 const steps = [
