@@ -1,62 +1,33 @@
-﻿import type { MetadataRoute } from "next";
+import type { MetadataRoute } from "next";
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://supracloud.co.uk";
 
+function entry(
+  path: string,
+  priority: number,
+  changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"] = "monthly"
+): MetadataRoute.Sitemap[number] {
+  return { url: `${BASE_URL}${path}`, lastModified: new Date(), changeFrequency, priority };
+}
+
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
-    {
-      url: BASE_URL,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 1,
-    },
-    {
-      url: `${BASE_URL}/programs`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.9,
-    },
-    {
-      url: `${BASE_URL}/projects`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
-      url: `${BASE_URL}/success-stories`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
-      url: `${BASE_URL}/about`,
-      lastModified: new Date(),
-      changeFrequency: "yearly",
-      priority: 0.7,
-    },
-    {
-      url: `${BASE_URL}/apply`,
-      lastModified: new Date(),
-      changeFrequency: "yearly",
-      priority: 0.6,
-    },
-    {
-      url: `${BASE_URL}/book`,
-      lastModified: new Date(),
-      changeFrequency: "yearly",
-      priority: 0.6,
-    },
-    {
-      url: `${BASE_URL}/privacy`,
-      lastModified: new Date(),
-      changeFrequency: "yearly",
-      priority: 0.2,
-    },
-    {
-      url: `${BASE_URL}/terms`,
-      lastModified: new Date(),
-      changeFrequency: "yearly",
-      priority: 0.2,
-    },
+    entry("/",                       1.0, "weekly"),
+    entry("/solutions/banking",      0.9, "monthly"),
+    entry("/solutions/supermarket",  0.9, "monthly"),
+    entry("/services/it-staffing",   0.8, "monthly"),
+    entry("/services/consultation",  0.8, "monthly"),
+    entry("/careers/internships",    0.8, "monthly"),
+    entry("/careers/training",       0.8, "monthly"),
+    entry("/talent/partnerships",    0.7, "monthly"),
+    entry("/ai-agents",              0.7, "monthly"),
+    entry("/about",                  0.7, "yearly"),
+    entry("/contact",                0.7, "yearly"),
+    entry("/success-stories",        0.6, "monthly"),
+    entry("/projects",               0.5, "monthly"),
+    entry("/book",                   0.6, "yearly"),
+    entry("/apply",                  0.5, "yearly"),
+    entry("/privacy",                0.2, "yearly"),
+    entry("/terms",                  0.2, "yearly"),
   ];
 }

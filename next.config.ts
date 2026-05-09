@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
       { source: "/talent/programs",    destination: "/careers/training",      permanent: true },
       { source: "/internships",        destination: "/careers/internships",   permanent: true },
       { source: "/programs",           destination: "/careers/training",      permanent: true },
+      { source: "/it-services",        destination: "/services/it-staffing",  permanent: true },
     ];
   },
 };
