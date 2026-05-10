@@ -3,7 +3,7 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 import {
   KNOWLEDGE_BASE, PAGE_SCRIPTS, DEFAULT_PAGE_SCRIPT,
-  ASK_NAME_SCRIPT, GREET_BY_NAME,
+  ASK_NAME_SCRIPT, GREET_BY_NAME, GREET_RETURNING,
   LEAD_CAPTURE_INTRO, LEAD_QUESTIONS, LEAD_CONFIRM, LEAD_CONFIRM_NO_EMAIL,
   PROACTIVE_CTA, INACTIVITY_REMINDER, DEMO_INTENT_TAGS,
 } from "./agentPersonality";
@@ -345,11 +345,10 @@ export function useVoiceAgent() {
     try { sessionStorage.setItem(SESSION_KEY, "1"); } catch {}
 
     if (name) {
-      // Returning visitor within same session
       saveName(name);
       setStage("chatting");
       setMessages([]);
-      await speakAndResetTimer(GREET_BY_NAME(name));
+      await speakAndResetTimer(alreadyInteracted ? GREET_RETURNING(name) : GREET_BY_NAME(name));
     } else {
       setStage("ask_name");
       setMessages([]);

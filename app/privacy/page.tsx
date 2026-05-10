@@ -9,7 +9,7 @@
           <section>
             <h2 className="text-base font-semibold text-gray-900 mb-2">1. Who We Are</h2>
             <p>
-              SupraCloud (&ldquo;we&rdquo;, &ldquo;us&rdquo;, &ldquo;our&rdquo;) operates the website and career accelerator programme.
+              SupraCloud (&ldquo;we&rdquo;, &ldquo;us&rdquo;, &ldquo;our&rdquo;) operates the website and provides enterprise AI agent development, IT staffing, and talent pipeline services.
               Our contact email is rk@supracloud.co.uk.
             </p>
           </section>

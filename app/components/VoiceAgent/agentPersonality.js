@@ -8,6 +8,9 @@ export const ASK_NAME_SCRIPT =
 export const GREET_BY_NAME = (name) =>
   `Great to meet you, ${name}! What can I help you with today?`;
 
+export const GREET_RETURNING = (name) =>
+  `Welcome back, ${name}! What can I help you with today?`;
+
 // ── Per-route contextual opening lines (accept name param) ────────────────────
 
 export const PAGE_SCRIPTS = {

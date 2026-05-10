@@ -1,24 +1,45 @@
-﻿import Link from "next/link";
-import { Target, ShieldCheck, Layers } from "lucide-react";
+import Link from "next/link";
+import { Target, ShieldCheck, Layers, Bot, Briefcase, GraduationCap, ArrowRight } from "lucide-react";
 
 const values = [
   {
     icon: <Layers size={28} className="text-emerald-500" />,
-    title: "Technical Depth",
+    title: "Production-First Engineering",
     description:
-      "We don't teach surface-level concepts. Every project, session, and piece of feedback is grounded in how real engineering teams actually work.",
+      "We don't build demos. Every agent we deliver is production-grade — with audit trails, monitoring, SLA dashboards, and continuous optimisation built in from day one.",
   },
   {
     icon: <ShieldCheck size={28} className="text-emerald-500" />,
-    title: "Accountability",
+    title: "Regulatory-Aware by Default",
     description:
-      "We hold you to a schedule — Mon to Thu, structured and consistent. Because employers don't care about intention, they care about output.",
+      "We specialise in regulated industries. FCA compliance, GDPR data perimeters, role-based access, and explainability layers are not afterthoughts — they're in our delivery blueprint.",
   },
   {
     icon: <Target size={28} className="text-emerald-500" />,
-    title: "Real-World Standards",
+    title: "Engineer-Led, Not Sales-Led",
     description:
-      "Every deliverable — your CV, your GitHub, your mock interview — is measured against what senior engineers and hiring managers actually expect.",
+      "Every client engagement starts with an engineer, not a sales deck. We ask the right technical questions first, then scope the work honestly — no overselling, no surprise bills.",
+  },
+];
+
+const pillars = [
+  {
+    icon: <Bot size={24} className="text-emerald-500" />,
+    title: "AI Agent Development",
+    desc: "Production-grade autonomous agents for banking and retail — built on LangGraph, RAG, and Claude API. Deployed, monitored, and continuously optimised.",
+    href: "/solutions/banking",
+  },
+  {
+    icon: <Briefcase size={24} className="text-emerald-500" />,
+    title: "Enterprise IT Services",
+    desc: "Engineer-screened IT staffing and strategic technology advisory for organisations scaling securely in regulated environments.",
+    href: "/services/staffing",
+  },
+  {
+    icon: <GraduationCap size={24} className="text-emerald-500" />,
+    title: "Talent Pipeline",
+    desc: "Structured training programmes, placement year partnerships, and graduate internships — feeding a pipeline of production-ready AI engineers.",
+    href: "/talent/programs",
   },
 ];
 
@@ -29,13 +50,13 @@ export default function AboutPage() {
       <section style={{ backgroundColor: "#0A192F" }} className="py-20 text-center">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <p className="inline-block mb-4 text-xs font-semibold tracking-widest uppercase text-emerald-400 border border-emerald-700 rounded-full px-3 py-1">
-            About Us
+            About SupraCloud
           </p>
           <h1 className="text-4xl sm:text-5xl font-extrabold text-white">
-            Built by Engineers, for Engineers
+            Built by Engineers, for Enterprise
           </h1>
           <p className="mt-4 text-slate-300 text-lg max-w-2xl mx-auto">
-            SupraCloud exists because the gap between "technically capable" and "hired in the UK" is real — and we've seen it up close.
+            UK-based enterprise AI and IT firm — founded to bridge the gap between AI research and production delivery in regulated industries.
           </p>
         </div>
       </section>
@@ -44,40 +65,34 @@ export default function AboutPage() {
       <section className="py-20 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            {/* Architecture diagram placeholder */}
+            {/* Terminal block */}
             <div className="rounded-xl bg-slate-900 p-8 font-mono text-xs text-emerald-400 leading-relaxed shadow-lg">
-              <p className="text-slate-500 mb-2"># system: candidate_journey.py</p>
-              <p>candidate = Candidate(</p>
-              <p className="pl-4">skills=&quot;strong&quot;,</p>
-              <p className="pl-4">visibility=&quot;low&quot;,</p>
-              <p className="pl-4">interviews_passed=0</p>
+              <p className="text-slate-500 mb-2"># supracloud-agent-runtime v3.2.1</p>
+              <p>agent = BankingAgent(</p>
+              <p className="pl-4">model=&quot;claude-sonnet-4-6&quot;,</p>
+              <p className="pl-4">orchestrator=&quot;langgraph&quot;,</p>
+              <p className="pl-4">compliance=&quot;FCA&quot;</p>
               <p>)</p>
               <br />
-              <p>accelerator = SupraCloud()</p>
-              <p>result = accelerator.run(candidate)</p>
+              <p>result = agent.handle(query)</p>
               <br />
-              <p className="text-white">assert result.role_secured == True</p>
-              <p className="text-white">assert result.salary &gt;= target</p>
+              <p className="text-white">assert result.deflected == True</p>
+              <p className="text-white">assert result.latency_ms &lt;= 500</p>
+              <p className="text-white">assert result.audit_logged == True</p>
             </div>
 
             {/* Text */}
             <div>
-              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">The Founder Story</h2>
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">Why We Exist</h2>
               <div className="space-y-4 text-gray-600 text-sm leading-relaxed">
                 <p>
-                  SupraCloud was founded after watching talented engineers — people who genuinely had
-                  the technical ability — fail to break into UK Data, Cloud, and AI roles. Not because
-                  they couldn't do the job. Because they couldn't <em>prove</em> they could.
+                  Most enterprise AI projects fail not because of the technology — but because the people building them don&apos;t understand the operational reality of banking and retail at scale.
                 </p>
                 <p>
-                  Their CVs didn't reflect their ability. Their GitHub was empty or full of tutorials.
-                  They'd never had to explain a system design under pressure. They applied, heard nothing,
-                  and assumed the market was closed to them.
+                  SupraCloud was founded to fix that. We are engineers who have worked inside regulated environments — and we build AI agents that survive contact with production: compliance reviews, security audits, integration constraints, and real query volumes.
                 </p>
                 <p>
-                  This programme bridges that gap. It's not a bootcamp. It's not a course. It's a
-                  structured, engineer-led accelerator that treats your job search like a production
-                  system — built, tested, and deployed with precision.
+                  Every engagement is scoped by an engineer, built by engineers, and delivered with the same rigour we&apos;d apply to our own systems. No slide decks. No overselling. Just working software, monitored and optimised from day one.
                 </p>
               </div>
             </div>
@@ -85,15 +100,27 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Mission */}
+      {/* Three Pillars */}
       <section className="py-16 bg-slate-50">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">Our Mission</h2>
-          <p className="text-gray-600 text-lg leading-relaxed">
-            To close the gap between learning and employability for Data, Cloud & AI professionals
-            entering or advancing in the UK tech market — through real projects, structured support,
-            and uncompromising standards.
-          </p>
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <p className="text-xs font-semibold uppercase tracking-widest text-emerald-600 mb-3">What We Do</p>
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">Three Capabilities, One Partner</h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {pillars.map((p) => (
+              <div key={p.title} className="bg-white rounded-xl p-7 border border-slate-100 shadow-sm flex flex-col">
+                <div className="w-11 h-11 rounded-lg bg-emerald-50 border border-emerald-100 flex items-center justify-center mb-4">
+                  {p.icon}
+                </div>
+                <h3 className="text-base font-bold text-gray-900 mb-2">{p.title}</h3>
+                <p className="text-sm text-gray-500 leading-relaxed flex-1">{p.desc}</p>
+                <Link href={p.href} className="inline-flex items-center gap-1 mt-5 text-xs font-semibold text-emerald-600 hover:text-emerald-700 transition-colors">
+                  Learn more <ArrowRight size={12} />
+                </Link>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -101,6 +128,7 @@ export default function AboutPage() {
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
+            <p className="text-xs font-semibold uppercase tracking-widest text-emerald-600 mb-3">How We Work</p>
             <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">Our Core Values</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -118,13 +146,13 @@ export default function AboutPage() {
       {/* CTA */}
       <section style={{ backgroundColor: "#0A192F" }} className="py-16 text-center">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">Let's See If We're a Fit</h2>
-          <p className="text-slate-300 mb-8">Book a free 30-minute call. No pitch. Just an honest conversation about where you are and where you want to be.</p>
+          <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">Ready to Talk?</h2>
+          <p className="text-slate-300 mb-8">Book a 30-minute discovery call. Engineer-led, no sales pressure — just an honest conversation about what you need and whether we can deliver it.</p>
           <Link
             href="/book"
             className="inline-block px-8 py-3.5 rounded-md text-base font-semibold text-white bg-emerald-500 hover:bg-emerald-600 transition-colors"
           >
-            Book Free Assessment Call
+            Book a Discovery Call
           </Link>
         </div>
       </section>
