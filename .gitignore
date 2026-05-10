@@ -36,8 +36,11 @@ yarn-error.log*
 # vercel
 .vercel
 
-# playwright screenshots (binary, not needed in repo)
+# generated test/qa output
 /test-results/
+/playwright-report/
+/qa-output/
+/graphify-out/
 
 # typescript
 *.tsbuildinfo
