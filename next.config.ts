@@ -3,13 +3,15 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   async redirects() {
     return [
-      { source: "/solutions/retail",   destination: "/solutions/supermarket", permanent: true },
-      { source: "/services/staffing",  destination: "/services/it-staffing",  permanent: true },
-      { source: "/talent/internships", destination: "/careers/internships",   permanent: true },
-      { source: "/talent/programs",    destination: "/careers/training",      permanent: true },
-      { source: "/internships",        destination: "/careers/internships",   permanent: true },
-      { source: "/programs",           destination: "/careers/training",      permanent: true },
-      { source: "/it-services",        destination: "/services/it-staffing",  permanent: true },
+      // Old B2C routes → new B2B canonical URLs (301 permanent)
+      { source: "/solutions/supermarket",  destination: "/solutions/retail",      permanent: true },
+      { source: "/services/it-staffing",   destination: "/services/staffing",     permanent: true },
+      { source: "/careers/internships",    destination: "/talent/internships",    permanent: true },
+      { source: "/careers/training",       destination: "/talent/programs",       permanent: true },
+      { source: "/internships",            destination: "/talent/internships",    permanent: true },
+      { source: "/programs",              destination: "/talent/programs",        permanent: true },
+      { source: "/it-services",           destination: "/services/staffing",     permanent: true },
+      { source: "/ai-agents",             destination: "/solutions/banking",     permanent: true },
     ];
   },
 };
