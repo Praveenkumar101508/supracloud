@@ -6,7 +6,7 @@ import { useRouteAnnouncer } from "./useRouteAnnouncer";
 import styles from "./VoiceAgentWidget.module.css";
 import { AGENT_NAME } from "./agentPersonality";
 import { useAIState } from "../context/AIState";
-import { CalendlyPopup } from "../CalendlyPopup";
+import { BookingModal } from "../BookingModal";
 
 const EMAIL_STEP = 5;
 const TOTAL_LEAD_STEPS = 6;
@@ -100,7 +100,7 @@ export default function VoiceAgentWidget() {
   } = useVoiceAgent();
 
   const { setAgentSpeaking, setAgentListening } = useAIState();
-  const [showCalendly, setShowCalendly] = useState(false);
+  const [showBooking, setShowBooking] = useState(false);
 
   const messagesEndRef  = useRef(null);
   const prevSpeakingRef = useRef(false);
@@ -144,10 +144,10 @@ export default function VoiceAgentWidget() {
     if (isOpen) clearTimeout(proactiveRef.current);
   }, [isOpen]);
 
-  // Show Calendly popup when lead capture completes
+  // Show booking modal when lead capture completes
   useEffect(() => {
     if (stage === "done") {
-      const t = setTimeout(() => setShowCalendly(true), 2000);
+      const t = setTimeout(() => setShowBooking(true), 2000);
       return () => clearTimeout(t);
     }
   }, [stage]);
@@ -231,7 +231,7 @@ export default function VoiceAgentWidget() {
 
   return (
     <>
-      <CalendlyPopup isOpen={showCalendly} onClose={() => setShowCalendly(false)} />
+      <BookingModal isOpen={showBooking} onClose={() => setShowBooking(false)} />
 
       <button
         className={`${styles.trigger} ${isSpeaking ? styles.speaking : ""} ${isListening ? styles.triggerListening : ""}`}
