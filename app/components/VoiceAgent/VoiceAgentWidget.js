@@ -5,6 +5,8 @@ import { useVoiceAgent } from "./useVoiceAgent";
 import { useRouteAnnouncer } from "./useRouteAnnouncer";
 import styles from "./VoiceAgentWidget.module.css";
 import { AGENT_NAME } from "./agentPersonality";
+import { useAIState } from "../context/AIState";
+import { CalendlyPopup } from "../CalendlyPopup";
 
 const EMAIL_STEP = 5;
 const TOTAL_LEAD_STEPS = 6;
@@ -97,10 +99,17 @@ export default function VoiceAgentWidget() {
     announceRoute, submitEmailFromText, interruptSpeech,
   } = useVoiceAgent();
 
+  const { setAgentSpeaking, setAgentListening } = useAIState();
+  const [showCalendly, setShowCalendly] = useState(false);
+
   const messagesEndRef  = useRef(null);
   const prevSpeakingRef = useRef(false);
   const proactiveRef    = useRef(null);
   const [emailDraft, setEmailDraft] = useState("");
+
+  // Sync voice state into global AIState (drives AIHub waveform)
+  useEffect(() => { setAgentSpeaking(isSpeaking); }, [isSpeaking, setAgentSpeaking]);
+  useEffect(() => { setAgentListening(isListening); }, [isListening, setAgentListening]);
 
   // Auto-scroll messages
   useEffect(() => {
@@ -134,6 +143,14 @@ export default function VoiceAgentWidget() {
   useEffect(() => {
     if (isOpen) clearTimeout(proactiveRef.current);
   }, [isOpen]);
+
+  // Show Calendly popup when lead capture completes
+  useEffect(() => {
+    if (stage === "done") {
+      const t = setTimeout(() => setShowCalendly(true), 2000);
+      return () => clearTimeout(t);
+    }
+  }, [stage]);
 
   // Keyboard shortcut: press 'a' to toggle Aria (when not typing in an input)
   useEffect(() => {
@@ -214,6 +231,8 @@ export default function VoiceAgentWidget() {
 
   return (
     <>
+      <CalendlyPopup isOpen={showCalendly} onClose={() => setShowCalendly(false)} />
+
       <button
         className={`${styles.trigger} ${isSpeaking ? styles.speaking : ""} ${isListening ? styles.triggerListening : ""}`}
         onClick={isOpen ? close : open}

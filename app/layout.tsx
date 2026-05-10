@@ -5,6 +5,8 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import MascotVoiceHub from "./components/MascotVoiceHub";
 import { Providers } from "./providers";
+import { AIStateProvider } from "./context/AIState";
+import { BootOverlay } from "./components/BootOverlay";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -23,13 +25,19 @@ export const metadata: Metadata = {
   description:
     "Engineer-led AI agent development for UK banking and retail. Production-grade L1 & L2 autonomous agents with compliance-native architecture and measurable SLAs.",
   keywords: [
+    "UK AI agency",
+    "enterprise AI agents London",
+    "autonomous AI agents banking UK",
     "banking AI agents UK",
     "retail AI automation",
     "enterprise AI agent development",
+    "LangGraph agency UK",
     "LangGraph RAG production",
     "IT staffing UK",
     "AI consultation UK",
     "L1 deflection banking",
+    "enterprise cloud solutions UK",
+    "AI agents London",
     "SupraCloud",
   ],
   authors:   [{ name: "SupraCloud", url: BASE_URL }],
@@ -72,14 +80,17 @@ export default function RootLayout({
     <html lang="en" className={`${inter.variable} h-full antialiased`}>
       <body
         className="min-h-full flex flex-col"
-        style={{ background: "#0B0E14", color: "#E2E8F0" }}
+        style={{ background: "#050505", color: "#E2E8F0" }}
       >
-        <Providers>
-          <Navbar />
-          <main className="flex-1">{children}</main>
-          <Footer />
-          <MascotVoiceHub />
-        </Providers>
+        <AIStateProvider>
+          <BootOverlay />
+          <Providers>
+            <Navbar />
+            <main className="flex-1">{children}</main>
+            <Footer />
+            <MascotVoiceHub />
+          </Providers>
+        </AIStateProvider>
       </body>
     </html>
   );

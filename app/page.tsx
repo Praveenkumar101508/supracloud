@@ -8,6 +8,7 @@ import {
   GraduationCap, ArrowRight, CheckCircle, Zap, Shield,
   TrendingUp, ChevronRight,
 } from "lucide-react";
+import { AIHub } from "./components/AIHub";
 
 /* ── Animated counter ────────────────────────────────────── */
 function Counter({ to, suffix = "" }: { to: number; suffix?: string }) {
@@ -225,8 +226,9 @@ export default function Home() {
               </FadeUp>
             </div>
 
-            {/* Right — terminal */}
-            <FadeUp delay={0.1} className="w-full">
+            {/* Right — AI Hub + terminal */}
+            <FadeUp delay={0.1} className="w-full flex flex-col items-center gap-10">
+              <AIHub />
               <Terminal />
             </FadeUp>
           </div>
