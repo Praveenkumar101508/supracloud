@@ -55,6 +55,18 @@ export const PAGE_SCRIPTS = {
 
   "/portal": (name) =>
     `${name ? `Welcome back, ${name}. ` : "Welcome to your SupraCloud client portal. "}Here you can track your projects, view scheduled sessions, and access resources.`,
+
+  "/solutions/supermarket": (name) =>
+    `${name ? `${name}, ` : ""}you're exploring our Supermarket AI Agents. We automate inventory management, customer support, and supply chain decisions for large-scale retail environments. Want a walkthrough?`,
+
+  "/services/it-staffing": (name) =>
+    `${name ? `${name}, ` : ""}SupraCloud IT Staffing places pre-vetted, engineer-screened talent directly into your team - AI engineers, data architects, DevOps specialists. What skill set are you looking to scale?`,
+
+  "/careers/internships": (name) =>
+    `${name ? `${name}, ` : ""}you're looking at our Graduate Internship programme. Paid 3 and 6-month tracks in Banking AI, Solutions Engineering, and Platform SRE - real production work from week one.`,
+
+  "/careers/training": (name) =>
+    `${name ? `${name}, ` : ""}our training programmes run in live cohorts of up to eight - Foundations at eight weeks, Production AI at twelve, and closed Enterprise cohorts for in-house teams. Which track interests you?`,
 };
 
 export const DEFAULT_PAGE_SCRIPT = (name) =>

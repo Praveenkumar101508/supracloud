@@ -1,22 +1,113 @@
-﻿import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
+import { randomUUID } from "crypto";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
 const OWNER_EMAIL = "rk@supracloud.co.uk";
-const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || "onboarding@resend.dev";
+const FROM_EMAIL =
+  process.env.EMAIL_FROM ||
+  process.env.RESEND_FROM_EMAIL ||
+  "onboarding@resend.dev";
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://supracloud.co.uk";
 
-// Add your permanent Google Meet link to .env.local as MEET_LINK
-// e.g. MEET_LINK=https://meet.google.com/xxx-xxxx-xxx
-const MEET_LINK = process.env.MEET_LINK || "https://meet.google.com/";
+// Google Calendar / Meet integration
+// Required env vars: GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REFRESH_TOKEN, GOOGLE_CALENDAR_ID
+// If not configured, falls back to static MEET_LINK env var
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
+const GOOGLE_REFRESH_TOKEN = process.env.GOOGLE_REFRESH_TOKEN;
+const GOOGLE_CALENDAR_ID = process.env.GOOGLE_CALENDAR_ID || "primary";
+const STATIC_MEET_LINK = process.env.MEET_LINK || "https://meet.google.com/";
 
-//  Client confirmation email 
+async function getGoogleAccessToken(): Promise<string | null> {
+  if (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET || !GOOGLE_REFRESH_TOKEN) {
+    return null;
+  }
+  try {
+    const res = await fetch("https://oauth2.googleapis.com/token", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({
+        client_id: GOOGLE_CLIENT_ID,
+        client_secret: GOOGLE_CLIENT_SECRET,
+        refresh_token: GOOGLE_REFRESH_TOKEN,
+        grant_type: "refresh_token",
+      }),
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    return data.access_token ?? null;
+  } catch {
+    return null;
+  }
+}
+
+async function createCalendarEventWithMeet(
+  accessToken: string,
+  name: string,
+  email: string,
+  inquiryType: string
+): Promise<string | null> {
+  try {
+    // Create a placeholder event 2 business days from now at 10am GMT
+    const now = new Date();
+    const startDate = new Date(now);
+    startDate.setDate(startDate.getDate() + 2);
+    // Skip weekends
+    if (startDate.getDay() === 0) startDate.setDate(startDate.getDate() + 1);
+    if (startDate.getDay() === 6) startDate.setDate(startDate.getDate() + 2);
+    startDate.setUTCHours(10, 0, 0, 0);
+    const endDate = new Date(startDate);
+    endDate.setUTCMinutes(30);
+
+    const requestId = randomUUID();
+    const event = {
+      summary: `SupraCloud Discovery Call — ${name}`,
+      description: `Discovery call request from ${name} (${email}).\nTopic: ${inquiryType}\n\nTime to be confirmed. This event was created automatically from the SupraCloud booking form.`,
+      start: { dateTime: startDate.toISOString(), timeZone: "Europe/London" },
+      end: { dateTime: endDate.toISOString(), timeZone: "Europe/London" },
+      attendees: [{ email }],
+      conferenceData: {
+        createRequest: {
+          requestId,
+          conferenceSolutionKey: { type: "hangoutsMeet" },
+        },
+      },
+    };
+
+    const res = await fetch(
+      `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(
+        GOOGLE_CALENDAR_ID
+      )}/events?conferenceDataVersion=1&sendUpdates=none`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(event),
+      }
+    );
+    if (!res.ok) return null;
+    const data = await res.json();
+    return (
+      data?.conferenceData?.entryPoints?.find(
+        (ep: { entryPointType: string; uri: string }) =>
+          ep.entryPointType === "video"
+      )?.uri ?? null
+    );
+  } catch {
+    return null;
+  }
+}
+
+//  Client confirmation email
 function clientHtml(d: {
   name: string;
   firstName: string;
   company: string;
   inquiryType: string;
   slots: string;
+  meetLink: string;
 }) {
   return `<!DOCTYPE html>
 <html lang="en">
@@ -30,40 +121,33 @@ function clientHtml(d: {
     <tr><td align="center">
       <table width="580" cellpadding="0" cellspacing="0" style="max-width:580px;width:100%;background:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.06);">
 
-        <!-- Top accent bar -->
         <tr><td style="background:linear-gradient(135deg,#0A192F 0%,#0d2137 100%);padding:32px 40px 28px;">
           <p style="margin:0 0 4px;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#10B981;">SUPRACLOUD</p>
           <p style="margin:0;font-size:13px;color:#94a3b8;font-weight:400;">Enterprise AI Agent Development &amp; IT Solutions</p>
         </td></tr>
 
-        <!-- Body -->
         <tr><td style="padding:36px 40px 0;">
-
           <p style="margin:0 0 20px;font-size:16px;color:#1e293b;line-height:1.5;">Hi ${d.firstName},</p>
-
           <p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.7;">
             Thanks for reaching out to SupraCloud. I&rsquo;ve received your discovery call request and will confirm a time with you within <strong style="color:#0A192F;">1 business day</strong>.
           </p>
-
           <p style="margin:0 0 28px;font-size:15px;color:#374151;line-height:1.7;">
-            In the meantime — here is your Google Meet link for the call:
+            Here is your Google Meet link for the call:
           </p>
 
-          <!-- Meet link CTA -->
           <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:32px;">
             <tr><td style="background:#f0fdf4;border:2px solid #10B981;border-radius:12px;padding:20px 24px;">
               <p style="margin:0 0 6px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#059669;">Your Google Meet Link</p>
-              <a href="${MEET_LINK}" style="display:block;font-size:16px;font-weight:700;color:#0A192F;word-break:break-all;margin-bottom:14px;text-decoration:none;">${MEET_LINK}</a>
-              <a href="${MEET_LINK}" style="display:inline-block;padding:10px 24px;background:#10B981;color:#ffffff;font-size:13px;font-weight:700;border-radius:8px;text-decoration:none;">
+              <a href="${d.meetLink}" style="display:block;font-size:16px;font-weight:700;color:#0A192F;word-break:break-all;margin-bottom:14px;text-decoration:none;">${d.meetLink}</a>
+              <a href="${d.meetLink}" style="display:inline-block;padding:10px 24px;background:#10B981;color:#ffffff;font-size:13px;font-weight:700;border-radius:8px;text-decoration:none;">
                 Join Google Meet &rarr;
               </a>
               <p style="margin:12px 0 0;font-size:12px;color:#6b7280;line-height:1.5;">
-                Save this link. Once I confirm the exact date and time, just click it at the agreed slot.
+                Save this link. Once I confirm the exact date and time, click it at the agreed slot.
               </p>
             </td></tr>
           </table>
 
-          <!-- Booking summary -->
           <table width="100%" cellpadding="0" cellspacing="0" style="background:#f8fafc;border-radius:12px;margin-bottom:28px;">
             <tr><td style="padding:20px 24px;">
               <p style="margin:0 0 14px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#94a3b8;">Your Request</p>
@@ -88,37 +172,22 @@ function clientHtml(d: {
             </td></tr>
           </table>
 
-          <!-- What to expect -->
           <p style="margin:0 0 12px;font-size:15px;color:#374151;line-height:1.7;">Here&rsquo;s what happens next:</p>
-
-          <p style="margin:0 0 8px;font-size:14px;color:#374151;line-height:1.7;">
-            <strong style="color:#0A192F;">1.</strong> I&rsquo;ll reply to this email within 1 business day to confirm the exact date and time.
-          </p>
-          <p style="margin:0 0 8px;font-size:14px;color:#374151;line-height:1.7;">
-            <strong style="color:#0A192F;">2.</strong> You&rsquo;ll receive a calendar invite to your inbox — just click Accept.
-          </p>
-          <p style="margin:0 0 28px;font-size:14px;color:#374151;line-height:1.7;">
-            <strong style="color:#0A192F;">3.</strong> On the call (30 min), we&rsquo;ll map your requirements and scope a solution — no hard sell.
-          </p>
+          <p style="margin:0 0 8px;font-size:14px;color:#374151;line-height:1.7;"><strong style="color:#0A192F;">1.</strong> I&rsquo;ll reply within 1 business day to confirm the exact date and time.</p>
+          <p style="margin:0 0 8px;font-size:14px;color:#374151;line-height:1.7;"><strong style="color:#0A192F;">2.</strong> You&rsquo;ll receive a calendar invite — just click Accept.</p>
+          <p style="margin:0 0 28px;font-size:14px;color:#374151;line-height:1.7;"><strong style="color:#0A192F;">3.</strong> On the 30-minute call, we&rsquo;ll map your requirements and scope a solution — no hard sell.</p>
 
           <p style="margin:0 0 28px;font-size:15px;color:#374151;line-height:1.7;">
-            If you need to reach me sooner, just reply to this email or message me on WhatsApp:
+            If you need to reach me sooner, reply to this email or message on WhatsApp:
             <a href="https://wa.me/447776456694" style="color:#10B981;font-weight:600;"> +44 7776 456694</a>.
-          </p>
-
-          <p style="margin:0 0 28px;font-size:13px;color:#94a3b8;background:#f8fafc;border-left:3px solid #10B981;padding:12px 16px;border-radius:0 8px 8px 0;">
-            After the demo, your <strong style="color:#0A192F;">SupraCloud Delivery Report</strong> will be available in the
-            <a href="${SITE_URL}/portal" style="color:#10B981;font-weight:600;">Supracloud Client Portal</a> — your private delivery dashboard.
           </p>
 
           <p style="margin:0 0 6px;font-size:15px;color:#374151;">Talk soon,</p>
           <p style="margin:0 0 4px;font-size:15px;font-weight:700;color:#0A192F;">Praveen Kumar</p>
           <p style="margin:0 0 32px;font-size:13px;color:#94a3b8;">Founder · SupraCloud &nbsp;|&nbsp; ex-IBM AI/ML Engineer</p>
-
           <hr style="border:none;border-top:1px solid #e2e8f0;margin-bottom:24px;">
         </td></tr>
 
-        <!-- Footer -->
         <tr><td style="padding:0 40px 32px;">
           <table width="100%" cellpadding="0" cellspacing="0">
             <tr>
@@ -135,10 +204,9 @@ function clientHtml(d: {
             </tr>
           </table>
           <p style="margin:16px 0 0;font-size:11px;color:#cbd5e1;line-height:1.6;">
-            This email was sent to you because you submitted a discovery call request on supracloud.co.uk.
+            This email was sent because you submitted a discovery call request on supracloud.co.uk.
           </p>
         </td></tr>
-
       </table>
     </td></tr>
   </table>
@@ -146,7 +214,7 @@ function clientHtml(d: {
 </html>`;
 }
 
-//  Owner notification email 
+//  Owner notification email
 function ownerHtml(d: {
   name: string;
   company: string;
@@ -155,10 +223,11 @@ function ownerHtml(d: {
   inquiryType: string;
   slots: string;
   message: string;
+  meetLink: string;
 }) {
   const replySubject = encodeURIComponent(`Re: SupraCloud Discovery Call — confirming your slot`);
   const replyBody = encodeURIComponent(
-    `Hi ${d.name},\n\nThanks for your interest in SupraCloud.\n\nI'd like to confirm your discovery call for [DATE] at [TIME] GMT.\n\nYour Google Meet link: ${MEET_LINK}\n\nI'll send a calendar invite to this email shortly.\n\nLook forward to speaking with you.\n\nBest,\nPraveen\nFounder · SupraCloud`
+    `Hi ${d.name},\n\nThanks for your interest in SupraCloud.\n\nI'd like to confirm your discovery call for [DATE] at [TIME] GMT.\n\nYour Google Meet link: ${d.meetLink}\n\nI'll send a calendar invite shortly.\n\nBest,\nPraveen\nFounder · SupraCloud`
   );
 
   return `<!DOCTYPE html>
@@ -169,15 +238,12 @@ function ownerHtml(d: {
     <tr><td align="center">
       <table width="540" cellpadding="0" cellspacing="0" style="max-width:540px;width:100%;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,0.08);">
 
-        <!-- Header -->
         <tr><td style="background:#0A192F;padding:20px 28px;">
           <p style="margin:0 0 2px;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#10B981;">NEW BOOKING</p>
           <p style="margin:0;font-size:18px;font-weight:800;color:#fff;">${d.name}${d.company ? ` — ${d.company}` : ""}</p>
         </td></tr>
 
-        <!-- Details -->
         <tr><td style="padding:24px 28px;">
-
           <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:20px;">
             ${[
               ["Topic", d.inquiryType],
@@ -199,7 +265,6 @@ function ownerHtml(d: {
             <p style="margin:0;font-size:14px;color:#374151;line-height:1.6;">${d.message}</p>
           </div>` : ""}
 
-          <!-- Action buttons -->
           <table cellpadding="0" cellspacing="0">
             <tr>
               <td style="padding-right:10px;">
@@ -209,7 +274,7 @@ function ownerHtml(d: {
                 </a>
               </td>
               <td>
-                <a href="${MEET_LINK}"
+                <a href="${d.meetLink}"
                    style="display:inline-block;padding:11px 22px;background:#f1f5f9;color:#0A192F;font-size:13px;font-weight:700;border-radius:8px;text-decoration:none;border:1px solid #e2e8f0;">
                   Open Meet Link
                 </a>
@@ -218,9 +283,8 @@ function ownerHtml(d: {
           </table>
 
           <p style="margin:16px 0 0;font-size:12px;color:#94a3b8;line-height:1.6;">
-            Meet link to include in reply: <a href="${MEET_LINK}" style="color:#10B981;">${MEET_LINK}</a>
+            Meet link: <a href="${d.meetLink}" style="color:#10B981;">${d.meetLink}</a>
           </p>
-
         </td></tr>
       </table>
     </td></tr>
@@ -229,19 +293,40 @@ function ownerHtml(d: {
 </html>`;
 }
 
-//  Route handler 
+//  Route handler
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const { name, company, email, phone, inquiryType, slots, message } = body;
 
     if (!name || !email || !inquiryType || !slots) {
-      return NextResponse.json({ success: false, error: "Missing required fields" }, { status: 400 });
+      return NextResponse.json(
+        { success: false, error: "Missing required fields" },
+        { status: 400 }
+      );
     }
 
     const firstName = name.trim().split(" ")[0];
 
-    // 1 — Confirmation email to client
+    // Attempt to create a Google Calendar event with a Meet link
+    let meetLink = STATIC_MEET_LINK;
+    const accessToken = await getGoogleAccessToken();
+    if (accessToken) {
+      const dynamicMeetLink = await createCalendarEventWithMeet(
+        accessToken,
+        name,
+        email,
+        inquiryType
+      );
+      if (dynamicMeetLink) meetLink = dynamicMeetLink;
+    }
+
+    // Lazy Resend client — supports EMAIL_SERVICE_API_KEY (preferred) or RESEND_API_KEY (legacy)
+    const resend = new Resend(
+      process.env.EMAIL_SERVICE_API_KEY || process.env.RESEND_API_KEY || ""
+    );
+
+    // 1 — Confirmation email to prospect
     await resend.emails.send({
       from: FROM_EMAIL,
       to: email,
@@ -253,6 +338,7 @@ export async function POST(req: NextRequest) {
         company: company || "",
         inquiryType,
         slots,
+        meetLink,
       }),
     });
 
@@ -261,7 +347,7 @@ export async function POST(req: NextRequest) {
       from: FROM_EMAIL,
       to: OWNER_EMAIL,
       replyTo: email,
-      subject: ` New booking: ${name}${company ? ` (${company})` : ""} — ${inquiryType}`,
+      subject: `New booking: ${name}${company ? ` (${company})` : ""} — ${inquiryType}`,
       html: ownerHtml({
         name,
         company: company || "",
@@ -270,6 +356,7 @@ export async function POST(req: NextRequest) {
         inquiryType,
         slots,
         message: message || "",
+        meetLink,
       }),
     });
 

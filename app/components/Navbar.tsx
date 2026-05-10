@@ -1,189 +1,108 @@
-﻿"use client";
+"use client";
 
 import Link from "next/link";
-import { useState, useRef, useEffect } from "react";
-import { Menu, X, ChevronDown, Bot, Building2, GraduationCap, Briefcase, Lightbulb, Users, BookOpen, Handshake } from "lucide-react";
-import Logo from "./Logo";
+import { useState } from "react";
+import { Menu, X, ChevronDown } from "lucide-react";
 
-type NavItem = { label: string; href: string; desc: string; icon: React.ReactNode };
-
-const solutionsLinks: NavItem[] = [
-  {
-    label: "Banking AI Agents",
-    href: "/solutions/banking",
-    desc: "L1/L2 support automation for financial services",
-    icon: <Building2 size={16} className="text-emerald-400 shrink-0" />,
-  },
-  {
-    label: "Retail AI Agents",
-    href: "/solutions/retail",
-    desc: "Order, inventory and customer support agents",
-    icon: <Bot size={16} className="text-emerald-400 shrink-0" />,
-  },
+const solutions = [
+  { label: "Banking AI Agents",     href: "/solutions/banking",    desc: "Autonomous L1 / L2 agents for financial ops." },
+  { label: "Supermarket AI Agents", href: "/solutions/supermarket", desc: "Retail automation & inventory intel." },
 ];
 
-const servicesLinks: NavItem[] = [
-  {
-    label: "IT Staffing & Outsourcing",
-    href: "/services/staffing",
-    desc: "Vetted engineers for contract and permanent roles",
-    icon: <Briefcase size={16} className="text-emerald-400 shrink-0" />,
-  },
-  {
-    label: "Enterprise IT Consultation",
-    href: "/services/consultation",
-    desc: "Technology advisory and digital transformation",
-    icon: <Lightbulb size={16} className="text-emerald-400 shrink-0" />,
-  },
+const services = [
+  { label: "IT Staffing",     href: "/services/it-staffing",  desc: "Pre-vetted engineering resources." },
+  { label: "IT Consultation", href: "/services/consultation", desc: "Solutions engineering & architecture strategy." },
 ];
 
-const talentLinks: NavItem[] = [
-  {
-    label: "Industry Training Programs",
-    href: "/talent/programs",
-    desc: "Structured pathways for Data, Cloud & AI",
-    icon: <BookOpen size={16} className="text-emerald-400 shrink-0" />,
-  },
-  {
-    label: "Placement Year Partnerships",
-    href: "/talent/partnerships",
-    desc: "University placement schemes with enterprise hosts",
-    icon: <Handshake size={16} className="text-emerald-400 shrink-0" />,
-  },
-  {
-    label: "Graduate Internships",
-    href: "/talent/internships",
-    desc: "Paid technical internships across the UK",
-    icon: <GraduationCap size={16} className="text-emerald-400 shrink-0" />,
-  },
+const careerPrograms = [
+  { label: "Internships",    href: "/careers/internships", desc: "Paid placements in production AI squads." },
+  { label: "Training",       href: "/careers/training",    desc: "Industry-standard AI upskilling programs." },
+  { label: "Placement Year", href: "/talent/partnerships", desc: "University partner placement programmes." },
 ];
 
-function MegaDropdown({
-  label,
-  items,
-  onClose,
-  width = "w-72",
-}: {
-  label: string;
-  items: NavItem[];
-  onClose: () => void;
-  width?: string;
-}) {
-  const [open, setOpen] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    function handleClick(e: MouseEvent) {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
-    }
-    document.addEventListener("mousedown", handleClick);
-    return () => document.removeEventListener("mousedown", handleClick);
-  }, []);
-
-  return (
-    <div ref={ref} className="relative">
-      <button
-        onClick={() => setOpen((v) => !v)}
-        className="flex items-center gap-1 text-slate-300 hover:text-white text-sm font-medium transition-colors py-1"
-        aria-expanded={open}
-      >
-        {label}
-        <ChevronDown
-          size={13}
-          className={`transition-transform duration-200 ${open ? "rotate-180" : ""}`}
-        />
-      </button>
-
-      {open && (
-        <div
-          className={`absolute top-full left-0 mt-2 ${width} rounded-xl bg-[#0d2137] border border-slate-700/60 shadow-2xl py-2 z-50`}
-          style={{ boxShadow: "0 24px 48px rgba(0,0,0,0.4)" }}
-        >
-          {items.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              onClick={() => { setOpen(false); onClose(); }}
-              className="flex items-start gap-3 px-4 py-3 hover:bg-white/5 transition-colors group"
-            >
-              <span className="mt-0.5">{item.icon}</span>
-              <span>
-                <span className="block text-sm font-medium text-white group-hover:text-emerald-400 transition-colors">
-                  {item.label}
-                </span>
-                <span className="block text-xs text-slate-400 mt-0.5 leading-relaxed">{item.desc}</span>
-              </span>
-            </Link>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}
-
-function MobileAccordion({
-  label,
-  items,
-  onClose,
-  icon,
-}: {
-  label: string;
-  items: NavItem[];
-  onClose: () => void;
-  icon: React.ReactNode;
-}) {
-  const [open, setOpen] = useState(false);
-  return (
-    <>
-      <button
-        onClick={() => setOpen((v) => !v)}
-        className="flex items-center justify-between w-full text-left py-2.5 text-sm font-medium text-slate-300 hover:text-white transition-colors"
-      >
-        <span className="flex items-center gap-2">
-          {icon}
-          {label}
-        </span>
-        <ChevronDown size={13} className={`transition-transform ${open ? "rotate-180" : ""}`} />
-      </button>
-      {open && (
-        <div className="pl-4 flex flex-col gap-0.5 mb-1 border-l border-slate-700 ml-2">
-          {items.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              onClick={onClose}
-              className="py-2 text-sm text-slate-400 hover:text-white transition-colors"
-            >
-              {item.label}
-            </Link>
-          ))}
-        </div>
-      )}
-    </>
-  );
-}
+type DropdownKey = "solutions" | "services" | "career" | null;
 
 export default function Navbar() {
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const close = () => setMobileOpen(false);
+  const [open, setOpen]                   = useState(false);
+  const [active, setActive]               = useState<DropdownKey>(null);
+
+  function Dropdown({ id, label, items }: { id: DropdownKey; label: string; items: typeof solutions }) {
+    return (
+      <div className="relative" onMouseEnter={() => setActive(id)} onMouseLeave={() => setActive(null)}>
+        <button
+          className="flex items-center gap-1 text-xs font-semibold tracking-wider uppercase px-3 py-2 rounded-lg transition-colors hover:text-white"
+          style={{ color: "#64748B", letterSpacing: "0.08em" }}
+        >
+          {label} <ChevronDown size={12} />
+        </button>
+        {active === id && (
+          <div
+            className="absolute top-full left-0 mt-1 w-64 rounded-xl p-2 shadow-2xl z-50"
+            style={{ background: "#0F1420", border: "1px solid rgba(0,245,255,0.15)" }}
+          >
+            {items.map(item => (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setActive(null)}
+                className="flex flex-col gap-0.5 px-3 py-2.5 rounded-lg transition-colors hover:bg-white/5"
+              >
+                <span className="text-xs font-semibold" style={{ color: "#E2E8F0" }}>{item.label}</span>
+                <span className="text-[11px]" style={{ color: "#64748B" }}>{item.desc}</span>
+              </Link>
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  }
 
   return (
-    <header style={{ backgroundColor: "#0A192F" }} className="sticky top-0 z-50 border-b border-slate-800/60 shadow-lg">
+    <header
+      className="sticky top-0 z-50"
+      style={{
+        background:     "rgba(11,14,20,0.95)",
+        backdropFilter: "blur(20px)",
+        borderBottom:   "1px solid rgba(0,245,255,0.1)",
+      }}
+    >
+      <div
+        aria-hidden
+        className="absolute top-0 left-0 right-0 h-px"
+        style={{ background: "linear-gradient(90deg, transparent, #00F5FF, transparent)" }}
+      />
+
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
+
         {/* Logo */}
-        <Link href="/" className="shrink-0" aria-label="SupraCloud — Home">
-          <Logo variant="light" size="md" showWordmark />
+        <Link href="/" aria-label="SupraCloud — Home" className="shrink-0 flex items-center gap-2">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <rect width="28" height="28" rx="7" fill="rgba(0,245,255,0.1)" stroke="rgba(0,245,255,0.4)" strokeWidth="1" />
+            <path d="M7 14 L14 7 L21 14 L14 21 Z" stroke="#00F5FF" strokeWidth="1.5" fill="none" strokeLinejoin="round" />
+            <circle cx="14" cy="14" r="3" fill="#00F5FF" />
+          </svg>
+          <span className="text-base font-extrabold tracking-tight" style={{ color: "#E2E8F0" }}>
+            Supra<span style={{ color: "#00F5FF" }}>Cloud</span>
+          </span>
         </Link>
 
         {/* Desktop nav */}
-        <div className="hidden md:flex items-center gap-7">
-          <MegaDropdown label="Solutions" items={solutionsLinks} onClose={close} />
-          <MegaDropdown label="Services" items={servicesLinks} onClose={close} width="w-80" />
-          <MegaDropdown label="Talent" items={talentLinks} onClose={close} width="w-80" />
-          <Link href="/about" className="text-slate-300 hover:text-white text-sm font-medium transition-colors">
+        <div className="hidden md:flex items-center gap-1">
+          <Dropdown id="solutions" label="Solutions"        items={solutions} />
+          <Dropdown id="services"  label="Services"         items={services} />
+          <Dropdown id="career"    label="Career Programs"  items={careerPrograms} />
+          <Link
+            href="/about"
+            className="text-xs font-semibold tracking-wider uppercase px-3 py-2 rounded-lg transition-colors hover:text-white"
+            style={{ color: "#64748B", letterSpacing: "0.08em" }}
+          >
             About
           </Link>
-          <Link href="/contact" className="text-slate-300 hover:text-white text-sm font-medium transition-colors">
+          <Link
+            href="/contact"
+            className="text-xs font-semibold tracking-wider uppercase px-3 py-2 rounded-lg transition-colors hover:text-white"
+            style={{ color: "#64748B", letterSpacing: "0.08em" }}
+          >
             Contact
           </Link>
         </div>
@@ -192,83 +111,67 @@ export default function Navbar() {
         <div className="hidden md:flex items-center gap-3">
           <Link
             href="/portal"
-            className="text-sm font-semibold px-4 py-2 rounded-md text-slate-400 hover:text-white transition-colors"
+            className="text-xs font-semibold px-3 py-2 rounded-lg transition-all hover:border-cyan-400 hover:text-white"
+            style={{ color: "#64748B", border: "1px solid rgba(255,255,255,0.08)", background: "transparent" }}
           >
-            Client Login
-          </Link>
-          <Link
-            href="/contact"
-            className="text-sm font-semibold px-4 py-2 rounded-md border border-white/30 text-white bg-white/5 hover:border-emerald-400 hover:bg-white/10 transition-colors"
-          >
-            Submit a Brief
+            Portal
           </Link>
           <Link
             href="/book"
-            className="text-sm font-semibold px-4 py-2 rounded-md text-white transition-colors"
-            style={{ backgroundColor: "#10B981" }}
-            onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#059669")}
-            onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#10B981")}
+            className="text-xs font-bold px-4 py-2 rounded-lg transition-all hover:brightness-110"
+            style={{ background: "linear-gradient(135deg, #00F5FF, #0099AA)", color: "#0B0E14", boxShadow: "0 0 16px rgba(0,245,255,0.25)" }}
           >
-            Book a Call
+            Book a Demo
           </Link>
         </div>
 
         {/* Mobile hamburger */}
         <button
-          className="md:hidden text-white p-2"
-          onClick={() => setMobileOpen((prev) => !prev)}
-          aria-label="Toggle menu"
+          className="md:hidden p-2 rounded-lg"
+          style={{ color: "#94A3B8" }}
+          onClick={() => setOpen(p => !p)}
+          aria-label="Toggle navigation"
         >
-          {mobileOpen ? <X size={22} /> : <Menu size={22} />}
+          {open ? <X size={20} /> : <Menu size={20} />}
         </button>
       </nav>
 
-      {/* Mobile menu */}
-      {mobileOpen && (
-        <div style={{ backgroundColor: "#0A192F" }} className="md:hidden border-t border-slate-700 px-4 pb-6">
-          <div className="flex flex-col gap-0.5 pt-3">
-            <MobileAccordion
-              label="Solutions"
-              items={solutionsLinks}
-              onClose={close}
-              icon={<Bot size={14} className="text-emerald-500" />}
-            />
-            <MobileAccordion
-              label="Services"
-              items={servicesLinks}
-              onClose={close}
-              icon={<Briefcase size={14} className="text-emerald-500" />}
-            />
-            <MobileAccordion
-              label="Talent"
-              items={talentLinks}
-              onClose={close}
-              icon={<Users size={14} className="text-emerald-500" />}
-            />
-            <Link href="/about" onClick={close} className="py-2.5 text-sm font-medium text-slate-300 hover:text-white transition-colors">
-              About
+      {/* Mobile drawer */}
+      {open && (
+        <div
+          className="md:hidden px-4 pb-5 pt-2 border-t"
+          style={{ background: "rgba(11,14,20,0.98)", borderColor: "rgba(0,245,255,0.1)" }}
+        >
+          <div className="flex flex-col gap-1">
+            <p className="text-[10px] font-mono tracking-widest uppercase px-3 pt-3 pb-1" style={{ color: "#475569" }}>Solutions</p>
+            {solutions.map(item => (
+              <Link key={item.href} href={item.href} onClick={() => setOpen(false)}
+                className="py-2 px-3 rounded-lg text-sm font-medium transition-colors hover:text-white"
+                style={{ color: "#94A3B8" }}>{item.label}</Link>
+            ))}
+            <p className="text-[10px] font-mono tracking-widest uppercase px-3 pt-3 pb-1" style={{ color: "#475569" }}>Services</p>
+            {services.map(item => (
+              <Link key={item.href} href={item.href} onClick={() => setOpen(false)}
+                className="py-2 px-3 rounded-lg text-sm font-medium transition-colors hover:text-white"
+                style={{ color: "#94A3B8" }}>{item.label}</Link>
+            ))}
+            <p className="text-[10px] font-mono tracking-widest uppercase px-3 pt-3 pb-1" style={{ color: "#475569" }}>Career Programs</p>
+            {careerPrograms.map(item => (
+              <Link key={item.href} href={item.href} onClick={() => setOpen(false)}
+                className="py-2 px-3 rounded-lg text-sm font-medium transition-colors hover:text-white"
+                style={{ color: "#94A3B8" }}>{item.label}</Link>
+            ))}
+            <Link href="/about" onClick={() => setOpen(false)}
+              className="py-2 px-3 rounded-lg text-sm font-medium transition-colors hover:text-white"
+              style={{ color: "#94A3B8" }}>About</Link>
+            <Link href="/contact" onClick={() => setOpen(false)}
+              className="py-2 px-3 rounded-lg text-sm font-medium transition-colors hover:text-white"
+              style={{ color: "#94A3B8" }}>Contact</Link>
+            <Link href="/book" onClick={() => setOpen(false)}
+              className="mt-2 py-3 rounded-lg text-sm font-bold text-center transition-all"
+              style={{ background: "linear-gradient(135deg, #00F5FF, #0099AA)", color: "#0B0E14" }}>
+              Book a Demo
             </Link>
-            <Link href="/contact" onClick={close} className="py-2.5 text-sm font-medium text-slate-300 hover:text-white transition-colors">
-              Contact
-            </Link>
-
-            <div className="flex flex-col gap-2 mt-4 pt-4 border-t border-slate-700">
-              <Link
-                href="/contact"
-                onClick={close}
-                className="text-sm font-semibold px-4 py-2.5 rounded-md text-center border border-slate-600 text-white hover:border-emerald-500 transition-colors"
-              >
-                Submit a Brief
-              </Link>
-              <Link
-                href="/book"
-                onClick={close}
-                className="text-sm font-semibold px-4 py-2.5 rounded-md text-center text-white"
-                style={{ backgroundColor: "#10B981" }}
-              >
-                Book a Call
-              </Link>
-            </div>
           </div>
         </div>
       )}

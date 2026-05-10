@@ -3,9 +3,18 @@ import Link from "next/link";
 import { CheckCircle, ArrowRight, Handshake, GraduationCap, Building2, Calendar } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Placement Year Partnerships",
+  title: "Placement Year Partnerships | SupraCloud",
   description:
     "University placement year partnerships connecting students with enterprise AI and data engineering hosts. Structured programmes with mentoring, real project delivery, and graduate conversion pathways.",
+  openGraph: {
+    title: "Placement Year Partnerships | SupraCloud",
+    description:
+      "University placement year partnerships in Data, Cloud & AI. Structured mentoring, real project delivery, and graduate conversion pathways.",
+    url: "https://supracloud.co.uk/talent/partnerships",
+    siteName: "SupraCloud",
+    locale: "en_GB",
+  },
+  alternates: { canonical: "https://supracloud.co.uk/talent/partnerships" },
 };
 
 const benefits = {

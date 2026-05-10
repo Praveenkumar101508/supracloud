@@ -1,36 +1,94 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SupraCloud — Enterprise AI Agent Development & IT Solutions
 
-## Getting Started
+Production-grade AI agents and enterprise IT services for banking and retail, built by ex-IBM engineers.
 
-First, run the development server:
+**Live site:** [supracloud.co.uk](https://supracloud.co.uk)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## Stack
+
+- **Framework:** Next.js 16 (App Router)
+- **Language:** TypeScript / JavaScript
+- **Styling:** Tailwind CSS v4
+- **Email:** Resend
+- **Deployment:** Vercel
+
+---
+
+## Routes
+
+| Route | Description |
+|---|---|
+| `/` | Homepage |
+| `/solutions/banking` | Banking AI Agents solution page |
+| `/solutions/retail` | Retail AI Agents solution page |
+| `/services/staffing` | IT Staffing & Outsourcing |
+| `/services/consultation` | Enterprise IT Consultation |
+| `/talent/programs` | Industry Training Programs |
+| `/talent/partnerships` | Placement Year Partnerships |
+| `/talent/internships` | Graduate Internships |
+| `/about` | About SupraCloud & founder bio |
+| `/contact` | Contact form & direct contact |
+| `/book` | Discovery call booking form |
+| `/portal` | Client portal (coming soon) |
+| `/privacy` | Privacy Policy (UK GDPR) |
+| `/terms` | Terms of Service |
+
+---
+
+## Environment Variables
+
+Create `.env.local` with:
+
+```
+# Email (Resend)
+EMAIL_SERVICE_API_KEY=re_...
+EMAIL_FROM=noreply@supracloud.co.uk
+RESEND_FROM_EMAIL=noreply@supracloud.co.uk   # legacy fallback
+
+# Google Calendar / Meet integration
+GOOGLE_CLIENT_ID=...
+GOOGLE_CLIENT_SECRET=...
+GOOGLE_REFRESH_TOKEN=...
+GOOGLE_CALENDAR_ID=primary
+
+# Static Meet link fallback (used if Google Calendar is not configured)
+MEET_LINK=https://meet.google.com/xxx-xxxx-xxx
+
+# Site
+NEXT_PUBLIC_SITE_URL=https://supracloud.co.uk
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Booking flow
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+When a discovery call form is submitted:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. If Google Calendar env vars are set, a calendar event is created with `conferenceData` to generate a unique Google Meet link.
+2. A confirmation email with the Meet link is sent to the prospect via Resend.
+3. A notification email is sent to `rk@supracloud.co.uk`.
+4. If Google Calendar is not configured, the static `MEET_LINK` env var is used as fallback.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## Development
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm install
+npm run dev
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Open [http://localhost:3000](http://localhost:3000).
 
-## Deploy on Vercel
+## Build
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm run build
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Tests
+
+```bash
+npm test              # jest unit tests
+npx playwright test   # e2e tests
+```
