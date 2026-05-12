@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Colors · Semantic</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin:0; padding:20px; background:#fff; font-family: var(--sc-font-sans); }
+  .row { display:grid; grid-template-columns: repeat(4, 1fr); gap:12px; }
+  .card { border-radius:12px; padding:14px; border:1px solid; display:flex; flex-direction:column; gap:6px; min-height:96px; }
+  .dot  { width:18px; height:18px; border-radius:6px; }
+  .name { font-size:13px; font-weight:700; }
+  .hex  { font-family: var(--sc-font-mono); font-size:11px; opacity:0.7; }
+  .desc { font-size:11px; opacity:0.7; }
+</style>
+</head>
+<body>
+  <div class="row">
+    <div class="card" style="background:#EFF6FF;border-color:#BFDBFE;color:#065F46">
+      <div class="dot" style="background:#3B82F6"></div>
+      <div class="name">Success</div><div class="hex">#3B82F6</div><div class="desc">Confirmations, deflection, SLA met</div>
+    </div>
+    <div class="card" style="background:#EFF6FF;border-color:#BFDBFE;color:#1E3A8A">
+      <div class="dot" style="background:#60A5FA"></div>
+      <div class="name">Info</div><div class="hex">#60A5FA</div><div class="desc">Programme updates, in progress</div>
+    </div>
+    <div class="card" style="background:#FFFBEB;border-color:#FDE68A;color:#92400E">
+      <div class="dot" style="background:#F59E0B"></div>
+      <div class="name">Warn</div><div class="hex">#F59E0B</div><div class="desc">Pending review, action needed</div>
+    </div>
+    <div class="card" style="background:#FEF2F2;border-color:#FECACA;color:#991B1B">
+      <div class="dot" style="background:#EF4444"></div>
+      <div class="name">Danger</div><div class="hex">#EF4444</div><div class="desc">Errors, escalations, breach</div>
+    </div>
+  </div>
+</body>
+</html>

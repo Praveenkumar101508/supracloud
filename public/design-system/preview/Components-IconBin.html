@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Components · Icon Bin</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  body { margin:0; padding:22px; background:#fff; font-family: var(--sc-font-sans); }
+  .row { display:grid; grid-template-columns: repeat(6, 1fr); gap:12px; }
+  .item { display:flex; flex-direction:column; align-items:center; gap:6px; }
+  .bin { width:46px; height:46px; border-radius:11px; background:#EFF6FF; border:1px solid #BFDBFE; display:flex; align-items:center; justify-content:center; }
+  .bin svg { color:#3B82F6; width:22px; height:22px; }
+  .name { font-size:10px; color:#374151; font-weight:600; font-family:'JetBrains Mono', monospace; }
+</style>
+</head>
+<body>
+  <div class="row">
+    <div class="item"><div class="bin"><i data-lucide="bot"></i></div><div class="name">bot</div></div>
+    <div class="item"><div class="bin"><i data-lucide="building-2"></i></div><div class="name">building-2</div></div>
+    <div class="item"><div class="bin"><i data-lucide="shopping-cart"></i></div><div class="name">shopping-cart</div></div>
+    <div class="item"><div class="bin"><i data-lucide="briefcase"></i></div><div class="name">briefcase</div></div>
+    <div class="item"><div class="bin"><i data-lucide="graduation-cap"></i></div><div class="name">graduation-cap</div></div>
+    <div class="item"><div class="bin"><i data-lucide="shield"></i></div><div class="name">shield</div></div>
+    <div class="item"><div class="bin"><i data-lucide="zap"></i></div><div class="name">zap</div></div>
+    <div class="item"><div class="bin"><i data-lucide="trending-up"></i></div><div class="name">trending-up</div></div>
+    <div class="item"><div class="bin"><i data-lucide="check-circle"></i></div><div class="name">check-circle</div></div>
+    <div class="item"><div class="bin"><i data-lucide="bar-chart-2"></i></div><div class="name">bar-chart-2</div></div>
+    <div class="item"><div class="bin"><i data-lucide="cpu"></i></div><div class="name">cpu</div></div>
+    <div class="item"><div class="bin"><i data-lucide="database"></i></div><div class="name">database</div></div>
+  </div>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

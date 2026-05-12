@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 60" width="280" height="60" fill="none">
+  <g transform="translate(4 5) scale(0.5)">
+    <path d="M80 25H35C26.7157 25 20 31.7157 20 40V42.5C20 50.7843 26.7157 57.5 35 57.5H65C73.2843 57.5 80 64.2157 80 72.5V75C80 83.2843 73.2843 90 65 90H20" stroke="#3B82F6" stroke-width="14" stroke-linecap="square"></path>
+    <path d="M80 25H35C26.7157 25 20 31.7157 20 40V42.5" stroke="#60A5FA" stroke-width="4" stroke-linecap="square"></path>
+  </g>
+  <text x="62" y="40" font-family="Inter, system-ui, sans-serif" font-size="22" font-weight="700" fill="#0A192F" letter-spacing="-0.02em">Supra<tspan fill="#3B82F6">Cloud</tspan></text>
+</svg>

@@ -1,0 +1,367 @@
+/* ── Lead capture progress bar ── */
+.progressTrack {
+  height: 3px;
+  background: #e2e8f0;
+  width: 100%;
+  flex-shrink: 0;
+}
+.progressBar {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981, #059669);
+  transition: width 0.5s ease;
+  border-radius: 0 2px 2px 0;
+}
+
+/* ── Floating trigger button ── */
+.trigger {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 9999;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  box-shadow: 0 4px 24px rgba(16, 185, 129, 0.45), 0 2px 8px rgba(0, 0, 0, 0.18);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  outline-offset: 3px;
+}
+.trigger:hover {
+  transform: scale(1.08);
+  box-shadow: 0 6px 32px rgba(16, 185, 129, 0.55), 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+.trigger:focus-visible {
+  outline: 2px solid #10b981;
+}
+.trigger svg {
+  width: 26px;
+  height: 26px;
+  color: #fff;
+}
+
+/* Pulse ring when speaking */
+.triggerListening {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+  box-shadow: 0 4px 24px rgba(239, 68, 68, 0.45), 0 2px 8px rgba(0,0,0,0.18) !important;
+}
+
+.trigger.speaking::before {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 2px solid rgba(16, 185, 129, 0.5);
+  animation: pulseRing 1.4s ease-out infinite;
+}
+@keyframes pulseRing {
+  0%   { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+/* ── Panel ── */
+.panel {
+  position: fixed;
+  bottom: 100px;
+  right: 28px;
+  z-index: 9998;
+  width: 360px;
+  max-height: 540px;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 8px 48px rgba(0, 0, 0, 0.14), 0 2px 12px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: slideUp 0.22s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  border: 1px solid rgba(16, 185, 129, 0.15);
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(18px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0)  scale(1); }
+}
+
+@media (max-width: 480px) {
+  .panel {
+    right: 12px;
+    left: 12px;
+    width: auto;
+    bottom: 90px;
+  }
+  .trigger {
+    right: 16px;
+    bottom: 20px;
+  }
+}
+
+/* ── Header ── */
+.header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  border-bottom: 1px solid rgba(16, 185, 129, 0.2);
+}
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #10b981, #059669);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 16px;
+}
+.headerText {
+  flex: 1;
+  min-width: 0;
+}
+.agentName {
+  font-size: 13px;
+  font-weight: 700;
+  color: #f8fafc;
+  letter-spacing: 0.02em;
+}
+.agentStatus {
+  font-size: 11px;
+  color: #94a3b8;
+  margin-top: 1px;
+}
+.agentStatus.active {
+  color: #10b981;
+}
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.iconBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, color 0.15s;
+}
+.iconBtn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #f8fafc;
+}
+.iconBtn svg { width: 16px; height: 16px; }
+
+/* ── Messages ── */
+.messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px 14px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  scroll-behavior: smooth;
+}
+.messages::-webkit-scrollbar { width: 4px; }
+.messages::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 4px; }
+
+.stageBadge {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 7px;
+  border-radius: 99px;
+  background: rgba(16, 185, 129, 0.18);
+  color: #10b981;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  vertical-align: middle;
+}
+
+.bubble {
+  max-width: 88%;
+  border-radius: 14px;
+  padding: 9px 13px;
+  font-size: 13px;
+  line-height: 1.5;
+  animation: fadeIn 0.18s ease both;
+}
+
+.bubbleSender {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  margin-bottom: 3px;
+  opacity: 0.6;
+  text-transform: uppercase;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.bubble.aria {
+  align-self: flex-start;
+  background: #f1f5f9;
+  color: #1e293b;
+  border-bottom-left-radius: 4px;
+}
+.bubble.user {
+  align-self: flex-end;
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: #fff;
+  border-bottom-right-radius: 4px;
+}
+
+.thinking {
+  align-self: flex-start;
+  display: flex;
+  gap: 4px;
+  padding: 10px 14px;
+  background: #f1f5f9;
+  border-radius: 14px;
+  border-bottom-left-radius: 4px;
+  animation: fadeIn 0.18s ease both;
+}
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #94a3b8;
+  animation: bounce 1.2s ease infinite;
+}
+.dot:nth-child(2) { animation-delay: 0.15s; }
+.dot:nth-child(3) { animation-delay: 0.3s; }
+@keyframes bounce {
+  0%, 60%, 100% { transform: translateY(0); }
+  30%            { transform: translateY(-5px); }
+}
+
+/* ── Footer / mic ── */
+.footer {
+  padding: 12px 14px 14px;
+  border-top: 1px solid #f1f5f9;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.micBtn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 16px;
+  border-radius: 12px;
+  border: 2px solid #e2e8f0;
+  background: #f8fafc;
+  font-size: 13px;
+  font-weight: 600;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+.micBtn:hover {
+  border-color: #10b981;
+  background: #f0fdf4;
+  color: #059669;
+}
+.micBtn.listening {
+  border-color: #ef4444;
+  background: #fef2f2;
+  color: #dc2626;
+  animation: listenPulse 1s ease infinite;
+}
+@keyframes listenPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.3); }
+  50%       { box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
+}
+.micBtn svg { width: 16px; height: 16px; }
+
+/* Interrupt state — red, pulsing */
+.micBtn.interrupt {
+  border-color: #ef4444;
+  background: #fef2f2;
+  color: #dc2626;
+  animation: listenPulse 1s ease infinite;
+}
+
+/* ── Listening waveform bars ── */
+.listeningWave {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  height: 16px;
+}
+.bar {
+  width: 3px;
+  border-radius: 2px;
+  background: #dc2626;
+  animation: barBounce 0.9s ease-in-out infinite;
+}
+.bar:nth-child(1) { height: 4px;  animation-delay: 0s; }
+.bar:nth-child(2) { height: 10px; animation-delay: 0.1s; }
+.bar:nth-child(3) { height: 14px; animation-delay: 0.2s; }
+.bar:nth-child(4) { height: 10px; animation-delay: 0.3s; }
+.bar:nth-child(5) { height: 5px;  animation-delay: 0.4s; }
+@keyframes barBounce {
+  0%, 100% { transform: scaleY(1); }
+  50%       { transform: scaleY(0.35); }
+}
+
+.hint {
+  font-size: 10px;
+  color: #94a3b8;
+  text-align: center;
+  margin-top: 6px;
+  padding: 0 4px;
+}
+
+/* ── Email input (lead capture step) ── */
+.emailForm {
+  flex: 1;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.emailInput {
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 2px solid #e2e8f0;
+  background: #f8fafc;
+  font-size: 13px;
+  color: #1e293b;
+  outline: none;
+  transition: border-color 0.18s ease;
+}
+.emailInput:focus {
+  border-color: #10b981;
+  background: #f0fdf4;
+}
+.emailSend {
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.18s ease;
+}
+.emailSend:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.emailSend:not(:disabled):hover {
+  opacity: 0.88;
+}

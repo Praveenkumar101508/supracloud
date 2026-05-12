@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SupraCloud — Enterprise AI Agent Development & IT Solutions</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../../assets/favicon.svg">
+<link rel="stylesheet" href="../../colors_and_type.css">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  * { box-sizing:border-box; }
+  body { margin:0; background:#F8FAFC; color:#111827; font-family: var(--sc-font-sans); }
+  a { text-decoration:none; color:inherit; }
+  .container { max-width: 1200px; margin:0 auto; padding: 0 24px; }
+
+  /* NAV */
+  .nav { position:sticky; top:0; z-index:50; background:#0A192F; border-bottom:1px solid rgba(255,255,255,0.06); }
+  .nav-row { display:flex; align-items:center; justify-content:space-between; height:64px; }
+  .nav-left { display:flex; align-items:center; gap:36px; }
+  .brand { display:flex; align-items:center; gap:10px; }
+  .brand-text { font-weight:700; font-size:18px; letter-spacing:-0.02em; color:#fff; }
+  .brand-text .cyan { color:#60A5FA; }
+  .nav-links { display:flex; gap:26px; }
+  .nav-link { color:#CBD5E1; font-size:14px; font-weight:500; cursor:pointer; display:flex; align-items:center; gap:4px; padding:6px 0; position:relative; }
+  .nav-link:hover { color:#fff; }
+  .chev { transition: transform .2s; }
+  .nav-link.open .chev { transform: rotate(180deg); }
+  .dropdown {
+    position:absolute; top:calc(100% + 6px); left:0; min-width:300px;
+    background:#0D2137; border:1px solid rgba(255,255,255,0.08); border-radius:12px;
+    box-shadow:0 24px 48px rgba(0,0,0,0.4); padding:8px; display:none;
+  }
+  .nav-link.open .dropdown { display:block; }
+  .dd-item { display:flex; gap:12px; padding:10px 12px; border-radius:8px; }
+  .dd-item:hover { background:rgba(255,255,255,0.05); }
+  .dd-item .ic { color:#60A5FA; flex-shrink:0; margin-top:2px; }
+  .dd-item .lab { color:#fff; font-size:13px; font-weight:500; }
+  .dd-item .desc { color:#94A3B8; font-size:11px; line-height:1.5; margin-top:2px; }
+  .nav-cta { display:flex; gap:10px; align-items:center; }
+  .btn-text { color:#94A3B8; font-size:13px; font-weight:600; padding:8px 12px; }
+  .btn-text:hover { color:#fff; }
+  .btn-ghost { border:1px solid #475569; color:#E2E8F0; padding:8px 14px; border-radius:6px; font-size:13px; font-weight:600; }
+  .btn-ghost:hover { border-color:#3B82F6; }
+  .btn-primary { background:#3B82F6; color:#fff; padding:8px 14px; border-radius:6px; font-size:13px; font-weight:600; }
+  .btn-primary:hover { background:#2563EB; }
+
+  /* HERO */
+  .hero { background:#0A192F; position:relative; overflow:hidden; padding:96px 0; }
+  .grid-bg { position:absolute; inset:0;
+    background-image: linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px);
+    background-size:48px 48px; opacity:0.035; pointer-events:none;
+  }
+  .glow { position:absolute; inset:0; background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(59,130,246,0.10), transparent 70%); pointer-events:none; }
+  .hero-grid { position:relative; display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center; }
+  .pill {
+    display:inline-flex; align-items:center; gap:6px; padding:6px 12px;
+    border:1px solid rgba(96,165,250,0.4); border-radius:9999px;
+    color:#60A5FA; font-size:11px; font-weight:600; letter-spacing:0.15em; text-transform:uppercase; margin-bottom:20px;
+  }
+  .h1 { font-size:54px; font-weight:800; line-height:1.08; letter-spacing:-0.02em; color:#fff; margin:0 0 20px; }
+  .grad { background:linear-gradient(135deg,#3B82F6,#60A5FA); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+  .sub { color:#94A3B8; font-size:18px; line-height:1.6; max-width:480px; margin:0 0 28px; }
+  .ctas { display:flex; gap:14px; }
+  .btn-primary-lg { background:#3B82F6; color:#fff; padding:14px 26px; border-radius:8px; font-weight:600; font-size:15px; display:inline-flex; align-items:center; gap:8px;}
+  .btn-ghost-lg   { border:1px solid #475569; color:#fff; padding:14px 26px; border-radius:8px; font-weight:600; font-size:15px; }
+  .trust { display:flex; gap:24px; margin-top:30px; color:#64748B; font-size:12px; font-weight:500;}
+  .trust span { display:flex; align-items:center; gap:6px; }
+
+  /* TERMINAL */
+  .term { border:1px solid rgba(255,255,255,0.10); border-radius:14px; overflow:hidden; box-shadow:0 25px 50px -12px rgba(0,0,0,0.4); }
+  .chrome { display:flex; align-items:center; gap:6px; padding:12px 16px; background:rgba(30,41,59,0.8); border-bottom:1px solid rgba(255,255,255,0.06); }
+  .dot { width:11px; height:11px; border-radius:50%; }
+  .term-title { margin-left:10px; font-family:var(--sc-font-mono); font-size:11px; color:#64748B; }
+  .term-body { background:rgba(15,23,42,0.92); padding:20px; min-height:240px; font-family:var(--sc-font-mono); font-size:12px; color:#60A5FA; line-height:1.8; }
+  .cursor { display:inline-block; width:7px; height:13px; background:#60A5FA; vertical-align:-2px; margin-left:1px; animation:blink 1s steps(2) infinite; }
+  @keyframes blink { 50% {opacity:0;} }
+
+  /* STAT BAR */
+  .statbar { background:#071527; border-top:1px solid rgba(255,255,255,0.06); border-bottom:1px solid rgba(255,255,255,0.06); padding:16px 0; }
+  .statbar-inner { display:flex; flex-wrap:wrap; gap:8px 28px; justify-content:center; color:#CBD5E1; font-size:13px; font-weight:600; }
+  .statbar-inner .ck { color:#3B82F6; margin-right:6px; }
+  .sep { color:#334155; }
+
+  /* SECTION */
+  section.light { padding:80px 0; background:#fff; }
+  .eyebrow { font-size:12px; font-weight:600; letter-spacing:0.15em; text-transform:uppercase; color:#2563EB; margin-bottom:12px; }
+  .h2 { font-size:36px; font-weight:700; letter-spacing:-0.02em; color:#111827; margin:0 0 12px; }
+  .lede { color:#6B7280; max-width:520px; margin:0 auto; font-size:16px; }
+  .center { text-align:center; }
+
+  /* PILLARS */
+  .pillars { display:grid; grid-template-columns: repeat(3, 1fr); gap:28px; margin-top:48px; }
+  .pillar { background:#F8FAFC; border:1px solid #F1F5F9; border-radius:18px; padding:28px; transition: transform .2s, box-shadow .2s; }
+  .pillar:hover { transform: translateY(-3px); box-shadow:0 12px 32px rgba(0,0,0,0.08); }
+  .icbin { width:46px; height:46px; border-radius:11px; background:#EFF6FF; border:1px solid #BFDBFE; display:flex; align-items:center; justify-content:center; margin-bottom:18px; color:#3B82F6; }
+  .pillar h3 { font-size:18px; font-weight:700; margin:0 0 10px; }
+  .pillar p { color:#6B7280; font-size:14px; line-height:1.6; margin:0 0 20px;}
+  .pillar-links { display:flex; flex-wrap:wrap; gap:14px; }
+  .pillar-links a { color:#2563EB; font-size:13px; font-weight:600; display:inline-flex; align-items:center; gap:4px;}
+
+  /* INDUSTRY MATRIX */
+  .matrix-section { background:#0A192F; padding:96px 0; position:relative; overflow:hidden;}
+  .matrix-toggle { display:flex; justify-content:center; margin:40px 0; }
+  .toggle-group { display:flex; border:1px solid rgba(255,255,255,0.10); border-radius:12px; overflow:hidden; }
+  .tog-btn { padding:14px 26px; font-size:14px; font-weight:600; color:#94A3B8; background:rgba(30,41,59,0.6); display:flex; align-items:center; gap:8px; cursor:pointer; border:0; }
+  .tog-btn.active { background:#3B82F6; color:#fff; }
+  .matrix-panel { display:grid; grid-template-columns:1fr 1fr; gap:28px; }
+  .glass { background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); backdrop-filter:blur(12px); border-radius:20px; padding:32px; }
+  .glass h3 { color:#fff; font-size:22px; font-weight:700; margin:0 0 6px;}
+  .glass .sub2 { color:#94A3B8; font-size:13px; margin-bottom:24px;}
+  .stat-callout { background:rgba(59,130,246,0.10); border:1px solid rgba(59,130,246,0.20); border-radius:14px; padding:18px; margin-bottom:24px;}
+  .stat-callout .v { font-size:30px; font-weight:800; color:#60A5FA; }
+  .stat-callout .l { color:#BFDBFE; font-size:13px; margin-top:4px;}
+  .chips { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px;}
+  .chip { padding:5px 12px; background:#334155; color:#CBD5E1; font-size:12px; font-weight:500; border:1px solid #475569; border-radius:9999px;}
+  .glass-eye { font-size:11px; font-weight:600; letter-spacing:0.15em; text-transform:uppercase; color:#3B82F6; margin-bottom:18px;}
+  .glass ul { list-style:none; padding:0; margin:0; }
+  .glass li { display:flex; gap:10px; color:#CBD5E1; font-size:14px; padding:8px 0; }
+  .glass li svg { color:#3B82F6; flex-shrink:0; margin-top:2px;}
+
+  /* FOOTER */
+  footer { background:#0A192F; padding:56px 0 24px; color:#CBD5E1; }
+  .foot-grid { display:grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap:40px; }
+  .foot-col h5 { color:#fff; font-size:11px; text-transform:uppercase; letter-spacing:0.1em; margin:0 0 16px; }
+  .foot-col ul { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:10px; }
+  .foot-col a { color:#CBD5E1; font-size:14px;}
+  .foot-col a:hover { color:#fff; }
+  .foot-bottom { border-top:1px solid #1E293B; margin-top:48px; padding-top:24px; display:flex; justify-content:space-between; color:#64748B; font-size:12px; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="container nav-row">
+    <div class="nav-left">
+      <a class="brand" href="#">
+        <img src="../../assets/logo-mark.svg" width="30" height="30" alt="">
+        <span class="brand-text">Supra<span class="cyan">Cloud</span></span>
+      </a>
+      <div class="nav-links">
+        <div class="nav-link" data-dd="ai">AI Solutions <i data-lucide="chevron-down" class="chev" style="width:14px;height:14px"></i>
+          <div class="dropdown">
+            <a class="dd-item" href="banking.html"><i data-lucide="building-2" class="ic" style="width:16px;height:16px"></i><div><div class="lab">Banking AI</div><div class="desc">L1/L2 support automation for financial services</div></div></a>
+            <a class="dd-item" href="supermarket.html"><i data-lucide="shopping-cart" class="ic" style="width:16px;height:16px"></i><div><div class="lab">Supermarket AI</div><div class="desc">Order, inventory and customer support agents</div></div></a>
+          </div>
+        </div>
+        <div class="nav-link" data-dd="ent">Enterprise Services <i data-lucide="chevron-down" class="chev" style="width:14px;height:14px"></i>
+          <div class="dropdown">
+            <a class="dd-item" href="staffing.html"><i data-lucide="briefcase" class="ic" style="width:16px;height:16px"></i><div><div class="lab">IT Staffing</div><div class="desc">Vetted engineers for contract and permanent roles</div></div></a>
+            <a class="dd-item" href="#"><i data-lucide="lightbulb" class="ic" style="width:16px;height:16px"></i><div><div class="lab">Consultation</div><div class="desc">Technology advisory and digital transformation</div></div></a>
+          </div>
+        </div>
+        <div class="nav-link" data-dd="tal">Talent Hub <i data-lucide="chevron-down" class="chev" style="width:14px;height:14px"></i>
+          <div class="dropdown">
+            <a class="dd-item" href="#"><i data-lucide="graduation-cap" class="ic" style="width:16px;height:16px"></i><div><div class="lab">Internships</div><div class="desc">Paid technical internships across the UK</div></div></a>
+            <a class="dd-item" href="#"><i data-lucide="book-open" class="ic" style="width:16px;height:16px"></i><div><div class="lab">Training</div><div class="desc">Structured pathways for Data, Cloud &amp; AI</div></div></a>
+          </div>
+        </div>
+        <a class="nav-link" href="#">About</a>
+        <a class="nav-link" href="portal.html">Client Portal</a>
+      </div>
+    </div>
+    <div class="nav-cta">
+      <a class="btn-text" href="portal.html">Client Login</a>
+      <a class="btn-ghost" href="booking.html">Submit a Brief</a>
+      <a class="btn-primary" href="booking.html">Book a Call</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="grid-bg"></div>
+  <div class="glow"></div>
+  <div class="container hero-grid">
+    <div>
+      <span class="pill"><i data-lucide="zap" style="width:11px;height:11px"></i> Enterprise AI · UK-Based · Production-Grade</span>
+      <h1 class="h1">Autonomous AI Agents for <span class="grad">Global Enterprise</span></h1>
+      <p class="sub">We design, build and deploy production-grade AI agents for banking and retail — slashing support costs and handling L1/L2 queries at scale, 24/7.</p>
+      <div class="ctas">
+        <a class="btn-primary-lg" href="booking.html">Book a Discovery Call <i data-lucide="arrow-right" style="width:15px;height:15px"></i></a>
+        <a class="btn-ghost-lg" href="booking.html">Submit a Brief</a>
+      </div>
+      <div class="trust">
+        <span><i data-lucide="check-circle" style="width:12px;height:12px;color:#3B82F6"></i> Banking &amp; Retail Specialists</span>
+        <span><i data-lucide="check-circle" style="width:12px;height:12px;color:#3B82F6"></i> Engineer-Led Delivery</span>
+        <span><i data-lucide="check-circle" style="width:12px;height:12px;color:#3B82F6"></i> UK-Based Team</span>
+      </div>
+    </div>
+    <div class="term">
+      <div class="chrome">
+        <span class="dot" style="background:#EF4444"></span>
+        <span class="dot" style="background:#F59E0B"></span>
+        <span class="dot" style="background:#3B82F6"></span>
+        <span class="term-title">supracloud-agent-runtime</span>
+      </div>
+      <div class="term-body" id="term">
+$ initialising SupraCloud enterprise runtime...<br>
+$ deploying banking-ai-agent v3.2.1 → production<br>
+$ agent.handleQuery('account_balance') → resolved in 0.4s<br>
+$ L1_deflection_rate: 63% ↑ | SLA: 99.97%<br>
+$ retail-ai-agent: processing 2,400 concurrent queries<br>
+$ rag_pipeline: 14ms avg latency | accuracy: 94.2%<br>
+$ all systems operational ✓<span class="cursor"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STAT BAR -->
+<div class="statbar">
+  <div class="container statbar-inner">
+    <span><span class="ck">✓</span> Banking &amp; Retail Sectors Served</span>
+    <span class="sep">·</span>
+    <span><span class="ck">✓</span> LangGraph + RAG Production Stack</span>
+    <span class="sep">·</span>
+    <span><span class="ck">✓</span> UK Enterprise Clients</span>
+    <span class="sep">·</span>
+    <span><span class="ck">✓</span> Built by ex-IBM Engineers</span>
+  </div>
+</div>
+
+<!-- PILLARS -->
+<section class="light">
+  <div class="container">
+    <div class="center">
+      <div class="eyebrow">What We Deliver</div>
+      <h2 class="h2">Three Pillars of Enterprise Capability</h2>
+      <p class="lede">End-to-end AI agent deployment, IT resource delivery, and specialised talent — under one roof.</p>
+    </div>
+    <div class="pillars">
+      <div class="pillar">
+        <div class="icbin"><i data-lucide="bot" style="width:24px;height:24px"></i></div>
+        <h3>AI Agent Development</h3>
+        <p>Production-grade autonomous agents for banking and retail. Built on LLMs, RAG, and LangGraph — deployed, monitored, and continuously optimised.</p>
+        <div class="pillar-links">
+          <a href="#">Banking Agents <i data-lucide="chevron-right" style="width:12px;height:12px"></i></a>
+          <a href="#">Retail Agents <i data-lucide="chevron-right" style="width:12px;height:12px"></i></a>
+        </div>
+      </div>
+      <div class="pillar">
+        <div class="icbin"><i data-lucide="briefcase" style="width:24px;height:24px"></i></div>
+        <h3>Enterprise IT Services</h3>
+        <p>Vetted IT staffing for contract and permanent roles, plus strategic technology advisory to help you scale securely.</p>
+        <div class="pillar-links">
+          <a href="#">IT Staffing <i data-lucide="chevron-right" style="width:12px;height:12px"></i></a>
+          <a href="#">Consultation <i data-lucide="chevron-right" style="width:12px;height:12px"></i></a>
+        </div>
+      </div>
+      <div class="pillar">
+        <div class="icbin"><i data-lucide="graduation-cap" style="width:24px;height:24px"></i></div>
+        <h3>Talent Pipeline</h3>
+        <p>Structured industry training, placement year partnerships, and graduate internships — feeding a pipeline of production-ready engineers.</p>
+        <div class="pillar-links">
+          <a href="#">Training <i data-lucide="chevron-right" style="width:12px;height:12px"></i></a>
+          <a href="#">Internships <i data-lucide="chevron-right" style="width:12px;height:12px"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INDUSTRY MATRIX -->
+<section class="matrix-section">
+  <div class="grid-bg"></div>
+  <div class="container">
+    <div class="center">
+      <div class="eyebrow" style="color:#3B82F6">Interactive Solution Matrix</div>
+      <h2 class="h2" style="color:#fff">Choose Your Industry</h2>
+      <p class="lede" style="color:#94A3B8">See exactly how SupraCloud AI agents map to your sector's support workflows.</p>
+    </div>
+    <div class="matrix-toggle">
+      <div class="toggle-group">
+        <button class="tog-btn active" data-mat="banking"><i data-lucide="building-2" style="width:16px;height:16px"></i> Banking Sector</button>
+        <button class="tog-btn" data-mat="retail"><i data-lucide="shopping-cart" style="width:16px;height:16px"></i> Retail Sector</button>
+      </div>
+    </div>
+    <div class="matrix-panel">
+      <div class="glass">
+        <h3 id="m-headline">Banking AI Agents</h3>
+        <p class="sub2" id="m-sub">L1 &amp; L2 customer support automation for financial services</p>
+        <div class="stat-callout">
+          <div class="v" id="m-stat">63%</div>
+          <div class="l" id="m-stat-l">reduction in L1 call volume</div>
+        </div>
+        <div class="chips" id="m-chips">
+          <span class="chip">Claude API</span><span class="chip">LangGraph</span><span class="chip">RAG</span><span class="chip">FastAPI</span><span class="chip">PostgreSQL</span><span class="chip">Pinecone</span>
+        </div>
+        <a href="#" style="color:#60A5FA; font-size:14px; font-weight:600;">View full solution →</a>
+      </div>
+      <div class="glass">
+        <div class="glass-eye">Capabilities</div>
+        <ul id="m-caps">
+          <li><i data-lucide="check-circle" style="width:15px;height:15px"></i> Account balance &amp; transaction queries</li>
+          <li><i data-lucide="check-circle" style="width:15px;height:15px"></i> Product information &amp; eligibility checks</li>
+          <li><i data-lucide="check-circle" style="width:15px;height:15px"></i> Fraud flag detection with human handoff</li>
+          <li><i data-lucide="check-circle" style="width:15px;height:15px"></i> Regulatory-aware escalation paths</li>
+          <li><i data-lucide="check-circle" style="width:15px;height:15px"></i> Complex complaint resolution (L2)</li>
+          <li><i data-lucide="check-circle" style="width:15px;height:15px"></i> Full context transfer on escalation</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container foot-grid">
+    <div class="foot-col">
+      <a class="brand" href="#">
+        <img src="../../assets/logo-mark.svg" width="26" height="26" alt="">
+        <span class="brand-text" style="font-size:16px">Supra<span class="cyan">Cloud</span></span>
+      </a>
+      <p style="color:#94A3B8; font-size:13px; margin:14px 0 18px; max-width:300px; line-height:1.6;">
+        Enterprise AI Agent Development and IT Solutions — engineer-led, production-grade, built for scale.
+      </p>
+      <ul style="list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:8px; font-size:13px;">
+        <li><a href="mailto:rk@supracloud.co.uk" style="display:flex; gap:8px; align-items:center;"><i data-lucide="mail" style="width:14px;height:14px;color:#3B82F6"></i> rk@supracloud.co.uk</a></li>
+        <li><a href="#" style="display:flex; gap:8px; align-items:center;"><i data-lucide="message-circle" style="width:14px;height:14px;color:#3B82F6"></i> +44 7776 456694</a></li>
+      </ul>
+    </div>
+    <div class="foot-col">
+      <h5>Solutions</h5>
+      <ul><li><a href="#">Banking AI</a></li><li><a href="#">Supermarket AI</a></li></ul>
+    </div>
+    <div class="foot-col">
+      <h5>Services</h5>
+      <ul><li><a href="#">IT Staffing</a></li><li><a href="#">Consultation</a></li><li><a href="#">Book a Call</a></li></ul>
+    </div>
+    <div class="foot-col">
+      <h5>Company</h5>
+      <ul><li><a href="#">About</a></li><li><a href="#">Contact</a></li><li><a href="portal.html">Client Portal</a></li><li><a href="#">Privacy</a></li></ul>
+    </div>
+  </div>
+  <div class="container foot-bottom">
+    <p>© 2026 SupraCloud Ltd. All rights reserved. Registered in England &amp; Wales.</p>
+    <div style="display:flex; gap:18px;"><a href="#">Privacy</a><a href="#">Terms</a></div>
+  </div>
+</footer>
+
+<script>
+  lucide.createIcons();
+  // Dropdown toggle
+  document.querySelectorAll('.nav-link[data-dd]').forEach(el => {
+    el.addEventListener('click', e => {
+      e.stopPropagation();
+      const wasOpen = el.classList.contains('open');
+      document.querySelectorAll('.nav-link.open').forEach(o => o.classList.remove('open'));
+      if (!wasOpen) el.classList.add('open');
+    });
+  });
+  document.addEventListener('click', () => document.querySelectorAll('.nav-link.open').forEach(o => o.classList.remove('open')));
+
+  // Matrix toggle
+  const matrix = {
+    banking: {
+      headline:'Banking AI Agents', sub:'L1 & L2 customer support automation for financial services',
+      stat:'63%', statL:'reduction in L1 call volume',
+      chips:['Claude API','LangGraph','RAG','FastAPI','PostgreSQL','Pinecone'],
+      caps:['Account balance & transaction queries','Product information & eligibility checks','Fraud flag detection with human handoff','Regulatory-aware escalation paths','Complex complaint resolution (L2)','Full context transfer on escalation'],
+    },
+    retail: {
+      headline:'Retail AI Agents', sub:'Order management, inventory escalation & customer support automation',
+      stat:'24/7', statL:'peak demand coverage',
+      chips:['Claude API','LangGraph','RAG','FastAPI','AWS','Pinecone'],
+      caps:['Order status, delivery & returns tracking','Product substitution & availability queries','Store info — opening hours, click & collect','Loyalty programme support','Inventory & supplier escalation (L2)','Multi-system complaint resolution'],
+    }
+  };
+  document.querySelectorAll('.tog-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tog-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const d = matrix[btn.dataset.mat];
+      document.getElementById('m-headline').textContent = d.headline;
+      document.getElementById('m-sub').textContent = d.sub;
+      document.getElementById('m-stat').textContent = d.stat;
+      document.getElementById('m-stat-l').textContent = d.statL;
+      document.getElementById('m-chips').innerHTML = d.chips.map(c => `<span class="chip">${c}</span>`).join('');
+      document.getElementById('m-caps').innerHTML = d.caps.map(c => `<li><i data-lucide="check-circle" style="width:15px;height:15px"></i> ${c}</li>`).join('');
+      lucide.createIcons();
+    });
+  });
+</script>
+</body>
+</html>
