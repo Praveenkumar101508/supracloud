@@ -6,12 +6,14 @@ import {
   ASK_NAME_SCRIPT, GREET_BY_NAME, GREET_RETURNING,
   LEAD_CAPTURE_INTRO, LEAD_QUESTIONS, LEAD_CONFIRM, LEAD_CONFIRM_NO_EMAIL,
   PROACTIVE_CTA, INACTIVITY_REMINDER, DEMO_INTENT_TAGS,
+  PRICING_DATA, calculateRoiResult,
 } from "./agentPersonality";
 
-const SESSION_KEY   = "aria_has_interacted";
-const NAME_KEY      = "aria_visitor_name";
-const INACTIVITY_MS = 45_000;  // 45s before reminder
-const CLOSE_MS      = 30_000;  // 30s after reminder before auto-close
+const SESSION_ID_KEY = "nova_session_id";
+const NAME_KEY       = "nova_visitor_name";
+const INTERACTED_KEY = "nova_has_interacted";
+const INACTIVITY_MS  = 45_000;
+const CLOSE_MS       = 30_000;
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -45,7 +47,6 @@ function extractName(text) {
 }
 
 function normalizeTranscript(text) {
-  // Fix common speech-to-text misrecognitions
   return text
     .replace(/\babam\b/gi, "IBM")
     .replace(/\bi\.b\.m\.?\b/gi, "IBM")
@@ -57,6 +58,71 @@ function normalizeTranscript(text) {
     .trim();
 }
 
+// ── Session ID: stable UUID per browser ───────────────────────────────────────
+
+function getOrCreateSessionId() {
+  try {
+    let id = localStorage.getItem(SESSION_ID_KEY);
+    if (!id) {
+      id = crypto.randomUUID();
+      localStorage.setItem(SESSION_ID_KEY, id);
+    }
+    return id;
+  } catch {
+    return crypto.randomUUID();
+  }
+}
+
+// ── Supabase session API ───────────────────────────────────────────────────────
+
+async function restoreSession(sessionId) {
+  try {
+    const res = await fetch(`/api/nova/session?sessionId=${encodeURIComponent(sessionId)}`);
+    if (!res.ok) return null;
+    return await res.json(); // { visitor_name, messages: [{role, content, id}] }
+  } catch {
+    return null;
+  }
+}
+
+async function persistMessage(sessionId, visitorName, role, content) {
+  try {
+    const res = await fetch("/api/nova/session", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ sessionId, visitorName, role, content }),
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    return data.messageId || null;
+  } catch {
+    return null;
+  }
+}
+
+async function submitFeedback(messageId, helpful) {
+  if (!messageId) return;
+  try {
+    await fetch("/api/nova/feedback", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ messageId, helpful }),
+    });
+  } catch {}
+}
+
+async function submitLead(leadData) {
+  try {
+    await fetch("/api/agent/lead", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(leadData),
+    });
+  } catch {}
+}
+
+// ── AI + TTS ──────────────────────────────────────────────────────────────────
+
 async function fetchAIResponse(question, pathname, name, history = []) {
   try {
     const res = await fetch("/api/agent/respond", {
@@ -66,9 +132,13 @@ async function fetchAIResponse(question, pathname, name, history = []) {
     });
     if (!res.ok) throw new Error("API error");
     const data = await res.json();
-    return data.answer || "I'm not sure about that - please book a discovery call and one of our engineers will answer directly.";
+    // Handle tool calls returned by Claude
+    if (data.tool_call) {
+      return { answer: data.answer, tool_call: data.tool_call };
+    }
+    return { answer: data.answer || "I'm not sure about that — please book a discovery call and one of our engineers will answer directly." };
   } catch {
-    return "I'm having a little trouble right now. Please try again or use the Contact page to reach us.";
+    return { answer: "I'm having a little trouble right now. Please try again or use the Contact page to reach us." };
   }
 }
 
@@ -92,6 +162,7 @@ async function speakText(text, abortRef) {
     }
   } catch {}
 
+  // Web Speech API fallback
   if (typeof window !== "undefined" && window.speechSynthesis) {
     return new Promise((resolve) => {
       const utt = new SpeechSynthesisUtterance(text);
@@ -105,62 +176,69 @@ async function speakText(text, abortRef) {
         voices[0];
       if (preferred) utt.voice = preferred;
       if (abortRef) abortRef.current = () => { window.speechSynthesis.cancel(); };
-      utt.onend = () => { if (abortRef) abortRef.current = null; resolve(); };
+      utt.onend  = () => { if (abortRef) abortRef.current = null; resolve(); };
       utt.onerror = () => { if (abortRef) abortRef.current = null; resolve(); };
       window.speechSynthesis.speak(utt);
     });
   }
 }
 
-async function submitLead(leadData) {
-  try {
-    await fetch("/api/agent/lead", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(leadData),
-    });
-  } catch {}
+// ── Tool execution (client-side) ───────────────────────────────────────────────
+
+function executeTool(toolName, toolInput) {
+  if (toolName === "calculate_roi") {
+    const result = calculateRoiResult(toolInput);
+    return `Based on your volume, here's a quick estimate: ${result.estimated_annual_saving} annual saving at ${result.deflection_rate} deflection rate, with a ${result.payback_months}-month payback. Want me to walk through how we'd implement this?`;
+  }
+  if (toolName === "get_pricing") {
+    const tier = toolInput.tier;
+    if (tier && PRICING_DATA[tier]) {
+      const p = PRICING_DATA[tier];
+      return `The ${p.name} tier is ${p.price} — ${p.description}. Would you like to know what's included, or shall I book a call to discuss your specific needs?`;
+    }
+    return `Our programmes range from £2,500 for Foundation through to £25,000 for the Full Accelerator, with custom Enterprise pricing. Which tier sounds most relevant for your team?`;
+  }
+  if (toolName === "qualify_lead") {
+    return "TRIGGER_LEAD_CAPTURE";
+  }
+  return null;
 }
 
 // ── Hook ──────────────────────────────────────────────────────────────────────
 
 export function useVoiceAgent() {
-  // UI state
   const [isOpen,      setIsOpen]      = useState(false);
   const [isSpeaking,  setIsSpeaking]  = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [isMuted,     setIsMuted]     = useState(false);
   const [isThinking,  setIsThinking]  = useState(false);
-  const [messages,    setMessages]    = useState([]);
+  const [messages,    setMessages]    = useState([]); // {role, text, id, messageId}
 
-  // Conversation state
   const [visitorName, setVisitorName] = useState(() => {
-    try { return sessionStorage.getItem(NAME_KEY) || ""; } catch { return ""; }
+    try { return localStorage.getItem(NAME_KEY) || ""; } catch { return ""; }
   });
   // stage: "ask_name" | "chatting" | "lead_capture" | "done"
-  const [stage,       setStage]       = useState("ask_name");
-  const [leadStep,    setLeadStep]    = useState(0);
+  const [stage,    setStage]    = useState("ask_name");
+  const [leadStep, setLeadStep] = useState(0);
 
-  // Lead capture
-  const leadRef    = useRef({});     // accumulates field answers
-  const stepRef    = useRef(0);      // current LEAD_QUESTIONS index
+  const leadRef    = useRef({});
+  const stepRef    = useRef(0);
+  const sessionId  = useRef(null);
 
-  // Conversation counters
   const exchangeCountRef = useRef(0);
   const ctaFiredRef      = useRef(false);
 
-  // Inactivity
   const inactivityTimer  = useRef(null);
   const closeTimer       = useRef(null);
 
-  // Refs for latest state in async callbacks
   const mutedRef       = useRef(false);
   const nameRef        = useRef(visitorName);
   const stageRef       = useRef(stage);
   const isOpenRef      = useRef(false);
   const recognitionRef = useRef(null);
   const messagesRef    = useRef([]);
-  const abortSpeechRef = useRef(null); // cancels current TTS audio
+  const abortSpeechRef = useRef(null);
+  const msgIdCounter   = useRef(0);
 
   useEffect(() => { mutedRef.current    = isMuted;     }, [isMuted]);
   useEffect(() => { nameRef.current     = visitorName; }, [visitorName]);
@@ -168,7 +246,7 @@ export function useVoiceAgent() {
   useEffect(() => { isOpenRef.current   = isOpen;      }, [isOpen]);
   useEffect(() => { messagesRef.current = messages;    }, [messages]);
 
-  // ── Inactivity timer management ────────────────────────────────────────────
+  // ── Inactivity ─────────────────────────────────────────────────────────────
 
   const clearInactivity = useCallback(() => {
     clearTimeout(inactivityTimer.current);
@@ -180,44 +258,69 @@ export function useVoiceAgent() {
     inactivityTimer.current = setTimeout(() => {
       if (!isOpenRef.current) return;
       const name = nameRef.current || "there";
-      speakFn(INACTIVITY_REMINDER(name), true /* skip inactivity reset */);
-      closeTimer.current = setTimeout(() => {
-        setIsOpen(false);
-      }, CLOSE_MS);
+      speakFn(INACTIVITY_REMINDER(name), true);
+      closeTimer.current = setTimeout(() => setIsOpen(false), CLOSE_MS);
     }, INACTIVITY_MS);
   }, [clearInactivity]);
 
+  // ── Unique local message ID ────────────────────────────────────────────────
+
+  const nextLocalId = () => `local-${++msgIdCounter.current}`;
+
   // ── Core speak ─────────────────────────────────────────────────────────────
 
-  const speak = useCallback(async (text) => {
+  const speak = useCallback(async (text, { skipPersist = false } = {}) => {
+    const localId = nextLocalId();
+    let dbMessageId = null;
+
+    if (!skipPersist && sessionId.current) {
+      dbMessageId = await persistMessage(
+        sessionId.current, nameRef.current, "nova", text
+      );
+    }
+
+    const msgObj = { role: "nova", text, id: localId, messageId: dbMessageId };
+
     if (mutedRef.current) {
-      setMessages((prev) => [...prev, { role: "aria", text }]);
-      return;
+      setMessages((prev) => [...prev, msgObj]);
+      return localId;
     }
     setIsSpeaking(true);
-    setMessages((prev) => [...prev, { role: "aria", text }]);
+    setMessages((prev) => [...prev, msgObj]);
     await speakText(text, abortSpeechRef);
     setIsSpeaking(false);
+    return localId;
   }, []);
 
-  // Wrap speak so inactivity resets after each Aria utterance
-  const speakAndResetTimer = useCallback(async (text, skipReset = false) => {
-    await speak(text);
+  const speakAndResetTimer = useCallback(async (text, skipReset = false, opts = {}) => {
+    const id = await speak(text, opts);
     if (!skipReset) resetInactivity(speakAndResetTimer);
+    return id;
   }, [speak, resetInactivity]);
+
+  // ── Submit feedback ────────────────────────────────────────────────────────
+
+  const submitMessageFeedback = useCallback(async (messageId, helpful) => {
+    await submitFeedback(messageId, helpful);
+    setMessages((prev) =>
+      prev.map((m) =>
+        m.messageId === messageId ? { ...m, feedback: helpful } : m
+      )
+    );
+  }, []);
 
   // ── Name capture ───────────────────────────────────────────────────────────
 
   const saveName = useCallback((name) => {
     setVisitorName(name);
     nameRef.current = name;
-    try { sessionStorage.setItem(NAME_KEY, name); } catch {}
+    try { localStorage.setItem(NAME_KEY, name); } catch {}
   }, []);
 
   // ── Lead capture step ──────────────────────────────────────────────────────
 
   const processLeadAnswer = useCallback(async (answer) => {
-    const step = stepRef.current;
+    const step    = stepRef.current;
     const fieldDef = LEAD_QUESTIONS[step];
     if (!fieldDef) return;
 
@@ -229,33 +332,39 @@ export function useVoiceAgent() {
     if (nextStep < LEAD_QUESTIONS.length) {
       await speakAndResetTimer(LEAD_QUESTIONS[nextStep - 1].question);
     } else {
-      // All questions answered
       const lead = {
         ...leadRef.current,
-        name: nameRef.current,
+        name:      nameRef.current,
         timestamp: new Date().toISOString(),
-        source: typeof window !== "undefined" ? window.location.href : "",
+        source:    typeof window !== "undefined" ? window.location.href : "",
       };
       await submitLead(lead);
       setStage("done");
       const email = lead.email;
-      const confirmation = email && email.includes("@")
+      const confirmation = email?.includes("@")
         ? LEAD_CONFIRM(nameRef.current || "there", email)
         : LEAD_CONFIRM_NO_EMAIL(nameRef.current || "there");
       await speakAndResetTimer(confirmation);
     }
   }, [speakAndResetTimer]);
 
-  // ── Handle incoming speech transcript ─────────────────────────────────────
+  // ── Handle transcript ──────────────────────────────────────────────────────
 
   const handleTranscript = useCallback(async (rawText) => {
     const text = normalizeTranscript(rawText);
-    setMessages((prev) => [...prev, { role: "user", text }]);
+    const localId = nextLocalId();
+    let userDbId = null;
+
+    if (sessionId.current) {
+      userDbId = await persistMessage(sessionId.current, nameRef.current, "user", text);
+    }
+
+    setMessages((prev) => [...prev, { role: "user", text, id: localId, messageId: userDbId }]);
     clearInactivity();
+
     const currentStage = stageRef.current;
     const name = nameRef.current;
 
-    // ── Stage: ask_name ──────────────────────────────────────────────────────
     if (currentStage === "ask_name") {
       const extracted = extractName(text);
       if (extracted) {
@@ -263,21 +372,18 @@ export function useVoiceAgent() {
         setStage("chatting");
         await speakAndResetTimer(GREET_BY_NAME(extracted));
       } else {
-        await speakAndResetTimer("Sorry, I didn't quite catch that - could you just tell me your first name?");
+        await speakAndResetTimer("Sorry, I didn't quite catch that — could you just tell me your first name?");
       }
       return;
     }
 
-    // ── Stage: lead_capture ──────────────────────────────────────────────────
     if (currentStage === "lead_capture") {
       await processLeadAnswer(text);
       return;
     }
 
-    // ── Stage: chatting / done ───────────────────────────────────────────────
     exchangeCountRef.current += 1;
 
-    // Check for demo/call intent
     if (hasDemoIntent(text) && currentStage !== "done") {
       setStage("lead_capture");
       stepRef.current = 0;
@@ -287,11 +393,9 @@ export function useVoiceAgent() {
       return;
     }
 
-    // Check local knowledge base
     const localAnswer = matchKnowledge(text, name);
     if (localAnswer) {
       await speakAndResetTimer(localAnswer);
-      // Fire proactive CTA after 3 exchanges if not yet fired
       if (exchangeCountRef.current >= 3 && !ctaFiredRef.current) {
         ctaFiredRef.current = true;
         setTimeout(async () => {
@@ -301,16 +405,34 @@ export function useVoiceAgent() {
       return;
     }
 
-    // Fall back to Claude AI (send full conversation history for memory)
+    // Claude AI with tool calling
     setIsThinking(true);
-    const aiAnswer = await fetchAIResponse(
+    const { answer, tool_call } = await fetchAIResponse(
       text,
       typeof window !== "undefined" ? window.location.pathname : "/",
       name,
       messagesRef.current,
     );
     setIsThinking(false);
-    await speakAndResetTimer(aiAnswer);
+
+    // Handle tool call if returned
+    if (tool_call) {
+      const toolResult = executeTool(tool_call.name, tool_call.input || {});
+      if (toolResult === "TRIGGER_LEAD_CAPTURE" && currentStage !== "done") {
+        setStage("lead_capture");
+        stepRef.current = 0;
+        setLeadStep(0);
+        leadRef.current = {};
+        await speakAndResetTimer(LEAD_CAPTURE_INTRO(name || "there"));
+        return;
+      }
+      if (toolResult) {
+        await speakAndResetTimer(toolResult);
+        return;
+      }
+    }
+
+    await speakAndResetTimer(answer);
 
     if (exchangeCountRef.current >= 3 && !ctaFiredRef.current) {
       ctaFiredRef.current = true;
@@ -334,25 +456,49 @@ export function useVoiceAgent() {
   const open = useCallback(async () => {
     setIsOpen(true);
 
-    // Restore name from session if returning visitor
-    let name = "";
-    try { name = sessionStorage.getItem(NAME_KEY) || ""; } catch {}
+    // Ensure session ID
+    if (!sessionId.current) {
+      sessionId.current = getOrCreateSessionId();
+    }
 
+    // Try to restore from Supabase
+    const restored = await restoreSession(sessionId.current);
     const alreadyInteracted = (() => {
-      try { return sessionStorage.getItem(SESSION_KEY) === "1"; } catch { return false; }
+      try { return localStorage.getItem(INTERACTED_KEY) === "1"; } catch { return false; }
     })();
+    try { localStorage.setItem(INTERACTED_KEY, "1"); } catch {}
 
-    try { sessionStorage.setItem(SESSION_KEY, "1"); } catch {}
-
-    if (name) {
-      saveName(name);
+    if (restored?.visitor_name) {
+      saveName(restored.visitor_name);
       setStage("chatting");
-      setMessages([]);
-      await speakAndResetTimer(alreadyInteracted ? GREET_RETURNING(name) : GREET_BY_NAME(name));
+      // Restore last 6 messages for continuity display
+      if (restored.messages?.length) {
+        const mapped = restored.messages.slice(-6).map((m, i) => ({
+          role:      m.role === "nova" ? "nova" : "user",
+          text:      m.content,
+          id:        `restored-${i}`,
+          messageId: m.id,
+        }));
+        setMessages(mapped);
+      } else {
+        setMessages([]);
+      }
+      await speakAndResetTimer(GREET_RETURNING(restored.visitor_name), false, { skipPersist: true });
     } else {
-      setStage("ask_name");
-      setMessages([]);
-      await speakAndResetTimer(ASK_NAME_SCRIPT);
+      const name = (() => { try { return localStorage.getItem(NAME_KEY) || ""; } catch { return ""; } })();
+      if (name) {
+        saveName(name);
+        setStage("chatting");
+        setMessages([]);
+        await speakAndResetTimer(
+          alreadyInteracted ? GREET_RETURNING(name) : GREET_BY_NAME(name),
+          false, { skipPersist: true }
+        );
+      } else {
+        setStage("ask_name");
+        setMessages([]);
+        await speakAndResetTimer(ASK_NAME_SCRIPT, false, { skipPersist: true });
+      }
     }
   }, [saveName, speakAndResetTimer]);
 
@@ -388,12 +534,10 @@ export function useVoiceAgent() {
       speak("Microphone access isn't available in this browser. Try Chrome or Edge.");
       return;
     }
-
     const rec = new SR();
     rec.lang = "en-GB";
     rec.interimResults = false;
     rec.maxAlternatives = 1;
-
     rec.onresult = async (event) => {
       const text = event.results[0][0].transcript;
       setIsListening(false);
@@ -401,7 +545,6 @@ export function useVoiceAgent() {
     };
     rec.onerror = () => setIsListening(false);
     rec.onend   = () => setIsListening(false);
-
     recognitionRef.current = rec;
     rec.start();
     setIsListening(true);
@@ -412,6 +555,13 @@ export function useVoiceAgent() {
     if (recognitionRef.current) { try { recognitionRef.current.stop(); } catch {} }
     setIsListening(false);
   }, []);
+
+  // ── Text input submit ─────────────────────────────────────────────────────
+
+  const submitText = useCallback(async (text) => {
+    if (!text.trim()) return;
+    await handleTranscript(text.trim());
+  }, [handleTranscript]);
 
   const submitEmailFromText = useCallback(async (email) => {
     await processLeadAnswer(email.trim());
@@ -429,5 +579,6 @@ export function useVoiceAgent() {
     open, close, toggleMute,
     startListening, stopListening,
     announceRoute, submitEmailFromText, interruptSpeech,
+    submitText, submitMessageFeedback,
   };
 }
