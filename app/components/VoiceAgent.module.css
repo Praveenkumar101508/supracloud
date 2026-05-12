@@ -1,0 +1,136 @@
+.orb {
+  position: fixed;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    left 2.2s cubic-bezier(0.4, 0, 0.2, 1),
+    top 2.2s cubic-bezier(0.4, 0, 0.2, 1),
+    background 0.3s ease,
+    box-shadow 0.3s ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.orb:focus-visible {
+  outline: 2px solid white;
+  outline-offset: 3px;
+}
+
+/* ── Glow states ─────────────────────────────────────────────────────────────── */
+
+.idle {
+  background: radial-gradient(circle at 38% 32%, #94a3b8, #64748b);
+  box-shadow: 0 6px 24px rgba(100, 116, 139, 0.45);
+}
+
+.listening {
+  background: radial-gradient(circle at 38% 32%, #34d399, #10b981);
+  box-shadow: 0 6px 28px rgba(16, 185, 129, 0.65);
+  animation: pulse-green 1.6s ease-in-out infinite;
+}
+
+.speaking {
+  background: radial-gradient(circle at 38% 32%, #60a5fa, #3b82f6);
+  box-shadow: 0 6px 28px rgba(59, 130, 246, 0.65);
+  animation: pulse-blue 0.9s ease-in-out infinite;
+}
+
+.muted {
+  background: radial-gradient(circle at 38% 32%, #f87171, #ef4444);
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.45);
+}
+
+/* ── Pulse animations ────────────────────────────────────────────────────────── */
+
+@keyframes pulse-green {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 6px 28px rgba(16, 185, 129, 0.65);
+  }
+  50% {
+    transform: scale(1.07);
+    box-shadow: 0 8px 36px rgba(16, 185, 129, 0.8);
+  }
+}
+
+@keyframes pulse-blue {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 6px 28px rgba(59, 130, 246, 0.65);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 8px 36px rgba(59, 130, 246, 0.8);
+  }
+}
+
+/* ── Icon ────────────────────────────────────────────────────────────────────── */
+
+.icon {
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.25));
+}
+
+/* ── Tooltip (speech text bubble) ────────────────────────────────────────────── */
+
+.tooltip {
+  position: absolute;
+  bottom: calc(100% + 12px);
+  right: 0;
+  background: #0a192f;
+  color: #e2e8f0;
+  font-size: 13px;
+  line-height: 1.45;
+  padding: 9px 13px;
+  border-radius: 12px;
+  max-width: 260px;
+  min-width: 140px;
+  white-space: normal;
+  word-break: break-word;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.25);
+  pointer-events: none;
+  animation: fade-in 0.18s ease;
+}
+
+.tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  right: 20px;
+  border: 7px solid transparent;
+  border-top-color: #0a192f;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Mobile: smaller orb on narrow screens ───────────────────────────────────── */
+
+@media (max-width: 480px) {
+  .orb {
+    width: 60px;
+    height: 60px;
+  }
+
+  .icon svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .tooltip {
+    max-width: 200px;
+    font-size: 12px;
+  }
+}

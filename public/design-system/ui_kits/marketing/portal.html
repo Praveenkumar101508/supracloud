@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Client Portal — SupraCloud</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../../assets/favicon.svg">
+<link rel="stylesheet" href="../../colors_and_type.css">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  * { box-sizing:border-box; }
+  body { margin:0; background:#F8FAFC; color:#111827; font-family: var(--sc-font-sans); }
+  a { text-decoration:none; color:inherit; }
+  .container { max-width:1100px; margin:0 auto; padding:0 24px; }
+
+  /* Portal nav */
+  .pnav { background:#0A192F; border-bottom:1px solid rgba(255,255,255,0.06); }
+  .pnav-row { display:flex; align-items:center; justify-content:space-between; height:60px; }
+  .brand { display:flex; align-items:center; gap:10px; color:#fff; font-weight:700; font-size:16px;}
+  .brand .cyan { color:#60A5FA; }
+  .pnav-side { display:flex; align-items:center; gap:18px; color:#94A3B8; font-size:13px; }
+  .live-pill { display:inline-flex; align-items:center; gap:6px; padding:5px 10px; background:rgba(59,130,246,0.10); border:1px solid rgba(59,130,246,0.30); border-radius:9999px; color:#60A5FA; font-size:11px; font-weight:600; }
+  .live-pill .dot { width:7px; height:7px; border-radius:50%; background:#3B82F6; }
+  .avatar { width:30px; height:30px; border-radius:50%; background:#1E293B; color:#60A5FA; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; border:1px solid rgba(255,255,255,0.10);}
+
+  /* Layout */
+  .head { padding:32px 0 8px; display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:14px;}
+  .eye { display:flex; align-items:center; gap:6px; color:#2563EB; font-size:11px; font-weight:600; letter-spacing:0.15em; text-transform:uppercase; margin-bottom:6px;}
+  h1 { font-size:26px; font-weight:700; margin:0; letter-spacing:-0.02em;}
+  .sub { color:#6B7280; font-size:14px; margin-top:4px;}
+  .status-chip { display:inline-flex; align-items:center; gap:8px; background:#fff; border:1px solid #E2E8F0; border-radius:8px; padding:8px 12px; font-size:12px; color:#64748B;}
+  .status-chip .dot { width:8px; height:8px; border-radius:50%; background:#3B82F6;}
+
+  section.block { background:#fff; border:1px solid #F1F5F9; border-radius:14px; padding:24px; margin-top:18px; box-shadow:0 1px 2px rgba(0,0,0,0.03);}
+  .block-head { display:flex; align-items:center; gap:8px; margin-bottom:18px;}
+  .block-head h2 { font-size:15px; font-weight:600; margin:0;}
+  .block-head .meta { margin-left:auto; font-size:11px; color:#9CA3AF;}
+
+  /* Metric tiles */
+  .metrics { display:grid; grid-template-columns: repeat(4, 1fr); gap:14px;}
+  .metric { background:#F8FAFC; border:1px solid #F1F5F9; border-radius:12px; padding:16px;}
+  .metric .v { font-size:22px; font-weight:800; color:#111827; }
+  .metric .l { font-size:12px; color:#6B7280; margin:2px 0 8px;}
+  .metric .t { font-size:11px; font-weight:600; color:#3B82F6; }
+
+  /* 2-col */
+  .two { display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:18px;}
+
+  /* Delivery list */
+  .row-d { display:flex; justify-content:space-between; align-items:center; gap:12px; padding:7px 0;}
+  .row-d .name { display:flex; align-items:center; gap:8px; min-width:0; font-size:13px; color:#374151;}
+  .row-d .name.done { color:#9CA3AF; text-decoration:line-through;}
+  .row-d .name svg.done { color:#3B82F6;}
+  .row-d .name svg.todo { color:#E2E8F0;}
+  .badge { padding:2px 10px; border-radius:9999px; font-size:11px; font-weight:600; border:1px solid; white-space:nowrap;}
+  .b-done { background:#EFF6FF; color:#1D4ED8; border-color:#BFDBFE;}
+  .b-prog { background:#EFF6FF; color:#1D4ED8; border-color:#BFDBFE;}
+  .b-pend { background:#F1F5F9; color:#64748B; border-color:#E2E8F0;}
+
+  /* Announcements */
+  .ann { display:flex; gap:10px; padding:10px 0;}
+  .ann svg.ok { color:#3B82F6; flex-shrink:0; margin-top:2px;}
+  .ann svg.info { color:#60A5FA; flex-shrink:0; margin-top:2px;}
+  .ann .msg { font-size:13px; color:#374151; line-height:1.55;}
+  .ann .when { font-size:11px; color:#9CA3AF; margin-top:4px; display:flex; align-items:center; gap:4px;}
+
+  /* Reports */
+  .reports { display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  .report { display:flex; flex-direction:column; background:#F8FAFC; border:1px solid #F1F5F9; border-radius:12px; padding:18px;}
+  .report-head { display:flex; gap:12px; margin-bottom:10px;}
+  .report-head .icbin { width:36px; height:36px; border-radius:9px; background:#EFF6FF; border:1px solid #BFDBFE; display:flex; align-items:center; justify-content:center; flex-shrink:0; color:#3B82F6;}
+  .report .title { font-size:13px; font-weight:600;}
+  .report .typ { font-size:11px; color:#9CA3AF; margin-top:2px;}
+  .report .desc { font-size:12px; color:#6B7280; line-height:1.55; margin-bottom:14px; flex:1;}
+  .report .acts { display:flex; gap:14px; font-size:11px; font-weight:600;}
+  .report .acts a { display:flex; align-items:center; gap:4px;}
+  .report .acts .v { color:#2563EB;}
+  .report .acts .d { color:#64748B;}
+
+  /* Next steps */
+  .next { background:#EFF6FF; border:1px solid #BFDBFE; border-radius:14px; padding:22px; margin-top:18px;}
+  .next h2 { display:flex; align-items:center; gap:8px; margin:0 0 14px; font-size:15px;}
+  .next-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:12px;}
+  .next-card { background:#fff; border:1px solid #BFDBFE; border-radius:10px; padding:14px;}
+  .next-card .t { font-size:13px; font-weight:600; color:#111827; margin-bottom:4px;}
+  .next-card .d { font-size:11px; color:#6B7280; line-height:1.55;}
+  .next a.cta { display:inline-block; margin-top:14px; color:#2563EB; font-size:13px; font-weight:600;}
+</style>
+</head>
+<body>
+
+<nav class="pnav">
+  <div class="container pnav-row">
+    <a class="brand" href="index.html">
+      <img src="../../assets/logo-mark.svg" width="26" height="26" alt="">
+      <span>Supra<span class="cyan">Cloud</span></span>
+      <span style="color:#475569; margin-left:8px; font-weight:400;">/</span>
+      <span style="color:#94A3B8; font-weight:500;">Client Portal</span>
+    </a>
+    <div class="pnav-side">
+      <a href="#">Reports</a>
+      <a href="#">Billing</a>
+      <a href="#">Support</a>
+      <span class="live-pill"><span class="dot"></span> Live</span>
+      <div class="avatar">HB</div>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="head">
+    <div>
+      <div class="eye"><i data-lucide="bot" style="width:12px;height:12px"></i> Client Delivery Dashboard</div>
+      <h1>SupraCloud Delivery Portal</h1>
+      <p class="sub">Banking AI Agent Programme — Active Engagement</p>
+    </div>
+    <div class="status-chip"><span class="dot"></span> Production agent live</div>
+  </div>
+
+  <!-- Live metrics -->
+  <section class="block">
+    <div class="block-head">
+      <i data-lucide="bar-chart-2" style="width:16px;height:16px;color:#3B82F6"></i>
+      <h2>Live Agent Performance</h2>
+      <span class="meta">Updated daily</span>
+    </div>
+    <div class="metrics">
+      <div class="metric"><div class="v">61%</div><div class="l">L1 Deflection Rate</div><div class="t">↑ +4% vs last month</div></div>
+      <div class="metric"><div class="v">0.42s</div><div class="l">Avg Response Latency</div><div class="t">↓ -0.08s vs last month</div></div>
+      <div class="metric"><div class="v">99.94%</div><div class="l">Agent Uptime</div><div class="t">SLA: 99.9%</div></div>
+      <div class="metric"><div class="v">4,821</div><div class="l">Daily Query Volume</div><div class="t">↑ +12% vs last month</div></div>
+    </div>
+  </section>
+
+  <!-- 2-col -->
+  <div class="two">
+    <section class="block" style="margin-top:0">
+      <div class="block-head">
+        <i data-lucide="zap" style="width:15px;height:15px;color:#3B82F6"></i>
+        <h2>Delivery Tracker</h2>
+      </div>
+      <div class="row-d"><span class="name done"><i data-lucide="check-circle" class="done" style="width:14px;height:14px"></i> Banking AI Agent — Phase 1 Build</span><span class="badge b-done">Delivered</span></div>
+      <div class="row-d"><span class="name done"><i data-lucide="check-circle" class="done" style="width:14px;height:14px"></i> QA Playwright E2E Test Suite</span><span class="badge b-done">Delivered</span></div>
+      <div class="row-d"><span class="name done"><i data-lucide="check-circle" class="done" style="width:14px;height:14px"></i> ProdReady Labs Regression Report</span><span class="badge b-done">Delivered</span></div>
+      <div class="row-d"><span class="name"><i data-lucide="circle" class="todo" style="width:14px;height:14px"></i> Banking AI Agent — Phase 2 (L2 Escalation)</span><span class="badge b-prog">In Progress</span></div>
+      <div class="row-d"><span class="name"><i data-lucide="circle" class="todo" style="width:14px;height:14px"></i> RAG Knowledge Base Ingestion v2</span><span class="badge b-prog">In Progress</span></div>
+      <div class="row-d"><span class="name"><i data-lucide="circle" class="todo" style="width:14px;height:14px"></i> Performance Dashboard Integration</span><span class="badge b-pend">Upcoming</span></div>
+    </section>
+
+    <section class="block" style="margin-top:0">
+      <div class="block-head">
+        <i data-lucide="alert-circle" style="width:15px;height:15px;color:#60A5FA"></i>
+        <h2>Programme Updates</h2>
+      </div>
+      <div class="ann">
+        <i data-lucide="check-circle" class="ok" style="width:15px;height:15px"></i>
+        <div>
+          <div class="msg">Phase 1 banking agent is live in production — L1 deflection tracking active.</div>
+          <div class="when"><i data-lucide="clock" style="width:10px;height:10px"></i> 2026-04-15</div>
+        </div>
+      </div>
+      <div class="ann">
+        <i data-lucide="alert-circle" class="info" style="width:15px;height:15px"></i>
+        <div>
+          <div class="msg">Phase 2 (L2 escalation flows) build underway — estimated completion in 3 weeks.</div>
+          <div class="when"><i data-lucide="clock" style="width:10px;height:10px"></i> 2026-05-01</div>
+        </div>
+      </div>
+      <div class="ann">
+        <i data-lucide="alert-circle" class="info" style="width:15px;height:15px"></i>
+        <div>
+          <div class="msg">RAG knowledge base v2 ingestion includes updated mortgage product documentation.</div>
+          <div class="when"><i data-lucide="clock" style="width:10px;height:10px"></i> 2026-05-05</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Reports -->
+  <section class="block">
+    <div class="block-head">
+      <i data-lucide="file-text" style="width:16px;height:16px;color:#3B82F6"></i>
+      <h2>Delivery Reports</h2>
+      <span class="meta">ProdReady Labs · QA Playwright</span>
+    </div>
+    <div class="reports">
+      <div class="report">
+        <div class="report-head">
+          <div class="icbin"><i data-lucide="check-circle" style="width:18px;height:18px"></i></div>
+          <div><div class="title">ProdReady Labs Test Report</div><div class="typ">QA Report · 2026-04-30</div></div>
+        </div>
+        <div class="desc">Full regression test coverage across all L1 banking agent journeys. Includes pass rates, coverage gaps, and recommended fixes.</div>
+        <div class="acts">
+          <a class="v" href="#"><i data-lucide="external-link" style="width:11px;height:11px"></i> View Report</a>
+          <a class="d" href="#"><i data-lucide="download" style="width:11px;height:11px"></i> Download</a>
+        </div>
+      </div>
+      <div class="report">
+        <div class="report-head">
+          <div class="icbin"><i data-lucide="file-text" style="width:18px;height:18px"></i></div>
+          <div><div class="title">QA Playwright E2E Report</div><div class="typ">E2E Test Report · 2026-04-28</div></div>
+        </div>
+        <div class="desc">End-to-end Playwright automation results. Browser-level validation of agent conversation flows, escalation paths, and handoff scenarios.</div>
+        <div class="acts">
+          <a class="v" href="#"><i data-lucide="external-link" style="width:11px;height:11px"></i> View Report</a>
+          <a class="d" href="#"><i data-lucide="download" style="width:11px;height:11px"></i> Download</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Next steps -->
+  <section class="next">
+    <h2><i data-lucide="check-circle" style="width:16px;height:16px;color:#2563EB"></i> Next Steps</h2>
+    <div class="next-grid">
+      <div class="next-card"><div class="t">Phase 2 sign-off</div><div class="d">Review L2 escalation spec and confirm scope before build starts</div></div>
+      <div class="next-card"><div class="t">Knowledge base review</div><div class="d">Confirm new mortgage product docs are complete for v2 ingestion</div></div>
+      <div class="next-card"><div class="t">Performance review call</div><div class="d">Monthly metrics review — book via the calendar link below</div></div>
+    </div>
+    <a class="cta" href="#">Book a review call →</a>
+  </section>
+
+  <div style="height:48px"></div>
+</div>
+
+<script>lucide.createIcons();</script>
+</body>
+</html>

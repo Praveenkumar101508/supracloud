@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Components · Buttons</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin:0; padding:22px; background:#0A192F; font-family: var(--sc-font-sans); }
+  .row { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:14px; }
+  .btn-primary { display:inline-flex; align-items:center; gap:8px; padding:12px 20px; border-radius:8px; background:#3B82F6; color:#fff; font-size:14px; font-weight:600; border:0; cursor:pointer; }
+  .btn-primary:hover { background:#2563EB; }
+  .btn-ghost { display:inline-flex; align-items:center; gap:8px; padding:12px 20px; border-radius:8px; border:1px solid #475569; color:#fff; font-size:14px; font-weight:600; background:transparent; }
+  .btn-ghost:hover { border-color:#94A3B8; }
+  .btn-text { color:#60A5FA; font-size:14px; font-weight:600; text-decoration:none; display:inline-flex; align-items:center; gap:6px; }
+  .label { font-family:'JetBrains Mono', monospace; font-size:10px; color:#64748B; margin-bottom:6px; text-transform:uppercase; letter-spacing:0.1em; }
+</style>
+</head>
+<body>
+  <div class="label">Primary · Secondary · Text</div>
+  <div class="row">
+    <button class="btn-primary">Book a Discovery Call →</button>
+    <button class="btn-ghost">Submit a Brief</button>
+    <a class="btn-text" href="#">View full solution →</a>
+  </div>
+  <div class="label">On light surface</div>
+  <div class="row" style="background:#fff; padding:14px; border-radius:10px;">
+    <button class="btn-primary">Book a Call →</button>
+    <button class="btn-ghost" style="border-color:#CBD5E1; color:#111827;">Cancel</button>
+    <a class="btn-text" style="color:#2563EB;" href="#">Read the full story →</a>
+  </div>
+</body>
+</html>

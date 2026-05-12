@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Spacing · Shadows</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin:0; padding:24px; background:#F8FAFC; font-family: var(--sc-font-sans); }
+  .row { display:grid; grid-template-columns: repeat(4, 1fr); gap:18px; }
+  .card { background:#fff; border:1px solid #F1F5F9; border-radius:12px; height:74px; padding:10px; display:flex; flex-direction:column; justify-content:flex-end; }
+  .name { font-size:11px; font-weight:700; color:#111827; }
+  .desc { font-size:10px; color:#6B7280; font-family:'JetBrains Mono', monospace; }
+</style>
+</head>
+<body>
+  <div class="row">
+    <div class="card" style="box-shadow:0 1px 2px rgba(0,0,0,0.05)"><div class="name">shadow-sm</div><div class="desc">cards default</div></div>
+    <div class="card" style="box-shadow:0 4px 12px rgba(0,0,0,0.08)"><div class="name">shadow-md</div><div class="desc">card hover</div></div>
+    <div class="card" style="box-shadow:0 12px 32px rgba(0,0,0,0.12)"><div class="name">shadow-lg</div><div class="desc">popovers</div></div>
+    <div class="card" style="box-shadow:0 0 0 1px #3B82F6, 0 4px 20px rgba(59,130,246,0.15)"><div class="name">emerald-glow</div><div class="desc">focus / active</div></div>
+  </div>
+</body>
+</html>

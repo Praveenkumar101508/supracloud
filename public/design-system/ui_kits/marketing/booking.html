@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Book a Strategy Session — SupraCloud</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../../assets/favicon.svg">
+<link rel="stylesheet" href="../../colors_and_type.css">
+<link rel="stylesheet" href="kit.css">
+<script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="dark">
+<div data-include="nav.html"></div>
+
+<main>
+  <section class="hero compact">
+    <div class="container hero-center">
+      <div class="eyebrow-pill"><i data-lucide="calendar" style="width:14px;height:14px"></i> Industry Strategy Session</div>
+      <h1 class="display">Worth a <span class="grad">quick chat?</span></h1>
+      <p class="lede-dark">Tell us which workflow you want to automate. We'll come back within 24h with a session tailored to your sector — Banking or Retail.</p>
+    </div>
+  </section>
+
+  <section class="dark-section">
+    <div class="container narrow">
+      <div class="booking-card">
+        <div class="booking-step">
+          <div class="step-eye">Step 01 · Industry</div>
+          <div class="industry-toggle" id="industry">
+            <button class="ind active" data-ind="banking"><i data-lucide="landmark" style="width:18px;height:18px"></i><div><div class="ind-t">Banking</div><div class="ind-d">L1 / L2 support automation, fraud, compliance</div></div></button>
+            <button class="ind" data-ind="retail"><i data-lucide="shopping-cart" style="width:18px;height:18px"></i><div><div class="ind-t">Supermarket / Retail</div><div class="ind-d">Inventory, customer support, loyalty workflows</div></div></button>
+          </div>
+        </div>
+
+        <div class="booking-step">
+          <div class="step-eye">Step 02 · Engagement Type</div>
+          <div class="chip-group">
+            <button class="chip-btn active">Technical Demo</button>
+            <button class="chip-btn">Solutions Engineering Review</button>
+            <button class="chip-btn">Pilot Scoping</button>
+            <button class="chip-btn">Resource Outsourcing</button>
+          </div>
+        </div>
+
+        <div class="booking-step">
+          <div class="step-eye">Step 03 · Your Details</div>
+          <div class="form-grid">
+            <label><span>Full name</span><input type="text" placeholder="Jane Doe"></label>
+            <label><span>Work email</span><input type="email" placeholder="jane@bank.co.uk"></label>
+            <label><span>Company</span><input type="text" placeholder="Tier 1 Financial"></label>
+            <label><span>Role</span><input type="text" placeholder="Head of Customer Ops"></label>
+            <label class="full"><span>What workflow are you trying to automate?</span><textarea rows="3" placeholder="e.g. L1 mortgage queries, fraud triage, refund routing..."></textarea></label>
+          </div>
+        </div>
+
+        <div class="booking-step">
+          <div class="step-eye">Step 04 · Pick a window</div>
+          <div class="time-grid">
+            <button class="time-slot">Tue 12 May · 10:00 BST</button>
+            <button class="time-slot">Tue 12 May · 14:30 BST</button>
+            <button class="time-slot">Wed 13 May · 09:00 BST</button>
+            <button class="time-slot active">Wed 13 May · 15:00 BST</button>
+            <button class="time-slot">Thu 14 May · 11:30 BST</button>
+            <button class="time-slot">Fri 15 May · 16:00 BST</button>
+          </div>
+        </div>
+
+        <div class="booking-foot">
+          <div class="booking-summary">
+            <div><strong>Banking</strong> · Technical Demo · Wed 13 May 15:00 BST</div>
+            <div class="booking-meta">45 min · UK timezone · Solutions Engineer + AI Engineer</div>
+          </div>
+          <button class="btn-primary-lg">Confirm Session <i data-lucide="arrow-right" style="width:14px;height:14px"></i></button>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div data-include="footer.html"></div>
+<script src="kit.js"></script>
+</body>
+</html>

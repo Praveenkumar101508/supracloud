@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Type · Eyebrow & Mono</title>
+<link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { margin:0; padding:22px; background:#fff; font-family: var(--sc-font-sans); }
+  .stack { display:flex; flex-direction:column; gap:14px; }
+  .eyebrow { font-size:12px; font-weight:600; letter-spacing:0.15em; text-transform:uppercase; color:#3B82F6; }
+  .eyebrow.dark-bg { color:#60A5FA; }
+  .meta { font-family:'JetBrains Mono', monospace; font-size:10px; color:#9CA3AF; margin-top:2px; }
+  .pill {
+    display:inline-flex; align-items:center; gap:6px; padding:6px 10px;
+    border:1px solid rgba(96,165,250,0.45); border-radius:9999px;
+    color:#60A5FA; font-size:11px; font-weight:600; letter-spacing:0.15em; text-transform:uppercase;
+    background:#0A192F;
+  }
+  .pillrow { background:#0A192F; padding:10px; border-radius:10px; }
+  .term { font-family:'JetBrains Mono', monospace; font-size:13px; color:#60A5FA; background:#0A192F; padding:10px 14px; border-radius:8px; line-height:1.6; }
+</style>
+</head>
+<body>
+  <div class="stack">
+    <div>
+      <div class="eyebrow">What We Deliver</div>
+      <div class="meta">Eyebrow · Inter 600 · 12px · 0.15em · uppercase · emerald-500</div>
+    </div>
+    <div class="pillrow">
+      <span class="pill">Enterprise AI · UK-Based · Production-Grade</span>
+      <div class="meta" style="color:#64748B; margin-top:8px;">Pill eyebrow on dark · emerald-700/50 border</div>
+    </div>
+    <div>
+      <div class="term">$ deploying banking-ai-agent v3.2.1 → production</div>
+      <div class="meta">Mono · JetBrains Mono 500 · 13px · emerald-400 on navy</div>
+    </div>
+  </div>
+</body>
+</html>
