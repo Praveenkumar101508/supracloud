@@ -22,7 +22,7 @@ Add each variable below. After adding ALL of them, click **Redeploy**.
 - [x] `MEET_LINK` — `https://meet.google.com/dyq-oerk-qkk` (already set)
 - [x] `NEXT_PUBLIC_SITE_URL` — `https://supracloud.co.uk` (already set)
 
-### Aria Voice Agent — STILL TO DO
+### Nova Voice Agent — STILL TO DO
 - [ ] `ELEVENLABS_API_KEY`
   - Where to get it: https://elevenlabs.io → sign up → Profile → API Keys → Create API Key
   - Copy the key and paste it here in Vercel
@@ -31,16 +31,16 @@ Add each variable below. After adding ALL of them, click **Redeploy**.
   - Where to get it: https://elevenlabs.io/voice-library → pick a voice → copy the Voice ID from the URL
   - Recommended voice: search "Rachel" or "Bella" — professional female voices
   - Paste the Voice ID (looks like: `EXAVITQu4vr4xnSDxMaL`)
-  - **If you skip this**: Aria will use the browser's built-in voice instead (robotic but still works)
+  - **If you skip this: Nova will use the browser's built-in voice instead (robotic but still works)
 
 - [ ] `ANTHROPIC_API_KEY`
   - Where to get it: https://console.anthropic.com → sign up → API Keys → Create Key
-  - This powers Aria's AI answers beyond the built-in knowledge base
-  - **If you skip this**: Aria still answers from 14 built-in Q&A pairs — only unknown questions get a "please contact us" message
+  - This powers Nova's AI answers beyond the built-in knowledge base
+  - **If you skip this**: Nova still answers from 14 built-in Q&A pairs — only unknown questions get a "please contact us" message
 
 - [ ] `LEAD_TO_EMAIL`
   - Set this to: `rk@supracloud.co.uk`
-  - This is where lead emails from Aria go
+  - This is where lead emails from Nova go
   - **If you skip this**: lead emails default to `rk@supracloud.co.uk` anyway
 
 - [ ] `LEAD_WEBHOOK_URL` ← for Google Sheets
@@ -51,7 +51,7 @@ Add each variable below. After adding ALL of them, click **Redeploy**.
 
 ## 2. Google Sheets — Lead Capture (via Zapier)
 
-Every time Aria collects a visitor's details, you get:
+Every time Nova collects a visitor's details, you get:
 1. An email to your inbox (works immediately once Resend is set up)
 2. A row added to a Google Sheet (needs Zapier — 5-minute setup, free plan)
 
@@ -59,7 +59,7 @@ Every time Aria collects a visitor's details, you get:
 
 1. Go to https://sheets.google.com
 2. Create a new blank spreadsheet
-3. Name it: **SupraCloud Aria Leads**
+3. Name it: **SupraCloud Nova Leads**
 4. Add these headers in Row 1 (one per column):
 
 | A | B | C | D | E | F | G | H | I |
@@ -144,21 +144,21 @@ After adding all the Vercel env variables:
 3. Click the three dots (...) on the latest deployment → **Redeploy**
 4. Wait ~2 minutes for build to finish
 5. Visit https://supracloud.co.uk and click the green waveform button (bottom right)
-6. Aria should greet you and ask your name
+6. Nova should greet you and ask your name
 
 ---
 
-## 6. Testing Aria
+## 6. Testing Nova
 
 Once live, test this flow:
 
 1. Open the site → click the **green waveform button** (bottom right)
-2. Aria asks: *"What's your name?"* → say your name
-3. Aria greets you by name
-4. Ask: *"What do you do?"* → Aria explains SupraCloud
-5. Ask: *"How much does it cost?"* → Aria gives pricing guidance
-6. Say: *"I'd like to book a call"* → Aria starts the lead capture flow
-7. Answer all 6 questions → Aria confirms
+2. Nova asks: *"What's your name?"* → say your name
+3. Nova greets you by name
+4. Ask: *"What do you do?"* → Nova explains SupraCloud
+5. Ask: *"How much does it cost?"* → Nova gives pricing guidance
+6. Say: *"I'd like to book a call"* → Nova starts the lead capture flow
+7. Answer all 6 questions → Nova confirms
 8. Check your email (rk@supracloud.co.uk) — you should get a lead email
 9. Check your Google Sheet — a new row should appear
 

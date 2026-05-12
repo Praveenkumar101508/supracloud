@@ -208,7 +208,7 @@
   from { opacity: 0; transform: translateY(6px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-.bubble.aria {
+.bubble.nova {
   align-self: flex-start;
   background: #f1f5f9;
   color: #1e293b;

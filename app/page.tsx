@@ -1,14 +1,28 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { useState, useEffect, useRef, Suspense } from "react";
+import dynamic from "next/dynamic";
+import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
-import { NeuralBackground } from "./components/3d/NeuralBackground";
-import { NovaSphere } from "./components/3d/NovaSphere";
 import { HolographicCard } from "./components/ui/HolographicCard";
 import { GlowButton } from "./components/ui/GlowButton";
 import { TrustBadgeRow } from "./components/ui/TrustBadge";
 import { AnimatedCounter } from "./components/ui/AnimatedCounter";
+import { SocialProof } from "./components/ui/SocialProof";
+import { ClientPortalTeaser } from "./components/ui/ClientPortalTeaser";
+
+const NeuralBackground = dynamic(
+  () => import("./components/3d/NeuralBackground").then((m) => m.NeuralBackground),
+  { ssr: false }
+);
+const NovaSphere = dynamic(
+  () => import("./components/3d/NovaSphere").then((m) => m.NovaSphere),
+  { ssr: false }
+);
+const NovaDemoPreview = dynamic(
+  () => import("./components/ui/NovaDemoPreview").then((m) => m.NovaDemoPreview),
+  { ssr: false }
+);
 
 // ── Typewriter ────────────────────────────────────────────────────────────────
 
@@ -215,11 +229,9 @@ function ROIStrip() {
                 <p className="text-white/30 text-xs mb-4">
                   Based on 72% deflection at £{costPerQuery}/query. Book a discovery call for a precise estimate.
                 </p>
-                <Link href="/book">
-                  <GlowButton variant="cyan" size="lg">
-                    Book a Free Discovery Call
-                  </GlowButton>
-                </Link>
+                <GlowButton variant="cyan" size="lg" href="/book">
+                  Book a Free Discovery Call
+                </GlowButton>
               </div>
             </div>
           </HolographicCard>
@@ -301,16 +313,19 @@ export default function HomePage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.7 }}
           >
-            <Link href="/book">
-              <GlowButton variant="cyan" size="lg">
-                Book a Discovery Call
-              </GlowButton>
-            </Link>
-            <Link href="/solutions/banking">
-              <GlowButton variant="outline" size="lg">
-                See Banking Demo
-              </GlowButton>
-            </Link>
+            <GlowButton variant="cyan" size="lg" href="/book">
+              Book a Discovery Call
+            </GlowButton>
+            <GlowButton
+              variant="purple"
+              size="lg"
+              onClick={() => document.dispatchEvent(new CustomEvent("nova:open"))}
+            >
+              Try Nova Now
+            </GlowButton>
+            <GlowButton variant="outline" size="lg" href="/solutions/banking">
+              See Banking Demo
+            </GlowButton>
           </motion.div>
 
           {/* Trust badges */}
@@ -365,6 +380,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* ── SOCIAL PROOF ── */}
+      <SocialProof />
 
       {/* ── SERVICES ── */}
       <section className="relative py-24 px-4">
@@ -465,6 +483,43 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ── NOVA DEMO PREVIEW ── */}
+      <section className="relative py-20 px-4">
+        <div className="max-w-5xl mx-auto">
+          <motion.div
+            className="text-center mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">
+              Nova in Action
+            </h2>
+            <p className="text-white/40 text-base max-w-md mx-auto">
+              Watch a live resolution — from customer query to autonomous action in seconds.
+            </p>
+          </motion.div>
+          <Suspense fallback={<div className="h-64 rounded-2xl bg-[rgba(255,255,255,0.02)] animate-pulse" />}>
+            <NovaDemoPreview />
+          </Suspense>
+          <motion.div
+            className="flex justify-center mt-8"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.4 }}
+          >
+            <GlowButton
+              variant="purple"
+              size="md"
+              onClick={() => document.dispatchEvent(new CustomEvent("nova:open"))}
+            >
+              Talk to Nova Live
+            </GlowButton>
+          </motion.div>
+        </div>
+      </section>
+
       {/* ── ROI CALCULATOR ── */}
       <ROIStrip />
 
@@ -518,6 +573,9 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ── CLIENT PORTAL TEASER ── */}
+      <ClientPortalTeaser />
+
       {/* ── FINAL CTA ── */}
       <section className="relative py-32 px-4 overflow-hidden">
         <div
@@ -545,16 +603,12 @@ export default function HomePage() {
               We'll give you a realistic estimate on the same call.
             </p>
             <div className="flex flex-wrap justify-center gap-4 mb-8">
-              <Link href="/book">
-                <GlowButton variant="cyan" size="lg">
-                  Book Discovery Call
-                </GlowButton>
-              </Link>
-              <Link href="/contact">
-                <GlowButton variant="outline" size="lg">
-                  Send Us a Message
-                </GlowButton>
-              </Link>
+              <GlowButton variant="cyan" size="lg" href="/book">
+                Book Discovery Call
+              </GlowButton>
+              <GlowButton variant="outline" size="lg" href="/contact">
+                Send Us a Message
+              </GlowButton>
             </div>
             <TrustBadgeRow className="justify-center" />
           </motion.div>
