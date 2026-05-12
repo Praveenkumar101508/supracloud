@@ -645,3 +645,131 @@ body {
   outline-offset: 3px;
   border-radius: 4px;
 }
+
+/* ══════════════════════════════════════════════════════════
+   @utility — composable design-token classes
+   Used by CVA component variants; replaces inline style={{}}
+   ══════════════════════════════════════════════════════════ */
+
+/* Holo card base */
+@utility holo-base {
+  background: rgba(10, 10, 20, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+/* Holo card variants */
+@utility holo-default {
+  border: 1px solid rgba(0, 245, 255, 0.20);
+}
+@utility holo-cyan {
+  border: 1px solid rgba(0, 245, 255, 0.35);
+}
+@utility holo-purple {
+  border: 1px solid rgba(139, 92, 246, 0.35);
+}
+
+/* Section backgrounds */
+@utility bg-void      { background: #050505; }
+@utility bg-void-2    { background: #080808; }
+@utility bg-void-3    { background: #0a0a0a; }
+@utility bg-void-4    { background: #0d0d0d; }
+
+/* Section dividers */
+@utility border-void  { border-color: rgba(255, 255, 255, 0.04); }
+@utility border-cyan-subtle { border-color: rgba(0, 245, 255, 0.08); }
+@utility border-cyan-faint  { border-color: rgba(0, 245, 255, 0.12); }
+
+/* Eyebrow / label pill */
+@utility label-cyan {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.375rem 0.75rem;
+  border-radius: 9999px;
+  background: rgba(0, 245, 255, 0.08);
+  color: var(--cyan);
+  border: 1px solid rgba(0, 245, 255, 0.20);
+}
+
+/* Transcript bubbles */
+@utility bubble-agent {
+  background: rgba(0, 245, 255, 0.08);
+  border: 1px solid rgba(0, 245, 255, 0.22);
+  border-radius: 0.625rem;
+  padding: 0.625rem 0.875rem;
+  max-width: 82%;
+}
+@utility bubble-customer {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 0.625rem;
+  padding: 0.625rem 0.875rem;
+  max-width: 82%;
+  margin-left: auto;
+}
+@utility bubble-tool {
+  background: rgba(245, 158, 11, 0.07);
+  border: 1px solid rgba(245, 158, 11, 0.22);
+  border-radius: 0.625rem;
+  padding: 0.625rem 0.875rem;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+}
+
+/* Terminal window */
+@utility terminal-nova {
+  background: #0a0a0a;
+  border: 1px solid rgba(0, 245, 255, 0.12);
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 0 40px rgba(0, 245, 255, 0.04);
+}
+@utility terminal-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: #0d0d0d;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+/* Arch node */
+@utility arch-node {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 1.25rem;
+  background: #0d0d0d;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+@utility arch-node-active {
+  background: rgba(0, 245, 255, 0.06);
+  border-color: rgba(0, 245, 255, 0.30);
+}
+
+/* Metric card */
+@utility metric-card {
+  background: rgba(0, 245, 255, 0.03);
+  border: 1px solid rgba(0, 245, 255, 0.10);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  text-align: center;
+}
+
+/* Delivery step card */
+@utility step-card {
+  background: rgba(0, 245, 255, 0.03);
+  border: 1px solid rgba(0, 245, 255, 0.10);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  text-align: center;
+}
