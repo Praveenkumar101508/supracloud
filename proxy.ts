@@ -1,5 +1,6 @@
 /**
- * Next.js Edge Middleware — runs before every matched request.
+ * Next.js 16 Proxy — runs before every matched request.
+ * (Renamed from middleware.ts per Next.js 16 convention.)
  * Responsibilities:
  *   1. Rate limiting (per-IP, per-route) via lib/rateLimiter
  *   2. Block obviously malicious request patterns
@@ -12,14 +13,13 @@ export const config = {
   matcher: ["/api/:path*"],
 };
 
-// Patterns that should never appear in a request body or URL for our API
 const BLOCKED_UA_PATTERNS = [
   /sqlmap/i,
   /nikto/i,
   /nessus/i,
   /masscan/i,
   /zgrab/i,
-  /python-requests\/[01]\./i, // old automated scrapers
+  /python-requests\/[01]\./i,
 ];
 
 const BLOCKED_PATH_PATTERNS = [
@@ -28,14 +28,14 @@ const BLOCKED_PATH_PATTERNS = [
   /phpMyAdmin/i,
   /\.env$/i,
   /\/etc\/passwd/i,
-  /\.\.\//,            // path traversal
+  /\.\.\//,
 ];
 
-export async function middleware(req: NextRequest) {
+export async function proxy(req: NextRequest) {
   const { pathname } = new URL(req.url);
   const ua = req.headers.get("user-agent") || "";
 
-  // ── 1. Block scanners / crawlers targeting non-existent routes ──────────────
+  // 1. Block scanners
   for (const pattern of BLOCKED_UA_PATTERNS) {
     if (pattern.test(ua)) {
       return new NextResponse(null, { status: 403 });
@@ -48,7 +48,7 @@ export async function middleware(req: NextRequest) {
     }
   }
 
-  // ── 2. Block oversized request bodies early (before route handler) ──────────
+  // 2. Block oversized request bodies early
   const contentLength = req.headers.get("content-length");
   if (contentLength && parseInt(contentLength, 10) > 50_000) {
     return NextResponse.json(
@@ -57,14 +57,13 @@ export async function middleware(req: NextRequest) {
     );
   }
 
-  // ── 3. Rate limiting ────────────────────────────────────────────────────────
+  // 3. Rate limiting
   const { success, response: rateLimitResponse } = await rateLimit(req);
   if (!success && rateLimitResponse) {
-    // Add CORS headers so the browser sees the 429 properly
     rateLimitResponse.headers.set("Access-Control-Allow-Origin", "*");
     return rateLimitResponse;
   }
 
-  // ── 4. Continue — security response headers are set in next.config.ts ───────
+  // 4. Continue — security headers set in next.config.ts
   return NextResponse.next();
 }
