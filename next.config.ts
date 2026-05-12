@@ -137,11 +137,8 @@ const nextConfig: NextConfig = {
     ],
   },
 
-  // ── Webpack: allow Three.js (it uses dynamic requires) ────────────────────
-  webpack(config) {
-    config.externals = config.externals || [];
-    return config;
-  },
+  // ── Turbopack (Next.js 16 default bundler) ───────────────────────────────
+  turbopack: {},
 };
 
 export default nextConfig;
