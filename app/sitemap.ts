@@ -13,7 +13,9 @@ function entry(
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     entry("/",                       1.0, "weekly"),
+    entry("/pricing",                 0.9, "monthly"),
     entry("/solutions/banking",      0.9, "monthly"),
+    entry("/solutions/retail",       0.9, "monthly"),
     entry("/solutions/supermarket",  0.9, "monthly"),
     entry("/services/it-staffing",   0.8, "monthly"),
     entry("/services/consultation",  0.8, "monthly"),
