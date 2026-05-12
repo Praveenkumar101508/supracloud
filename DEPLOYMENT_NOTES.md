@@ -1,6 +1,6 @@
 # Deployment Notes
 
-## Aria Voice Agent — Setup Checklist
+## Nova Voice Agent — Setup Checklist
 
 ---
 
@@ -14,7 +14,7 @@
    - `ELEVENLABS_API_KEY` = your key
    - `ELEVENLABS_VOICE_ID` = voice ID (default: `EXAVITQu4vr4xnSDxMaL` = Bella)
 
-> Without these keys Aria falls back to the browser's built-in TTS automatically.
+> Without these keys Nova falls back to the browser's built-in TTS automatically.
 
 ---
 
@@ -24,7 +24,7 @@
 2. Create a new key
 3. Add to Vercel: `ANTHROPIC_API_KEY`
 
-> Without this key Aria answers from the 14-entry local knowledge base. Only unknown questions fail gracefully with a "please contact us" message.
+> Without this key Nova answers from the 14-entry local knowledge base. Only unknown questions fail gracefully with a "please contact us" message.
 
 ---
 
@@ -51,7 +51,7 @@ This is the easiest way to get leads into a spreadsheet automatically.
 - `LEAD_WEBHOOK_URL` = the Zapier webhook URL from Step B
 - `LEAD_TO_EMAIL` = `rk@supracloud.co.uk` (or wherever lead emails should go)
 
-Now every time a visitor completes the qualification flow with Aria, you get:
+Now every time a visitor completes the qualification flow with Nova, you get:
 - An email to your inbox with a formatted summary and a "Reply" button
 - A new row added to your Google Sheet automatically
 
@@ -75,20 +75,20 @@ After adding/changing variables in Vercel: **redeploy** the project.
 
 ---
 
-### 5. How Aria Works — Full Flow
+### 5. How Nova Works — Full Flow
 
-1. **First visit:** Aria opens and asks "What's your name?"
-2. **Name captured:** Aria greets by name and starts helping - uses name throughout
-3. **Questions:** Aria checks local knowledge base first (instant), then Claude AI (if configured)
-4. **After 3 exchanges:** Aria proactively suggests a discovery call
-5. **Demo intent detected** ("book a call", "interested", "yes please", etc.): Aria asks 6 qualifying questions
+1. **First visit: Nova opens and asks "What's your name?"
+2. **Name captured:** Nova greets by name and starts helping - uses name throughout
+3. **Questions:** Nova checks local knowledge base first (instant), then Claude AI (if configured)
+4. **After 3 exchanges:** Nova proactively suggests a discovery call
+5. **Demo intent detected** ("book a call", "interested", "yes please", etc.): Nova asks 6 qualifying questions
 6. **Lead stored:** Email sent to team + row added to Google Sheet (if configured)
-7. **Inactivity:** After 45 seconds of silence, Aria says "Still there, [Name]?" - closes after 30 more seconds if no response
+7. **Inactivity:** After 45 seconds of silence, Nova says "Still there, [Name]?" - closes after 30 more seconds if no response
 8. **Returning visitor (same session):** Aria remembers the name and skips the intro
 
 ---
 
-### 6. Customising Aria
+### 6. Customising Nova
 
 All customisation is in `app/components/VoiceAgent/agentPersonality.js`:
 

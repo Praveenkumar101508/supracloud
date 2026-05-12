@@ -210,6 +210,13 @@ export default function MascotVoiceHub() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  // Listen for external nova:open events (e.g. "Try Nova Now" hero button)
+  useEffect(() => {
+    const handler = () => open();
+    document.addEventListener("nova:open", handler);
+    return () => document.removeEventListener("nova:open", handler);
+  }, [open]);
+
   // Count unread (nova messages since closed)
   const [unreadCount, setUnreadCount] = useState(0);
   const lastSeenCountRef = useRef(0);

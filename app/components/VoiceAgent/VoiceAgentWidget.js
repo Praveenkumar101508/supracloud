@@ -10,7 +10,7 @@ import { BookingModal } from "../BookingModal";
 
 const EMAIL_STEP = 5;
 const TOTAL_LEAD_STEPS = 6;
-const PROACTIVE_DELAY_MS = 35_000; // 35s on page before Aria auto-opens
+const PROACTIVE_DELAY_MS = 35_000; // 35s on page before Nova auto-opens
 
 function MicIcon() {
   return (
@@ -116,7 +116,7 @@ export default function VoiceAgentWidget() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isThinking]);
 
-  // Jarvis mode: auto-listen after Aria finishes speaking
+  // auto-listen after Nova finishes speaking
   useEffect(() => {
     const wasJustSpeaking = prevSpeakingRef.current && !isSpeaking;
     prevSpeakingRef.current = isSpeaking;
@@ -130,7 +130,7 @@ export default function VoiceAgentWidget() {
   // Proactive trigger: auto-open after 35s if user hasn't interacted
   useEffect(() => {
     const alreadyInteracted = (() => {
-      try { return sessionStorage.getItem("aria_has_interacted") === "1"; } catch { return false; }
+      try { return sessionStorage.getItem("nova_has_interacted") === "1"; } catch { return false; }
     })();
     if (alreadyInteracted || isOpen) return;
     proactiveRef.current = setTimeout(() => {
@@ -152,7 +152,7 @@ export default function VoiceAgentWidget() {
     }
   }, [stage]);
 
-  // Keyboard shortcut: press 'a' to toggle Aria (when not typing in an input)
+  // Keyboard shortcut: press n to toggle Nova (when not typing in an input)
   useEffect(() => {
     function onKey(e) {
       if (e.key.toLowerCase() !== "a") return;
@@ -167,16 +167,16 @@ export default function VoiceAgentWidget() {
   // PostHog tracking
   useEffect(() => {
     if (typeof window === "undefined" || !window.posthog) return;
-    if (isOpen) window.posthog.capture("aria_opened", { page: window.location.pathname });
+    if (isOpen) window.posthog.capture("nova_opened", { page: window.location.pathname });
   }, [isOpen]);
 
   useEffect(() => {
     if (typeof window === "undefined" || !window.posthog) return;
     if (stage === "lead_capture" && leadStep === 0) {
-      window.posthog.capture("aria_lead_started", { name: visitorName });
+      window.posthog.capture("nova_lead_started", { name: visitorName });
     }
     if (stage === "done") {
-      window.posthog.capture("aria_lead_completed", { name: visitorName });
+      window.posthog.capture("nova_lead_completed", { name: visitorName });
     }
   }, [stage, leadStep, visitorName]);
 
@@ -191,7 +191,7 @@ export default function VoiceAgentWidget() {
     await submitEmailFromText(email);
   }, [emailDraft, submitEmailFromText]);
 
-  // Mic button click: interrupt if Aria is speaking, otherwise start/stop
+  // Mic button click: interrupt if Nova is speaking, otherwise start/stop
   const handleMicClick = useCallback(() => {
     if (isSpeaking) {
       interruptSpeech();
@@ -238,7 +238,7 @@ export default function VoiceAgentWidget() {
         onClick={isOpen ? close : open}
         aria-label={isOpen ? `Close ${AGENT_NAME}` : `Open ${AGENT_NAME} — press A`}
         aria-expanded={isOpen}
-        title={isOpen ? "Close Aria" : "Open Aria (press A)"}
+        title={isOpen ? "Close Nova" : "Open Nova (press N)"}
       >
         {isOpen ? <CloseIcon /> : <WaveformIcon />}
       </button>
@@ -282,7 +282,7 @@ export default function VoiceAgentWidget() {
           <div className={styles.messages} aria-live="polite" aria-atomic="false">
             {messages.map((msg, i) => (
               <div key={i} className={`${styles.bubble} ${styles[msg.role]}`}>
-                {msg.role === "aria" && (
+                {msg.role === "nova" && (
                   <span className={styles.bubbleSender}>{AGENT_NAME}</span>
                 )}
                 {msg.role === "user" && visitorName && (
