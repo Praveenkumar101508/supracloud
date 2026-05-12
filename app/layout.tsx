@@ -72,11 +72,61 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id":   `${BASE_URL}/#organization`,
+      name:    "SupraCloud",
+      url:     BASE_URL,
+      logo:    { "@type": "ImageObject", url: `${BASE_URL}/logo.png` },
+      sameAs:  ["https://www.linkedin.com/company/supracloud"],
+      contactPoint: [
+        { "@type": "ContactPoint", email: "rk@supracloud.co.uk", contactType: "customer service", areaServed: "GB" },
+      ],
+      address: { "@type": "PostalAddress", addressCountry: "GB" },
+      description: "Production-grade AI agents for banking and retail enterprises. Engineer-led, FCA-aware, UK-based.",
+    },
+    {
+      "@type":    "WebSite",
+      "@id":      `${BASE_URL}/#website`,
+      url:        BASE_URL,
+      name:       "SupraCloud",
+      publisher:  { "@id": `${BASE_URL}/#organization` },
+    },
+    {
+      "@type":       "Service",
+      "@id":         `${BASE_URL}/solutions/banking#service`,
+      name:          "Banking AI Agents",
+      provider:      { "@id": `${BASE_URL}/#organization` },
+      description:   "Autonomous AI agents for customer queries, fraud triage, and back-office automation in regulated financial services.",
+      areaServed:    "GB",
+      serviceType:   "Enterprise AI Development",
+    },
+    {
+      "@type":       "Service",
+      "@id":         `${BASE_URL}/solutions/retail#service`,
+      name:          "Retail AI Agents",
+      provider:      { "@id": `${BASE_URL}/#organization` },
+      description:   "AI agents for inventory automation, customer personalisation, and support deflection at enterprise retail scale.",
+      areaServed:    "GB",
+      serviceType:   "Enterprise AI Development",
+    },
+  ],
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${inter.variable} h-full antialiased`}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body
         className="min-h-full flex flex-col"
         style={{ background: "#050505", color: "#E2E8F0" }}
