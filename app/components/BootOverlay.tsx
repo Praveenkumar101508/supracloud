@@ -5,11 +5,12 @@ import { Bot } from "lucide-react";
 import { useAIState } from "../context/AIState";
 
 const BOOT_LINES = [
-  "> Establishing secure connection...",
-  "> Loading enterprise AI agent runtime...",
-  "> Connecting to knowledge base [FCA · GDPR]...",
-  "> Verifying compliance controls...",
-  "> All systems operational. ✓",
+  "> Establishing encrypted connection [TLS 1.3]...",
+  "> Loading Nova AI agent runtime...",
+  "> Connecting to knowledge base [FCA · GDPR · ISO 27001]...",
+  "> Verifying compliance controls + RAG pipeline...",
+  "> Prompt injection hardening active...",
+  "> All systems operational. Nova is ready. ✓",
 ];
 
 export function BootOverlay() {
@@ -77,13 +78,13 @@ export function BootOverlay() {
               <div style={{
                 width: 56, height: 56, borderRadius: 14,
                 display: "flex", alignItems: "center", justifyContent: "center",
-                background: "linear-gradient(135deg, #0070FF, #3B8EFF)",
+                background: "linear-gradient(135deg, #00F5FF, #00C8E0)",
                 boxShadow: "0 0 40px rgba(0,112,255,0.6), 0 0 80px rgba(0,112,255,0.2)",
               }}>
                 <Bot size={28} color="#fff" strokeWidth={2.5} />
               </div>
               <span style={{ fontSize: 28, fontWeight: 800, color: "#fff", letterSpacing: "-0.02em" }}>
-                Supra<span style={{ color: "#0070FF" }}>Cloud</span>
+                Supra<span style={{ color: "#00F5FF" }}>Cloud</span>
               </span>
             </motion.div>
 
@@ -121,7 +122,7 @@ export function BootOverlay() {
                       lineHeight: 1.6,
                       color: i === lines.length - 1 && i === BOOT_LINES.length - 1
                         ? "#22C55E"
-                        : "#3B8EFF",
+                        : "#00C8E0",
                       marginBottom: 4,
                     }}
                   >
@@ -129,7 +130,7 @@ export function BootOverlay() {
                   </motion.div>
                 ))}
                 {lines.length < BOOT_LINES.length && (
-                  <span style={{ fontFamily: "monospace", fontSize: 13, color: "#3B8EFF" }}>
+                  <span style={{ fontFamily: "monospace", fontSize: 13, color: "#00C8E0" }}>
                     <motion.span
                       animate={{ opacity: [1, 0, 1] }}
                       transition={{ duration: 0.8, repeat: Infinity }}
@@ -149,7 +150,7 @@ export function BootOverlay() {
                 initial={{ width: 0 }}
                 animate={{ width: `${progress}%` }}
                 transition={{ duration: 0.4, ease: "easeOut" }}
-                style={{ height: "100%", background: "linear-gradient(90deg, #0070FF, #3B8EFF)", borderRadius: 4 }}
+                style={{ height: "100%", background: "linear-gradient(90deg, #00F5FF, #00C8E0)", borderRadius: 4 }}
               />
             </div>
 
@@ -162,7 +163,7 @@ export function BootOverlay() {
                   transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                   onClick={initialize}
                   style={{
-                    background: "#0070FF",
+                    background: "#00F5FF",
                     color: "#fff",
                     border: "none",
                     borderRadius: 10,
@@ -180,13 +181,13 @@ export function BootOverlay() {
                   whileHover={{ scale: 1.04, boxShadow: "0 0 48px rgba(0,112,255,0.7)" }}
                   whileTap={{ scale: 0.97 }}
                 >
-                  Initialize Systems →
+                  Initialise Nova →
                 </motion.button>
               )}
             </AnimatePresence>
 
             <p style={{ marginTop: 20, fontSize: 11, color: "#374151", letterSpacing: "0.05em" }}>
-              Enterprise AI Platform · UK-Based · Production-Grade
+              Powered by Nova AI · Enterprise Platform · UK-Based · FCA Aligned
             </p>
           </div>
         </motion.div>

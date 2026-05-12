@@ -173,6 +173,7 @@ export default function Navbar() {
           <MegaDropdown label="Solutions" items={solutions} />
           <MegaDropdown label="Services"  items={services}  />
           <MegaDropdown label="Academy"   items={academy}   />
+          <Link href="/pricing" className="text-sm font-medium text-gray-400 hover:text-[#00F5FF] transition-colors">Pricing</Link>
           <Link href="/about"   className="text-sm font-medium text-gray-400 hover:text-white transition-colors">About</Link>
           <Link href="/contact" className="text-sm font-medium text-gray-400 hover:text-white transition-colors">Contact</Link>
         </div>
@@ -183,11 +184,12 @@ export default function Navbar() {
             Client Portal
           </Link>
           <Link href="/book"
-            className="text-sm font-bold px-5 py-2.5 rounded-lg text-white transition-all duration-200"
-            style={{ background: "#0070FF", boxShadow: "0 0 20px rgba(0,112,255,0.4)" }}
-            onMouseOver={e => { const el = e.currentTarget as HTMLElement; el.style.background = "#3B8EFF"; el.style.boxShadow = "0 0 32px rgba(0,112,255,0.7)"; }}
-            onMouseOut={e  => { const el = e.currentTarget as HTMLElement; el.style.background = "#0070FF"; el.style.boxShadow = "0 0 20px rgba(0,112,255,0.4)"; }}
+            className="flex items-center gap-2 text-sm font-bold px-5 py-2.5 rounded-lg text-black transition-all duration-200"
+            style={{ background: "#00F5FF", boxShadow: "0 0 20px rgba(0,245,255,0.4)" }}
+            onMouseOver={e => { const el = e.currentTarget as HTMLElement; el.style.boxShadow = "0 0 32px rgba(0,245,255,0.7)"; }}
+            onMouseOut={e  => { const el = e.currentTarget as HTMLElement; el.style.boxShadow = "0 0 20px rgba(0,245,255,0.4)"; }}
           >
+            <span className="w-1.5 h-1.5 rounded-full bg-black/40 animate-pulse" />
             Book a Call
           </Link>
         </div>
@@ -216,14 +218,15 @@ export default function Navbar() {
               <MobileSection label="Services"  items={services}  onClose={close} />
               <MobileSection label="Academy"   items={academy}   onClose={close} />
               <div className="py-3 flex flex-col gap-0.5">
+                <Link href="/pricing" onClick={close} className="py-2.5 text-sm font-semibold text-[#00F5FF]/70 hover:text-[#00F5FF] transition-colors">Pricing</Link>
                 <Link href="/about"   onClick={close} className="py-2.5 text-sm font-semibold text-gray-400 hover:text-white transition-colors">About</Link>
                 <Link href="/contact" onClick={close} className="py-2.5 text-sm font-semibold text-gray-400 hover:text-white transition-colors">Contact</Link>
               </div>
               <div className="pt-4 flex flex-col gap-3">
                 <Link href="/portal" onClick={close} className="text-center py-2.5 rounded-lg text-sm font-semibold text-gray-400 hover:text-white transition-colors"
                   style={{ border: "1px solid rgba(255,255,255,0.08)" }}>Client Portal</Link>
-                <Link href="/book" onClick={close} className="text-center py-3 rounded-lg text-sm font-bold text-white"
-                  style={{ background: "#0070FF", boxShadow: "0 0 20px rgba(0,112,255,0.4)" }}>Book a Discovery Call</Link>
+                <Link href="/book" onClick={close} className="text-center py-3 rounded-lg text-sm font-bold text-black"
+                  style={{ background: "#00F5FF", boxShadow: "0 0 20px rgba(0,245,255,0.4)" }}>Book a Discovery Call</Link>
               </div>
             </div>
           </motion.div>
