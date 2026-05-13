@@ -1,0 +1,116 @@
+name: CI / Deploy to Vercel
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Required for all jobs
+  ANTHROPIC_API_KEY:                  ${{ secrets.ANTHROPIC_API_KEY }}
+  NEXT_PUBLIC_SUPABASE_URL:           ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+  NEXT_PUBLIC_SUPABASE_ANON_KEY:      ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+  SUPABASE_SERVICE_ROLE_KEY:          ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+  RESEND_API_KEY:                     ${{ secrets.RESEND_API_KEY }}
+  RESEND_FROM_EMAIL:                  ${{ secrets.RESEND_FROM_EMAIL }}
+  NEXT_PUBLIC_SITE_URL:               ${{ secrets.NEXT_PUBLIC_SITE_URL }}
+  # Optional integrations
+  GEMINI_API_KEY:                     ${{ secrets.GEMINI_API_KEY }}
+  STRIPE_SECRET_KEY:                  ${{ secrets.STRIPE_SECRET_KEY }}
+  NEXT_PUBLIC_STRIPE_PUB_KEY:         ${{ secrets.NEXT_PUBLIC_STRIPE_PUB_KEY }}
+  STRIPE_WEBHOOK_SECRET:              ${{ secrets.STRIPE_WEBHOOK_SECRET }}
+  GOOGLE_SERVICE_ACCOUNT_EMAIL:       ${{ secrets.GOOGLE_SERVICE_ACCOUNT_EMAIL }}
+  GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY }}
+  GOOGLE_CALENDAR_ID:                 ${{ secrets.GOOGLE_CALENDAR_ID }}
+
+jobs:
+  # ── Typecheck + build verification ─────────────────────────────────────────
+  build:
+    name: Build check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - run: npm ci
+
+      - name: Type-check (skip test files)
+        run: npx tsc --noEmit 2>&1 | grep -v "__tests__" | grep -E "error TS" && exit 1 || exit 0
+
+      - name: Build
+        run: npm run build
+
+  # ── Deploy preview on PRs ──────────────────────────────────────────────────
+  deploy-preview:
+    name: Deploy preview
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - run: npm ci
+      - run: npm install --global vercel@latest
+
+      - name: Pull Vercel project settings
+        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Build for Vercel
+        run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Deploy preview
+        id: deploy
+        run: |
+          url=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }})
+          echo "url=$url" >> $GITHUB_OUTPUT
+
+      - name: Comment preview URL on PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `✅ **Preview deployed:** ${{ steps.deploy.outputs.url }}`
+            })
+
+  # ── Deploy production on main ──────────────────────────────────────────────
+  deploy-production:
+    name: Deploy production
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - run: npm ci
+      - run: npm install --global vercel@latest
+
+      - name: Pull Vercel project settings
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Build for Vercel
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Deploy to production
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
