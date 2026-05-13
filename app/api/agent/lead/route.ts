@@ -3,9 +3,7 @@ import { z } from "zod";
 import { Resend } from "resend";
 import { sanitiseText, hashIp } from "@/lib/sanitize";
 
-const resend    = new Resend(process.env.RESEND_API_KEY);
 const TO_EMAIL  = "rk@supracloud.co.uk";
-const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || "onboarding@resend.dev";
 
 // ── Request schema ────────────────────────────────────────────────────────────
 
@@ -116,8 +114,10 @@ export async function POST(req: NextRequest) {
     auditLog("nova_lead_captured", ipHash, { score, company: lead.company }),
   ]);
 
-  // Email notification (always send — don't fail UX for a logging failure)
+  // Email notification — instantiate Resend lazily so build doesn't fail without env vars
   if (process.env.RESEND_API_KEY) {
+    const resend    = new Resend(process.env.RESEND_API_KEY);
+    const fromEmail = process.env.RESEND_FROM_EMAIL || "onboarding@resend.dev";
     const fields: [string, string | undefined][] = [
       ["Name",       lead.name],
       ["Email",      lead.email],
@@ -133,9 +133,9 @@ export async function POST(req: NextRequest) {
 
     try {
       await resend.emails.send({
-        from:    FROM_EMAIL,
+        from:    fromEmail,
         to:      TO_EMAIL,
-        subject: `🔥 Nova Lead [${score}/100] — ${lead.name || "Unknown"} @ ${lead.company || "Unknown"}`,
+        subject: `Nova Lead [${score}/100] — ${lead.name || "Unknown"} @ ${lead.company || "Unknown"}`,
         text:    fields
           .filter(([, v]) => v)
           .map(([k, v]) => `${k}: ${v}`)

@@ -3,9 +3,7 @@ import { z } from "zod";
 import { Resend } from "resend";
 import { sanitiseText } from "@/lib/sanitize";
 
-const resend    = new Resend(process.env.RESEND_API_KEY);
-const TO_EMAIL  = "rk@supracloud.co.uk";
-const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || "onboarding@resend.dev";
+const TO_EMAIL = "rk@supracloud.co.uk";
 
 const INQUIRY_TYPES = ["client", "partnership", "talent"] as const;
 
@@ -81,7 +79,9 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    await resend.emails.send({ from: FROM_EMAIL, to: TO_EMAIL, subject, text });
+    const resend    = new Resend(process.env.RESEND_API_KEY);
+    const fromEmail = process.env.RESEND_FROM_EMAIL || "onboarding@resend.dev";
+    await resend.emails.send({ from: fromEmail, to: TO_EMAIL, subject, text });
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error";

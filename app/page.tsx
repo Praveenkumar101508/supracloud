@@ -319,7 +319,7 @@ export default function HomePage() {
             <GlowButton
               variant="purple"
               size="lg"
-              onClick={() => document.dispatchEvent(new CustomEvent("nova:open"))}
+              onClick={() => { document.dispatchEvent(new CustomEvent("nova:open")); }}
             >
               Try Nova Now
             </GlowButton>
@@ -512,7 +512,7 @@ export default function HomePage() {
             <GlowButton
               variant="purple"
               size="md"
-              onClick={() => document.dispatchEvent(new CustomEvent("nova:open"))}
+              onClick={() => { document.dispatchEvent(new CustomEvent("nova:open")); }}
             >
               Talk to Nova Live
             </GlowButton>
