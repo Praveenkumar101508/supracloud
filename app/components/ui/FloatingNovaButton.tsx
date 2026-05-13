@@ -80,19 +80,25 @@ export function FloatingNovaButton({
               transition={{ duration: 2, repeat: Infinity, delay: 0.4, ease: "easeOut" }}
             />
 
-            {/* Nova neural orb icon */}
-            <svg width="28" height="28" viewBox="0 0 32 32" fill="none" aria-hidden>
-              <circle cx="16" cy="16" r="8"  fill="rgba(0,0,0,0.35)" />
-              <circle cx="16" cy="16" r="4"  fill="rgba(0,0,0,0.6)" />
-              <circle cx="16" cy="16" r="2"  fill="black" />
-              <circle cx="16" cy="8"  r="2"  fill="black" opacity="0.8" />
-              <circle cx="16" cy="24" r="2"  fill="black" opacity="0.8" />
-              <circle cx="8"  cy="16" r="2"  fill="black" opacity="0.8" />
-              <circle cx="24" cy="16" r="2"  fill="black" opacity="0.8" />
-              <line x1="16" y1="13" x2="16" y2="10" stroke="black" strokeWidth="1.5" opacity="0.7" />
-              <line x1="16" y1="22" x2="16" y2="19" stroke="black" strokeWidth="1.5" opacity="0.7" />
-              <line x1="10" y1="16" x2="13" y2="16" stroke="black" strokeWidth="1.5" opacity="0.7" />
-              <line x1="19" y1="16" x2="22" y2="16" stroke="black" strokeWidth="1.5" opacity="0.7" />
+            {/* Nova female robot icon */}
+            <svg width="30" height="30" viewBox="0 0 64 64" fill="none" aria-label="Nova">
+              {/* Antenna */}
+              <line x1="32" y1="4" x2="32" y2="13" stroke="black" strokeWidth="2" strokeLinecap="round" opacity="0.7" />
+              <circle cx="32" cy="3" r="2.5" fill="black" opacity="0.8" />
+              {/* Head */}
+              <rect x="9" y="13" width="46" height="38" rx="16" fill="rgba(0,0,0,0.25)" stroke="black" strokeWidth="1.5" opacity="0.6" />
+              {/* Eyes */}
+              <ellipse cx="22" cy="29" rx="6" ry="6.5" fill="rgba(0,0,0,0.3)" stroke="black" strokeWidth="1.2" />
+              <circle  cx="22" cy="29" r="3"   fill="black" opacity="0.85" />
+              <circle  cx="23.5" cy="27.5" r="1" fill="white" opacity="0.5" />
+              <ellipse cx="42" cy="29" rx="6" ry="6.5" fill="rgba(0,0,0,0.3)" stroke="black" strokeWidth="1.2" />
+              <circle  cx="42" cy="29" r="3"   fill="black" opacity="0.85" />
+              <circle  cx="43.5" cy="27.5" r="1" fill="white" opacity="0.5" />
+              {/* Smile */}
+              <path d="M23 41 Q32 48 41 41" stroke="black" strokeWidth="2" strokeLinecap="round" fill="none" opacity="0.75" />
+              {/* Blush */}
+              <ellipse cx="13" cy="36" rx="4" ry="2.5" fill="rgba(0,0,0,0.15)" />
+              <ellipse cx="51" cy="36" rx="4" ry="2.5" fill="rgba(0,0,0,0.15)" />
             </svg>
 
             {/* Unread badge */}

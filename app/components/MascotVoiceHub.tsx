@@ -142,20 +142,44 @@ function NovaAvatarIcon({ state }: { state: NovaState }) {
     speaking:  "#00F5FF",
   };
   const c = COLOR[state];
+  const id = `ng-${state}`;
 
   return (
-    <svg width="36" height="36" viewBox="0 0 64 64" fill="none" aria-hidden>
-      {/* Outer ring */}
-      <circle cx="32" cy="32" r="30" fill="none" stroke={c} strokeWidth="1.5" opacity="0.4" />
-      {/* Core */}
-      <circle cx="32" cy="32" r="18" fill={`${c}18`} stroke={c} strokeWidth="1" />
-      {/* Inner dot */}
-      <circle cx="32" cy="32" r="6" fill={c} opacity="0.9" />
-      {/* Speaking waves */}
+    <svg width="36" height="36" viewBox="0 0 64 64" fill="none" aria-label="Nova AI assistant">
+      <defs>
+        <radialGradient id={id} cx="45%" cy="30%" r="65%">
+          <stop offset="0%"   stopColor={c} stopOpacity="0.22" />
+          <stop offset="100%" stopColor="#050510" stopOpacity="0.95" />
+        </radialGradient>
+      </defs>
+
+      {/* Antenna */}
+      <line x1="32" y1="4" x2="32" y2="13" stroke={c} strokeWidth="1.8" strokeLinecap="round" opacity="0.8" />
+      <circle cx="32" cy="3" r="2.5" fill={c} opacity="0.9" />
+
+      {/* Head */}
+      <rect x="9" y="13" width="46" height="38" rx="16" fill={`url(#${id})`} stroke={c} strokeWidth="1.4" opacity="0.9" />
+
+      {/* Eyes */}
+      <ellipse cx="22" cy="29" rx="6" ry="6.5" fill={`${c}22`} stroke={c} strokeWidth="1.2" />
+      <circle  cx="22" cy="29" r="3" fill={c} opacity="0.95" />
+      <circle  cx="23.5" cy="27.5" r="1" fill="white" opacity="0.6" />
+
+      <ellipse cx="42" cy="29" rx="6" ry="6.5" fill={`${c}22`} stroke={c} strokeWidth="1.2" />
+      <circle  cx="42" cy="29" r="3" fill={c} opacity="0.95" />
+      <circle  cx="43.5" cy="27.5" r="1" fill="white" opacity="0.6" />
+
+      {/* Smile */}
+      <path d="M23 41 Q32 48 41 41" stroke={c} strokeWidth="1.8" strokeLinecap="round" fill="none" opacity="0.9" />
+
+      {/* Blush */}
+      <ellipse cx="13" cy="36" rx="4" ry="2.5" fill="rgba(255,100,180,0.18)" />
+      <ellipse cx="51" cy="36" rx="4" ry="2.5" fill="rgba(255,100,180,0.18)" />
+
+      {/* Speaking pulse rings */}
       {state === "speaking" && (
         <>
-          <circle cx="32" cy="32" r="12" fill="none" stroke={c} strokeWidth="1" opacity="0.5" />
-          <circle cx="32" cy="32" r="22" fill="none" stroke={c} strokeWidth="0.6" opacity="0.25" />
+          <circle cx="32" cy="32" r="28" fill="none" stroke={c} strokeWidth="0.6" opacity="0.2" />
         </>
       )}
     </svg>
