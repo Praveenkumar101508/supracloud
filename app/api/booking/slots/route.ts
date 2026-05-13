@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createSign } from "crypto";
+import { rateLimit } from "@/lib/rateLimiter";
 
 const CALENDAR_ID = process.env.GOOGLE_CALENDAR_ID || "primary";
 const CACHE = new Map<string, { data: SlotInfo[]; ts: number }>();
@@ -121,6 +122,9 @@ function markBusy(
 }
 
 export async function GET(req: NextRequest) {
+  const rl = await rateLimit(req);
+  if (!rl.success) return rl.response!;
+
   const date = req.nextUrl.searchParams.get("date");
   if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
     return NextResponse.json({ error: "Invalid date" }, { status: 400 });

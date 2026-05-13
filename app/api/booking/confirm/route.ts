@@ -1,6 +1,26 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createSign, randomUUID } from "crypto";
+import { z } from "zod";
 import { Resend } from "resend";
+import { rateLimit } from "@/lib/rateLimiter";
+
+const BookingSchema = z.object({
+  name:     z.string().min(1).max(100),
+  email:    z.string().email().max(254),
+  company:  z.string().max(100).optional(),
+  topic:    z.string().min(1).max(500),
+  isoStart: z.string().regex(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?Z$/),
+  isoEnd:   z.string().regex(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?Z$/),
+});
+
+function esc(s: string): string {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#x27;");
+}
 
 const CALENDAR_ID = process.env.GOOGLE_CALENDAR_ID || "primary";
 const OWNER_EMAIL = "rk@supracloud.co.uk";
@@ -175,22 +195,22 @@ function clientEmailHtml(d: {
           <p style="margin:0;font-size:13px;color:#94a3b8;">Enterprise AI · Confirmed Discovery Call</p>
         </td></tr>
         <tr><td style="padding:36px 40px 0;">
-          <p style="margin:0 0 20px;font-size:16px;color:#1e293b;">Hi ${d.firstName},</p>
+          <p style="margin:0 0 20px;font-size:16px;color:#1e293b;">Hi ${esc(d.firstName)},</p>
           <p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.7;">
             Your discovery call with SupraCloud is confirmed. Here are the details:
           </p>
           <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:28px;">
             <tr><td style="background:#f0f7ff;border:2px solid #0070FF;border-radius:12px;padding:20px 24px;">
               <p style="margin:0 0 8px;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#0070FF;">Your Booking</p>
-              <p style="margin:0 0 4px;font-size:20px;font-weight:800;color:#0A192F;">${d.displayDate}</p>
-              <p style="margin:0 0 16px;font-size:16px;color:#374151;">${d.displayTime} GMT · 30 minutes</p>
-              <a href="${d.meetLink}" style="display:inline-block;padding:12px 28px;background:#0070FF;color:#ffffff;font-size:14px;font-weight:700;border-radius:8px;text-decoration:none;">
+              <p style="margin:0 0 4px;font-size:20px;font-weight:800;color:#0A192F;">${esc(d.displayDate)}</p>
+              <p style="margin:0 0 16px;font-size:16px;color:#374151;">${esc(d.displayTime)} GMT · 30 minutes</p>
+              <a href="${esc(d.meetLink)}" style="display:inline-block;padding:12px 28px;background:#0070FF;color:#ffffff;font-size:14px;font-weight:700;border-radius:8px;text-decoration:none;">
                 Join Google Meet &rarr;
               </a>
-              <p style="margin:12px 0 0;font-size:12px;color:#6b7280;word-break:break-all;">${d.meetLink}</p>
+              <p style="margin:12px 0 0;font-size:12px;color:#6b7280;word-break:break-all;">${esc(d.meetLink)}</p>
             </td></tr>
           </table>
-          <p style="margin:0 0 8px;font-size:14px;color:#374151;line-height:1.7;"><strong>Topic:</strong> ${d.topic}</p>
+          <p style="margin:0 0 8px;font-size:14px;color:#374151;line-height:1.7;"><strong>Topic:</strong> ${esc(d.topic)}</p>
           <p style="margin:0 0 28px;font-size:14px;color:#374151;line-height:1.7;">
             A calendar invite has been sent to your email. If you need to reschedule, reply to this email or contact us at
             <a href="mailto:rk@supracloud.co.uk" style="color:#0070FF;">rk@supracloud.co.uk</a>.
@@ -232,17 +252,17 @@ function ownerEmailHtml(d: {
       <table width="540" cellpadding="0" cellspacing="0" style="max-width:540px;width:100%;background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,0.08);">
         <tr><td style="background:#0A192F;padding:20px 28px;">
           <p style="margin:0 0 2px;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#0070FF;">NEW BOOKING — CONFIRMED SLOT</p>
-          <p style="margin:0;font-size:18px;font-weight:800;color:#fff;">${d.name}${d.company ? ` — ${d.company}` : ""}</p>
+          <p style="margin:0;font-size:18px;font-weight:800;color:#fff;">${esc(d.name)}${d.company ? ` — ${esc(d.company)}` : ""}</p>
         </td></tr>
         <tr><td style="padding:24px 28px;">
           <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:20px;">
             ${[
-              ["Date", d.displayDate],
-              ["Time", `${d.displayTime} GMT`],
-              ["Topic", d.topic],
-              ["Name", d.name],
-              ["Company", d.company || "—"],
-              ["Email", `<a href="mailto:${d.email}" style="color:#0070FF;">${d.email}</a>`],
+              ["Date", esc(d.displayDate)],
+              ["Time", `${esc(d.displayTime)} GMT`],
+              ["Topic", esc(d.topic)],
+              ["Name", esc(d.name)],
+              ["Company", esc(d.company) || "—"],
+              ["Email", `<a href="mailto:${esc(d.email)}" style="color:#0070FF;">${esc(d.email)}</a>`],
             ]
               .map(
                 ([k, v]) => `
@@ -253,10 +273,10 @@ function ownerEmailHtml(d: {
               )
               .join("")}
           </table>
-          <a href="${d.meetLink}" style="display:inline-block;padding:11px 22px;background:#0070FF;color:#fff;font-size:13px;font-weight:700;border-radius:8px;text-decoration:none;">
+          <a href="${esc(d.meetLink)}" style="display:inline-block;padding:11px 22px;background:#0070FF;color:#fff;font-size:13px;font-weight:700;border-radius:8px;text-decoration:none;">
             Open Google Meet
           </a>
-          <p style="margin:12px 0 0;font-size:12px;color:#94a3b8;word-break:break-all;">${d.meetLink}</p>
+          <p style="margin:12px 0 0;font-size:12px;color:#94a3b8;word-break:break-all;">${esc(d.meetLink)}</p>
         </td></tr>
       </table>
     </td></tr>
@@ -286,21 +306,24 @@ function formatDisplayTime(isoStart: string): string {
 }
 
 export async function POST(req: NextRequest) {
+  const rl = await rateLimit(req);
+  if (!rl.success) return rl.response!;
+
+  let rawBody: unknown;
   try {
-    const body = await req.json();
-    const { name, email, company, topic, isoStart, isoEnd } = body as {
-      name: string;
-      email: string;
-      company?: string;
-      topic: string;
-      isoStart: string;
-      isoEnd: string;
-    };
+    rawBody = await req.json();
+  } catch {
+    return NextResponse.json({ error: "Invalid JSON." }, { status: 400 });
+  }
 
-    if (!name || !email || !topic || !isoStart || !isoEnd) {
-      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
-    }
+  const parsed = BookingSchema.safeParse(rawBody);
+  if (!parsed.success) {
+    return NextResponse.json({ error: "Invalid request data." }, { status: 400 });
+  }
 
+  const { name, email, company, topic, isoStart, isoEnd } = parsed.data;
+
+  try {
     const token = await getServiceAccountToken();
 
     // Race condition guard: re-check availability before booking
@@ -324,7 +347,6 @@ export async function POST(req: NextRequest) {
     const displayTime = formatDisplayTime(isoStart);
     const firstName = name.trim().split(" ")[0];
 
-    // Insert to Supabase (non-blocking, non-fatal)
     void insertSupabase({
       name,
       email,
@@ -365,8 +387,7 @@ export async function POST(req: NextRequest) {
     ]);
 
     return NextResponse.json({ success: true, meetLink, displayDate, displayTime });
-  } catch (err) {
-    const message = err instanceof Error ? err.message : "Unknown error";
-    return NextResponse.json({ error: message }, { status: 500 });
+  } catch {
+    return NextResponse.json({ error: "Booking could not be completed. Please try again." }, { status: 500 });
   }
 }

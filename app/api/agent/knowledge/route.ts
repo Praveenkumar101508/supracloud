@@ -10,6 +10,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { sanitiseText } from "@/lib/sanitize";
+import { rateLimit } from "@/lib/rateLimiter";
 import { KNOWLEDGE_BASE } from "@/app/components/VoiceAgent/agentPersonality";
 
 const RequestSchema = z.object({
@@ -54,6 +55,9 @@ async function supabaseFullTextSearch(query: string, topK = 3): Promise<string[]
 }
 
 export async function POST(req: NextRequest) {
+  const rl = await rateLimit(req);
+  if (!rl.success) return rl.response!;
+
   let body: unknown;
   try {
     body = await req.json();
