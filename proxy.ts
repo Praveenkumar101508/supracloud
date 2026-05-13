@@ -55,7 +55,7 @@ const BLOCKED_PATH_PATTERNS = [
   /\/etc\/shadow/i,
   /\/proc\/self/i,
   /\/windows\/system/i,
-  // WordPress/PHP probes (not relevant, block fast)
+  // WordPress/PHP probes
   /\.(php|asp|aspx|jsp|cgi)$/i,
   /wp-admin/i,
   /phpMyAdmin/i,
@@ -74,7 +74,6 @@ const BLOCKED_PATH_PATTERNS = [
 const API_MAX_BODY_BYTES = 64 * 1024; // 64 KB
 
 export async function proxy(req: NextRequest) {
-  const { pathname } = new URL(req.url);
   const method = req.method.toUpperCase();
   const ua = (req.headers.get("user-agent") ?? "").toLowerCase();
 
