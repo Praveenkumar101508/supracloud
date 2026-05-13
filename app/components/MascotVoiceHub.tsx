@@ -248,7 +248,7 @@ export default function MascotVoiceHub() {
     } catch { /* ignore */ }
     const t = setTimeout(() => {
       open();
-    }, 14_000);
+    }, 15_000);
     return () => clearTimeout(t);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

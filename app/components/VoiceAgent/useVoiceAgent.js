@@ -166,7 +166,7 @@ async function speakText(text, abortRef) {
   if (typeof window !== "undefined" && window.speechSynthesis) {
     return new Promise((resolve) => {
       const utt = new SpeechSynthesisUtterance(text);
-      utt.lang = "en-GB";
+      utt.lang = (typeof navigator !== "undefined" && navigator.language) || "en-GB";
       utt.rate = 1.0;
       utt.pitch = 1.05;
       const voices = window.speechSynthesis.getVoices();
@@ -370,11 +370,14 @@ export function useVoiceAgent() {
       if (extracted) {
         saveName(extracted);
         setStage("chatting");
+        stageRef.current = "chatting";
         await speakAndResetTimer(GREET_BY_NAME(extracted));
-      } else {
-        await speakAndResetTimer("Sorry, I didn't quite catch that — could you just tell me your first name?");
+        return;
       }
-      return;
+      // No name detected — gracefully move to chatting and answer the actual question
+      setStage("chatting");
+      stageRef.current = "chatting";
+      // falls through to normal response handling below
     }
 
     if (currentStage === "lead_capture") {
@@ -535,7 +538,7 @@ export function useVoiceAgent() {
       return;
     }
     const rec = new SR();
-    rec.lang = "en-GB";
+    rec.lang = (typeof navigator !== "undefined" && navigator.language) || "en-GB";
     rec.interimResults = false;
     rec.maxAlternatives = 1;
     rec.onresult = async (event) => {

@@ -15,13 +15,13 @@ export const PAGE_AUTO_OPEN_DELAY = {
 // ── Opening ───────────────────────────────────────────────────────────────────
 
 export const ASK_NAME_SCRIPT =
-  "Hi there! I'm Nova, your friendly SupraCloud AI assistant. How can I help you today with AI agents for banking, retail, or building your team?";
+  "Hey there! I'm Nova, your friendly SupraCloud AI companion. I'm here to help with enterprise AI agents, banking solutions, retail intelligence, IT staffing, or anything else you need — what would you like to explore today?";
 
 export const GREET_BY_NAME = (name) =>
-  `Great to meet you, ${name}! What can I help you with today?`;
+  `Lovely to meet you, ${name}! What can I help you with today?`;
 
 export const GREET_RETURNING = (name) =>
-  `Welcome back, ${name}! What can I help you with today?`;
+  `Hey ${name}, great to have you back! What would you like to explore today?`;
 
 // ── Per-route contextual opening lines (accept name param) ────────────────────
 
