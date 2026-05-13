@@ -13,71 +13,74 @@ interface AnimatedCounterProps {
 
 export function AnimatedCounter({
   value,
-  suffix = "",
-  prefix = "",
+  suffix   = "",
+  prefix   = "",
   duration = 2000,
   decimals = 0,
   className = "",
 }: AnimatedCounterProps) {
-  const ref     = useRef<HTMLSpanElement>(null);
-  const firedRef = useRef(false);
-  const rafRef   = useRef<number | null>(null);
-  const [display, setDisplay] = useState("0");
+  const ref = useRef<HTMLSpanElement>(null);
+  // Initialise display to the correctly-formatted zero so there is no flicker
+  // (e.g. decimals=1 → "0.0", not "0")
+  const [display, setDisplay] = useState(() => (0).toFixed(decimals));
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
 
-    // Respect reduced-motion immediately
+    // Skip animation when the user has requested reduced motion
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       setDisplay(value.toFixed(decimals));
       return;
     }
 
-    function startAnimation() {
-      if (firedRef.current) return;
-      firedRef.current = true;
+    // `alive` is a closure-local flag so that:
+    //  • RAF callbacks from a previous (cleaned-up) effect do nothing
+    //  • React Strict Mode's double-invocation doesn't double-count
+    let alive = true;
 
+    function runAnimation() {
       const startTime = performance.now();
 
       function tick(now: number) {
+        if (!alive) return;
+
         const elapsed  = now - startTime;
         const progress = Math.min(elapsed / duration, 1);
-        // Ease-out cubic — fast start, gentle finish
+        // Ease-out cubic: fast start → gentle landing
         const eased    = 1 - Math.pow(1 - progress, 3);
+
         setDisplay((value * eased).toFixed(decimals));
 
         if (progress < 1) {
-          rafRef.current = requestAnimationFrame(tick);
+          requestAnimationFrame(tick);
         } else {
-          setDisplay(value.toFixed(decimals)); // snap to exact final value
+          // Snap to the exact final value to eliminate floating-point drift
+          setDisplay(value.toFixed(decimals));
         }
       }
 
-      rafRef.current = requestAnimationFrame(tick);
+      requestAnimationFrame(tick);
     }
 
-    // Use a native IntersectionObserver — more reliable than framer useInView
-    // when the counter lives inside motion.div initial={{ opacity:0 }} containers.
+    // Native IntersectionObserver — unaffected by framer-motion's scheduler.
+    // threshold: 0   → fire as soon as ANY pixel of the element is visible.
+    // rootMargin "0px 0px 0px 0px" → exact viewport boundary (no early trigger).
     const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          observer.disconnect();
-          startAnimation();
-        }
+      ([entry]) => {
+        if (!entry.isIntersecting || !alive) return;
+        // Disconnect first, then animate — prevents double-fire on re-observe
+        observer.disconnect();
+        runAnimation();
       },
-      {
-        // Fire as soon as any pixel of the element enters the viewport
-        threshold: 0,
-        rootMargin: "0px",
-      }
+      { threshold: 0, rootMargin: "0px" }
     );
 
     observer.observe(el);
 
     return () => {
+      alive = false;      // stop any in-flight RAF ticks
       observer.disconnect();
-      if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
     };
   }, [value, duration, decimals]);
 

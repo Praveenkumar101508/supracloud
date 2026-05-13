@@ -70,10 +70,10 @@ function TypewriterWord() {
 // ── Stat strip ────────────────────────────────────────────────────────────────
 
 const STATS = [
-  { value: 72, suffix: "%", label: "Query Deflection" },
-  { value: 14, suffix: "M+", label: "Transactions Processed" },
-  { value: 6,  suffix: "wk", label: "Avg. Time to Production" },
-  { value: 99, suffix: ".9%", label: "Uptime SLA", decimals: 0 },
+  { value: 72,   suffix: "%",  label: "Query Deflection",        decimals: 0 },
+  { value: 14,   suffix: "M+", label: "Transactions Processed",  decimals: 0 },
+  { value: 6,    suffix: "wk", label: "Avg. Time to Production", decimals: 0 },
+  { value: 99.9, suffix: "%",  label: "Uptime SLA",              decimals: 1 },
 ];
 
 // ── Service cards ──────────────────────────────────────────────────────────────
