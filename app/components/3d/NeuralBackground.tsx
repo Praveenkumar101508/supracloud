@@ -207,14 +207,18 @@ function StaticFallback() {
 // ─── Main export (lazy-loaded, no SSR) ───────────────────────────────────────
 function NeuralBackgroundCanvas() {
   const [reduced, setReduced] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    setIsMobile(window.innerWidth < 640);
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
     setReduced(mq.matches);
     const handler = (e: MediaQueryListEvent) => setReduced(e.matches);
     mq.addEventListener("change", handler);
     return () => mq.removeEventListener("change", handler);
   }, []);
+
+  if (isMobile) return <StaticFallback />;
 
   return (
     <div

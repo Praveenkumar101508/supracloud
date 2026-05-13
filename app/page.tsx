@@ -270,29 +270,45 @@ export default function HomePage() {
 
           {/* Badge */}
           <motion.div
-            className="flex items-center gap-2 px-4 py-1.5 rounded-full mb-6 text-xs font-semibold text-[#00F5FF]"
-            style={{
-              background: "rgba(0,245,255,0.08)",
-              border: "1px solid rgba(0,245,255,0.2)",
-            }}
+            className="flex items-center gap-2 px-4 py-1.5 rounded-full mb-5 text-xs font-semibold text-[#00F5FF]"
+            style={{ background: "rgba(0,245,255,0.08)", border: "1px solid rgba(0,245,255,0.2)" }}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
+            transition={{ delay: 0.25 }}
           >
             <span className="w-1.5 h-1.5 rounded-full bg-[#00F5FF] animate-pulse" />
-            Nova AI · Now Live
+            Nova AI · Now Live · UK-Based
+          </motion.div>
+
+          {/* Brand name */}
+          <motion.div
+            className="mb-4"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.35, duration: 0.6 }}
+          >
+            <span
+              className="text-5xl sm:text-7xl md:text-8xl font-black tracking-tight"
+              style={{
+                background: "linear-gradient(135deg, #ffffff 0%, #00F5FF 50%, #8B5CF6 100%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+                filter: "drop-shadow(0 0 32px rgba(0,245,255,0.35))",
+              }}
+            >
+              SupraCloud
+            </span>
           </motion.div>
 
           {/* Headline */}
           <motion.h1
-            className="text-4xl sm:text-6xl md:text-7xl font-black leading-[1.05] tracking-tight mb-6"
-            initial={{ opacity: 0, y: 24 }}
+            className="text-2xl sm:text-3xl md:text-4xl font-bold text-white/80 leading-snug tracking-tight mb-6"
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.7 }}
+            transition={{ delay: 0.45, duration: 0.6 }}
           >
-            Enterprise AI for
-            <br />
-            <TypewriterWord />
+            Enterprise AI for <TypewriterWord />
           </motion.h1>
 
           {/* Sub */}

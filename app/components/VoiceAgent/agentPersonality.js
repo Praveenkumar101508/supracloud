@@ -15,7 +15,7 @@ export const PAGE_AUTO_OPEN_DELAY = {
 // ── Opening ───────────────────────────────────────────────────────────────────
 
 export const ASK_NAME_SCRIPT =
-  "Hi there! I'm Nova, your friendly SupraCloud AI assistant. I can help you with AI agents, banking solutions, retail intelligence, or our talent programmes. Before we dive in — what's your name?";
+  "Hi there! I'm Nova, your friendly SupraCloud AI assistant. How can I help you today with AI agents for banking, retail, or building your team?";
 
 export const GREET_BY_NAME = (name) =>
   `Great to meet you, ${name}! What can I help you with today?`;
