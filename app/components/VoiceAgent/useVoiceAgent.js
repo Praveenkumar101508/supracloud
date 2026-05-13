@@ -142,45 +142,67 @@ async function fetchAIResponse(question, pathname, name, history = []) {
   }
 }
 
-async function speakText(text, abortRef) {
-  try {
-    const res = await fetch("/api/agent/speak", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text }),
-    });
-    if (res.ok) {
-      const blob = await res.blob();
-      const url = URL.createObjectURL(blob);
-      const audio = new Audio(url);
-      if (abortRef) abortRef.current = () => { audio.pause(); audio.src = ""; URL.revokeObjectURL(url); };
-      return new Promise((resolve) => {
-        audio.onended = () => { if (abortRef) abortRef.current = null; URL.revokeObjectURL(url); resolve(); };
-        audio.onerror = () => { if (abortRef) abortRef.current = null; URL.revokeObjectURL(url); resolve(); };
-        audio.play().catch(resolve);
-      });
-    }
-  } catch {}
+// Preferred female voices in priority order — matched by substring against voice.name
+const FEMALE_VOICE_HINTS = [
+  "samantha", "karen", "moira", "tessa",   // macOS / iOS
+  "google uk english female",              // Chrome on Android/desktop
+  "microsoft sonia",                       // Windows Edge
+  "microsoft libby", "microsoft mia",
+  "zira",                                  // Windows legacy
+];
 
-  // Web Speech API fallback
-  if (typeof window !== "undefined" && window.speechSynthesis) {
-    return new Promise((resolve) => {
-      const utt = new SpeechSynthesisUtterance(text);
-      utt.lang = (typeof navigator !== "undefined" && navigator.language) || "en-GB";
-      utt.rate = 1.0;
-      utt.pitch = 1.05;
-      const voices = window.speechSynthesis.getVoices();
-      const preferred =
-        voices.find((v) => v.lang.startsWith("en") && v.name.toLowerCase().includes("female")) ||
-        voices.find((v) => v.lang.startsWith("en-GB")) ||
-        voices[0];
-      if (preferred) utt.voice = preferred;
-      if (abortRef) abortRef.current = () => { window.speechSynthesis.cancel(); };
-      utt.onend  = () => { if (abortRef) abortRef.current = null; resolve(); };
-      utt.onerror = () => { if (abortRef) abortRef.current = null; resolve(); };
-      window.speechSynthesis.speak(utt);
+function pickVoice(voices) {
+  const lower = (s) => s.toLowerCase();
+  // 1. Explicit female hint match
+  for (const hint of FEMALE_VOICE_HINTS) {
+    const v = voices.find((v) => lower(v.name).includes(hint));
+    if (v) return v;
+  }
+  // 2. Any en-GB voice
+  const gb = voices.find((v) => v.lang === "en-GB");
+  if (gb) return gb;
+  // 3. Any en-US voice
+  const us = voices.find((v) => v.lang === "en-US");
+  if (us) return us;
+  // 4. Any English voice
+  return voices.find((v) => v.lang.startsWith("en")) || voices[0] || null;
+}
+
+async function speakText(text, abortRef) {
+  if (typeof window === "undefined" || !window.speechSynthesis) return;
+
+  // Voices may not be loaded on first call — wait up to 500 ms for them.
+  let voices = window.speechSynthesis.getVoices();
+  if (!voices.length) {
+    voices = await new Promise((resolve) => {
+      const tid = setTimeout(() => resolve(window.speechSynthesis.getVoices()), 500);
+      window.speechSynthesis.onvoiceschanged = () => {
+        clearTimeout(tid);
+        window.speechSynthesis.onvoiceschanged = null;
+        resolve(window.speechSynthesis.getVoices());
+      };
     });
   }
+
+  return new Promise((resolve) => {
+    // Cancel any currently playing utterance before starting a new one
+    window.speechSynthesis.cancel();
+
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.lang  = (typeof navigator !== "undefined" && navigator.language) || "en-GB";
+    utt.rate  = 0.97;   // slightly slower → clearer and more natural
+    utt.pitch = 1.08;   // slightly higher → feminine tone
+    utt.volume = 1.0;
+
+    const voice = pickVoice(voices);
+    if (voice) utt.voice = voice;
+
+    if (abortRef) abortRef.current = () => { window.speechSynthesis.cancel(); };
+    utt.onend  = () => { if (abortRef) abortRef.current = null; resolve(); };
+    utt.onerror = () => { if (abortRef) abortRef.current = null; resolve(); };
+
+    window.speechSynthesis.speak(utt);
+  });
 }
 
 // ── Tool execution (client-side) ───────────────────────────────────────────────

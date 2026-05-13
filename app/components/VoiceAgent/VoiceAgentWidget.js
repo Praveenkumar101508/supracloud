@@ -164,22 +164,6 @@ export default function VoiceAgentWidget() {
     return () => window.removeEventListener("keydown", onKey);
   }, [isOpen, open, close]);
 
-  // PostHog tracking
-  useEffect(() => {
-    if (typeof window === "undefined" || !window.posthog) return;
-    if (isOpen) window.posthog.capture("nova_opened", { page: window.location.pathname });
-  }, [isOpen]);
-
-  useEffect(() => {
-    if (typeof window === "undefined" || !window.posthog) return;
-    if (stage === "lead_capture" && leadStep === 0) {
-      window.posthog.capture("nova_lead_started", { name: visitorName });
-    }
-    if (stage === "done") {
-      window.posthog.capture("nova_lead_completed", { name: visitorName });
-    }
-  }, [stage, leadStep, visitorName]);
-
   const handleRouteChange = useCallback((pathname) => { announceRoute(pathname); }, [announceRoute]);
   useRouteAnnouncer(handleRouteChange);
 

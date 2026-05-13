@@ -12,23 +12,20 @@ function buildCsp(): string {
       "'unsafe-inline'",           // Required by Next.js inline scripts
       "https://js.stripe.com",
       "https://www.googletagmanager.com",
-      "https://app.posthog.com",
     ],
     "style-src":       ["'self'", "'unsafe-inline'"], // Tailwind inline styles
     "img-src":         ["'self'", "data:", "blob:", "https:"],
     "font-src":        ["'self'", "data:", "https://fonts.gstatic.com"],
-    "media-src":       ["'self'", "blob:"],           // ElevenLabs audio
+    "media-src":       ["'self'", "blob:"],
     "connect-src":     [
       "'self'",
       "https://*.supabase.co",
       "https://api.anthropic.com",
-      "https://api.elevenlabs.io",
       "https://generativelanguage.googleapis.com",
       "https://oauth2.googleapis.com",
       "https://www.googleapis.com",
-      "https://app.posthog.com",
       "https://o*.ingest.sentry.io",
-      "wss://*.supabase.co",       // Supabase realtime
+      "wss://*.supabase.co",
     ],
     "frame-src":       ["https://js.stripe.com", "https://calendly.com"],
     "frame-ancestors": ["'none'"],
@@ -102,14 +99,6 @@ const nextConfig: NextConfig = {
       {
         source: "/(.*)",
         headers: securityHeaders,
-      },
-      // Slightly relaxed COEP for API routes that return binary (audio)
-      {
-        source: "/api/agent/speak",
-        headers: [
-          { key: "Cross-Origin-Embedder-Policy", value: "unsafe-none" },
-          { key: "Cross-Origin-Resource-Policy", value: "cross-origin" },
-        ],
       },
     ];
   },

@@ -1,7 +1,6 @@
 ﻿"use client";
 
 import { useState } from "react";
-import posthog from "posthog-js";
 
 const levels = ["Student / Recent Graduate", "0–2 years experience", "2–5 years experience", "5+ years experience"];
 const roles = ["Data Engineer", "ML Engineer", "Cloud Engineer / Architect", "Data Analyst", "Data Scientist", "Other"];
@@ -25,9 +24,6 @@ export default function ApplyPage() {
       tools: (form.elements.namedItem("tools") as HTMLInputElement).value,
       goal: (form.elements.namedItem("goal") as HTMLTextAreaElement).value,
     };
-
-    // Track in PostHog
-    posthog.capture("application_submitted", { targetRole: data.targetRole, level: data.level });
 
     try {
       const res = await fetch("/api/apply", {

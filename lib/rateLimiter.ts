@@ -1,8 +1,5 @@
 /**
- * Rate limiting — Upstash Redis (production) with in-memory fallback (dev/test).
- *
- * Production: set UPSTASH_REDIS_REST_URL + UPSTASH_REDIS_REST_TOKEN in env.
- * Development: automatic in-memory sliding-window (resets on process restart).
+ * In-memory sliding-window rate limiter.
  *
  * Per-endpoint limits (requests per minute per IP):
  *   /api/agent/respond  → 20
@@ -11,91 +8,16 @@
  *   /api/agent/knowledge→ 30
  *   /api/contact        →  5
  *   /api/book           → 10
+ *   /api/booking        → 10
  *   /api/checkout       → 10
  *   default             → 60
+ *
+ * Resets on process restart (acceptable for edge/serverless deployments).
  */
 
 import { NextRequest, NextResponse } from "next/server";
 
-// ── Upstash (production) ───────────────────────────────────────────────────────
-
-async function upstashLimit(
-  key: string,
-  limit: number,
-  windowMs: number
-): Promise<{ success: boolean; remaining: number; reset: number }> {
-  const url   = process.env.UPSTASH_REDIS_REST_URL;
-  const token = process.env.UPSTASH_REDIS_REST_TOKEN;
-
-  const now       = Date.now();
-  const windowSec = Math.floor(windowMs / 1000);
-  const bucket    = `rl:${key}:${Math.floor(now / windowMs)}`;
-
-  try {
-    // INCR + EXPIRE via Upstash REST pipeline
-    const res = await fetch(`${url}/pipeline`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify([
-        ["INCR", bucket],
-        ["EXPIRE", bucket, windowSec],
-      ]),
-    });
-
-    if (!res.ok) throw new Error("Upstash error");
-
-    const data: [[string, number], [string, number]] = await res.json();
-    const count = data[0][1];
-    const reset = Math.ceil(now / windowMs) * windowMs;
-
-    return {
-      success:   count <= limit,
-      remaining: Math.max(0, limit - count),
-      reset,
-    };
-  } catch {
-    // If Upstash is unreachable, fail open (allow the request)
-    return { success: true, remaining: limit, reset: now + windowMs };
-  }
-}
-
-// ── In-memory fallback (development / no Upstash) ─────────────────────────────
-
-type WindowEntry = { count: number; windowStart: number };
-const memStore = new Map<string, WindowEntry>();
-
-function memLimit(
-  key: string,
-  limit: number,
-  windowMs: number
-): { success: boolean; remaining: number; reset: number } {
-  const now         = Date.now();
-  const windowStart = Math.floor(now / windowMs) * windowMs;
-  const reset       = windowStart + windowMs;
-
-  const entry = memStore.get(key);
-
-  if (!entry || entry.windowStart !== windowStart) {
-    memStore.set(key, { count: 1, windowStart });
-    return { success: true, remaining: limit - 1, reset };
-  }
-
-  entry.count += 1;
-  memStore.set(key, entry);
-
-  return {
-    success:   entry.count <= limit,
-    remaining: Math.max(0, limit - entry.count),
-    reset,
-  };
-}
-
-// ── Unified interface ─────────────────────────────────────────────────────────
-
-const WINDOW_MS = 60_000; // 1 minute sliding window
+const WINDOW_MS = 60_000;
 
 const ROUTE_LIMITS: Record<string, number> = {
   "/api/agent/respond":   20,
@@ -108,11 +30,26 @@ const ROUTE_LIMITS: Record<string, number> = {
   "/api/checkout":        10,
 };
 
+type WindowEntry = { count: number; windowStart: number };
+
+// Module-level store — shared across all requests in the same Node.js process.
+const store = new Map<string, WindowEntry>();
+
+// Prune stale entries every 5 minutes to prevent unbounded memory growth.
+if (typeof setInterval !== "undefined") {
+  setInterval(() => {
+    const cutoff = Date.now() - WINDOW_MS * 2;
+    for (const [key, entry] of store.entries()) {
+      if (entry.windowStart < cutoff) store.delete(key);
+    }
+  }, 5 * 60_000);
+}
+
 function getLimitForPath(pathname: string): number {
   for (const [route, limit] of Object.entries(ROUTE_LIMITS)) {
     if (pathname.startsWith(route)) return limit;
   }
-  return 60; // generous default for other API routes
+  return 60;
 }
 
 function getClientIp(req: NextRequest): string {
@@ -123,6 +60,30 @@ function getClientIp(req: NextRequest): string {
   );
 }
 
+function check(
+  key: string,
+  limit: number
+): { success: boolean; remaining: number; reset: number } {
+  const now         = Date.now();
+  const windowStart = Math.floor(now / WINDOW_MS) * WINDOW_MS;
+  const reset       = windowStart + WINDOW_MS;
+
+  const entry = store.get(key);
+
+  if (!entry || entry.windowStart !== windowStart) {
+    store.set(key, { count: 1, windowStart });
+    return { success: true, remaining: limit - 1, reset };
+  }
+
+  entry.count += 1;
+
+  return {
+    success:   entry.count <= limit,
+    remaining: Math.max(0, limit - entry.count),
+    reset,
+  };
+}
+
 export async function rateLimit(
   req: NextRequest
 ): Promise<{ success: boolean; response?: NextResponse }> {
@@ -131,13 +92,7 @@ export async function rateLimit(
   const limit    = getLimitForPath(pathname);
   const key      = `${pathname}:${ip}`;
 
-  const isUpstash =
-    Boolean(process.env.UPSTASH_REDIS_REST_URL) &&
-    Boolean(process.env.UPSTASH_REDIS_REST_TOKEN);
-
-  const result = isUpstash
-    ? await upstashLimit(key, limit, WINDOW_MS)
-    : memLimit(key, limit, WINDOW_MS);
+  const result = check(key, limit);
 
   if (result.success) return { success: true };
 
@@ -153,10 +108,10 @@ export async function rateLimit(
       {
         status: 429,
         headers: {
-          "Retry-After":        String(retryAfter),
-          "X-RateLimit-Limit":  String(limit),
+          "Retry-After":           String(retryAfter),
+          "X-RateLimit-Limit":     String(limit),
           "X-RateLimit-Remaining": "0",
-          "X-RateLimit-Reset":  String(result.reset),
+          "X-RateLimit-Reset":     String(result.reset),
         },
       }
     ),

@@ -1,7 +1,6 @@
 ﻿"use client";
 
 import { useState } from "react";
-import posthog from "posthog-js";
 
 interface CheckoutButtonProps {
   tier: "foundation" | "application_engine" | "full_accelerator";
@@ -16,9 +15,6 @@ export default function CheckoutButton({ tier, label, highlight }: CheckoutButto
   async function handleClick() {
     setLoading(true);
     setError(null);
-
-    // Track click in PostHog
-    posthog.capture("checkout_initiated", { tier });
 
     try {
       const res = await fetch("/api/checkout", {

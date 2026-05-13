@@ -10,10 +10,6 @@ const serverEnvSchema = z.object({
   ANTHROPIC_API_KEY:        z.string().min(1).optional(),
   GEMINI_API_KEY:           z.string().min(1).optional(),
 
-  // ── Voice ──────────────────────────────────────────────────────────────────
-  ELEVENLABS_API_KEY:       z.string().min(1).optional(),
-  ELEVENLABS_VOICE_ID:      z.string().min(1).optional(),
-
   // ── Supabase (server-side only) ────────────────────────────────────────────
   SUPABASE_SERVICE_ROLE_KEY: z.string().min(1).optional(),
 
@@ -29,10 +25,6 @@ const serverEnvSchema = z.object({
   GOOGLE_SERVICE_ACCOUNT_EMAIL:       z.string().email().optional(),
   GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY: z.string().min(1).optional(),
   GOOGLE_CALENDAR_ID:                 z.string().min(1).optional(),
-
-  // ── Rate limiting (Upstash Redis) ──────────────────────────────────────────
-  UPSTASH_REDIS_REST_URL:   z.string().url().optional(),
-  UPSTASH_REDIS_REST_TOKEN: z.string().min(1).optional(),
 
   // ── Monitoring ─────────────────────────────────────────────────────────────
   SENTRY_DSN:               z.string().url().optional(),
@@ -66,10 +58,7 @@ export const env = validateEnv();
 
 // ── Typed helpers (use these instead of process.env) ────────────────────────
 
-export const isAnthropicConfigured  = () => Boolean(process.env.ANTHROPIC_API_KEY);
-export const isGeminiConfigured     = () => Boolean(process.env.GEMINI_API_KEY);
-export const isElevenLabsConfigured = () => Boolean(process.env.ELEVENLABS_API_KEY);
-export const isSupabaseConfigured   = () =>
+export const isAnthropicConfigured = () => Boolean(process.env.ANTHROPIC_API_KEY);
+export const isGeminiConfigured    = () => Boolean(process.env.GEMINI_API_KEY);
+export const isSupabaseConfigured  = () =>
   Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY);
-export const isUpstashConfigured    = () =>
-  Boolean(process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN);
