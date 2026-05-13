@@ -483,6 +483,111 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ── WHY BANKS CHOOSE SUPRACLOUD ── */}
+      <section className="relative py-24 px-4">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] rounded-full bg-[rgba(0,245,255,0.025)] blur-3xl" />
+        </div>
+        <div className="max-w-6xl mx-auto">
+          <motion.div
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">
+              Why Banks Choose SupraCloud
+            </h2>
+            <p className="text-white/40 text-lg max-w-xl mx-auto">
+              Not another AI vendor. An engineering partner that delivers in regulated environments.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {[
+              {
+                icon: "🔒",
+                title: "Data Never Leaves Your Perimeter",
+                desc: "Every agent runs inside your own AWS or Azure tenant. We never touch your customer data — NDA before discovery call is a hard requirement.",
+                tag: "Zero Data Exfiltration",
+                variant: "cyan" as const,
+              },
+              {
+                icon: "🏛",
+                title: "FCA-Ready from Day One",
+                desc: "Explainable AI decisions, full audit trails, and regulatory documentation built into every agent — not bolted on afterwards.",
+                tag: "Regulatory Compliance",
+                variant: "default" as const,
+              },
+              {
+                icon: "⚡",
+                title: "Live in 4–6 Weeks",
+                desc: "Contained agents from discovery to production in 4–6 weeks. Multi-agent platforms in 3–6 months. No 18-month transformation programmes.",
+                tag: "Fast Deployment",
+                variant: "cyan" as const,
+              },
+              {
+                icon: "🧠",
+                title: "Self-Improving Agents",
+                desc: "Agents learn from every real interaction through feedback loops. Deflection rates improve week over week without manual retraining.",
+                tag: "Continuous Learning",
+                variant: "default" as const,
+              },
+              {
+                icon: "🔗",
+                title: "No Rip-and-Replace",
+                desc: "We integrate with your existing core banking systems, ERPs, and CRMs via API. No infrastructure migration required.",
+                tag: "Legacy Compatible",
+                variant: "cyan" as const,
+              },
+              {
+                icon: "👷",
+                title: "Engineer-Led, Not Sales-Led",
+                desc: "Every engagement starts with an engineer on the call — not an account manager. You get a realistic technical estimate on the first call.",
+                tag: "Engineer First",
+                variant: "default" as const,
+              },
+            ].map((item, i) => (
+              <motion.div
+                key={item.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.07 }}
+              >
+                <HolographicCard variant={item.variant} className="p-6 h-full group" tilt={false}>
+                  <div className="flex flex-col h-full">
+                    <div className="flex items-start justify-between mb-4">
+                      <span className="text-3xl">{item.icon}</span>
+                      <span className="text-[10px] font-bold tracking-wider px-2 py-0.5 rounded-full"
+                        style={{ background: "rgba(0,245,255,0.07)", color: "rgba(0,245,255,0.6)", border: "1px solid rgba(0,245,255,0.15)" }}>
+                        {item.tag}
+                      </span>
+                    </div>
+                    <h3 className="text-white font-bold text-base mb-2 group-hover:text-[#00F5FF] transition-colors leading-snug">
+                      {item.title}
+                    </h3>
+                    <p className="text-white/45 text-sm leading-relaxed flex-1">{item.desc}</p>
+                  </div>
+                </HolographicCard>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div
+            className="flex justify-center mt-10"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.5 }}
+          >
+            <GlowButton variant="cyan" size="lg" href="/solutions/banking">
+              See Banking Agent in Action
+            </GlowButton>
+          </motion.div>
+        </div>
+      </section>
+
       {/* ── NOVA DEMO PREVIEW ── */}
       <section className="relative py-20 px-4">
         <div className="max-w-5xl mx-auto">

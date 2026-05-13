@@ -80,22 +80,19 @@ export function FloatingNovaButton({
               transition={{ duration: 2, repeat: Infinity, delay: 0.4, ease: "easeOut" }}
             />
 
-            {/* Nova icon — waveform */}
-            <svg
-              width="28"
-              height="28"
-              viewBox="0 0 28 28"
-              fill="none"
-              aria-hidden
-            >
-              {/* Mic + sound waves */}
-              <rect x="11" y="4" width="6" height="12" rx="3" fill="black" />
-              <path
-                d="M7 14a7 7 0 0014 0"
-                stroke="black" strokeWidth="2" strokeLinecap="round"
-              />
-              <line x1="14" y1="21" x2="14" y2="24" stroke="black" strokeWidth="2" strokeLinecap="round" />
-              <line x1="10" y1="24" x2="18" y2="24" stroke="black" strokeWidth="2" strokeLinecap="round" />
+            {/* Nova neural orb icon */}
+            <svg width="28" height="28" viewBox="0 0 32 32" fill="none" aria-hidden>
+              <circle cx="16" cy="16" r="8"  fill="rgba(0,0,0,0.35)" />
+              <circle cx="16" cy="16" r="4"  fill="rgba(0,0,0,0.6)" />
+              <circle cx="16" cy="16" r="2"  fill="black" />
+              <circle cx="16" cy="8"  r="2"  fill="black" opacity="0.8" />
+              <circle cx="16" cy="24" r="2"  fill="black" opacity="0.8" />
+              <circle cx="8"  cy="16" r="2"  fill="black" opacity="0.8" />
+              <circle cx="24" cy="16" r="2"  fill="black" opacity="0.8" />
+              <line x1="16" y1="13" x2="16" y2="10" stroke="black" strokeWidth="1.5" opacity="0.7" />
+              <line x1="16" y1="22" x2="16" y2="19" stroke="black" strokeWidth="1.5" opacity="0.7" />
+              <line x1="10" y1="16" x2="13" y2="16" stroke="black" strokeWidth="1.5" opacity="0.7" />
+              <line x1="19" y1="16" x2="22" y2="16" stroke="black" strokeWidth="1.5" opacity="0.7" />
             </svg>
 
             {/* Unread badge */}

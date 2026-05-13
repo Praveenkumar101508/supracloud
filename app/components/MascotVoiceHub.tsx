@@ -217,6 +217,18 @@ export default function MascotVoiceHub() {
     return () => document.removeEventListener("nova:open", handler);
   }, [open]);
 
+  // Proactive auto-open: 14 s after first visit (never repeats — stored in sessionStorage)
+  useEffect(() => {
+    try {
+      if (sessionStorage.getItem("nova_has_interacted") === "1") return;
+    } catch { /* ignore */ }
+    const t = setTimeout(() => {
+      open();
+    }, 14_000);
+    return () => clearTimeout(t);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // Count unread (nova messages since closed)
   const [unreadCount, setUnreadCount] = useState(0);
   const lastSeenCountRef = useRef(0);
