@@ -7,6 +7,7 @@
  */
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
+import { rateLimit } from "@/lib/rateLimiter";
 
 const FeedbackSchema = z.object({
   messageId: z.string().uuid("messageId must be a valid UUID."),
@@ -14,6 +15,9 @@ const FeedbackSchema = z.object({
 });
 
 export async function POST(req: NextRequest) {
+  const rl = await rateLimit(req);
+  if (!rl.success) return rl.response!;
+
   let body: unknown;
   try {
     body = await req.json();

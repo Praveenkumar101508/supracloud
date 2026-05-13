@@ -6,6 +6,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { sanitiseText } from "@/lib/sanitize";
+import { rateLimit } from "@/lib/rateLimiter";
+import { createClient } from "@supabase/supabase-js";
 
 const UpsertSchema = z.object({
   sessionId:   z.string().min(1).max(100),
@@ -18,13 +20,14 @@ function getSupabase() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (!url || !key) return null;
-  const { createClient } = require("@supabase/supabase-js");
   return createClient(url, key);
 }
 
 // ── GET — restore session ─────────────────────────────────────────────────────
 
 export async function GET(req: NextRequest) {
+  const rl = await rateLimit(req);
+  if (!rl.success) return rl.response!;
   const sessionId = new URL(req.url).searchParams.get("sessionId");
   if (!sessionId || sessionId.length > 100) {
     return NextResponse.json({ messages: [], visitorName: "" }, { status: 200 });
@@ -68,6 +71,9 @@ export async function GET(req: NextRequest) {
 // ── POST — store message ──────────────────────────────────────────────────────
 
 export async function POST(req: NextRequest) {
+  const rl = await rateLimit(req);
+  if (!rl.success) return rl.response!;
+
   let body: unknown;
   try {
     body = await req.json();

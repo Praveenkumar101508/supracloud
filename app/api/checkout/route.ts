@@ -1,6 +1,7 @@
 import Stripe from "stripe";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
+import { rateLimit } from "@/lib/rateLimiter";
 
 const ALLOWED_TIERS = ["foundation", "application_engine", "full_accelerator"] as const;
 
@@ -18,6 +19,9 @@ const PRICE_IDS: Record<typeof ALLOWED_TIERS[number], string> = {
 };
 
 export async function POST(req: NextRequest) {
+  const rl = await rateLimit(req);
+  if (!rl.success) return rl.response!;
+
   if (!process.env.STRIPE_SECRET_KEY) {
     return NextResponse.json(
       { error: "Checkout is not configured." },
