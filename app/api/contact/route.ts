@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { Resend } from "resend";
 import { sanitiseText } from "@/lib/sanitize";
+import { rateLimit } from "@/lib/rateLimiter";
 
 const TO_EMAIL = "rk@supracloud.co.uk";
 
@@ -18,6 +19,9 @@ const ContactSchema = z.object({
 });
 
 export async function POST(req: NextRequest) {
+  const rl = await rateLimit(req);
+  if (!rl.success) return rl.response!;
+
   let body: unknown;
   try {
     body = await req.json();

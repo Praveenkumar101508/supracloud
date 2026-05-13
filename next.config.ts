@@ -3,37 +3,51 @@ import type { NextConfig } from "next";
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://supracloud.co.uk";
 
 // ── CSP directive builder ─────────────────────────────────────────────────────
-// Kept as a function so it can include a nonce in future if needed.
 function buildCsp(): string {
   const directives: Record<string, string[]> = {
     "default-src":     ["'self'"],
     "script-src":      [
       "'self'",
-      "'unsafe-inline'",           // Required by Next.js inline scripts
+      "'unsafe-inline'",           // Required by Next.js inline scripts + Tailwind
       "https://js.stripe.com",
       "https://www.googletagmanager.com",
     ],
     "style-src":       ["'self'", "'unsafe-inline'"], // Tailwind inline styles
-    "img-src":         ["'self'", "data:", "blob:", "https:"],
+    "img-src":         [
+      "'self'",
+      "data:",
+      "blob:",
+      "https://*.supabase.co",     // Supabase storage images only (not https:)
+      "https://www.googletagmanager.com",
+      "https://www.google-analytics.com",
+    ],
     "font-src":        ["'self'", "data:", "https://fonts.gstatic.com"],
     "media-src":       ["'self'", "blob:"],
     "connect-src":     [
       "'self'",
       "https://*.supabase.co",
+      "wss://*.supabase.co",
       "https://api.anthropic.com",
       "https://generativelanguage.googleapis.com",
       "https://oauth2.googleapis.com",
       "https://www.googleapis.com",
       "https://o*.ingest.sentry.io",
-      "wss://*.supabase.co",
+      "https://www.googletagmanager.com",
+      "https://www.google-analytics.com",
+      "https://region1.google-analytics.com",
     ],
-    "frame-src":       ["https://js.stripe.com", "https://calendly.com"],
+    "frame-src":       [
+      "https://js.stripe.com",
+      "https://hooks.stripe.com",
+      "https://calendly.com",
+    ],
     "frame-ancestors": ["'none'"],
     "object-src":      ["'none'"],
     "base-uri":        ["'self'"],
     "form-action":     ["'self'", "https://js.stripe.com"],
     "worker-src":      ["'self'", "blob:"],           // Three.js workers
     "manifest-src":    ["'self'"],
+    "child-src":       ["'self'", "blob:"],
     "upgrade-insecure-requests": [],
   };
 
@@ -51,10 +65,12 @@ const securityHeaders = [
   },
   {
     key:   "Strict-Transport-Security",
+    // 2 years, preload — tells browsers to HTTPS-only, prevents downgrade attacks
     value: "max-age=63072000; includeSubDomains; preload",
   },
   {
     key:   "X-Frame-Options",
+    // DENY prevents clickjacking — belt-and-suspenders with CSP frame-ancestors
     value: "DENY",
   },
   {
@@ -67,12 +83,43 @@ const securityHeaders = [
   },
   {
     key:   "Permissions-Policy",
-    // Only allow microphone on same origin (Nova voice input), nothing else
-    value: "camera=(), microphone=(self), geolocation=(), interest-cohort=()",
+    // Explicitly deny every powerful feature; allow microphone only on self for Nova voice
+    value: [
+      "accelerometer=()",
+      "ambient-light-sensor=()",
+      "autoplay=()",
+      "battery=()",
+      "camera=()",
+      "display-capture=()",
+      "document-domain=()",
+      "encrypted-media=()",
+      "execution-while-not-rendered=()",
+      "execution-while-out-of-viewport=()",
+      "fullscreen=(self)",
+      "geolocation=()",
+      "gyroscope=()",
+      "interest-cohort=()",
+      "keyboard-map=()",
+      "magnetometer=()",
+      "microphone=(self)",
+      "midi=()",
+      "navigation-override=()",
+      "payment=(self https://js.stripe.com)",
+      "picture-in-picture=()",
+      "publickey-credentials-get=()",
+      "screen-wake-lock=()",
+      "serial=()",
+      "speaker-selection=()",
+      "sync-xhr=()",
+      "usb=()",
+      "web-share=()",
+      "xr-spatial-tracking=()",
+    ].join(", "),
   },
   {
     key:   "X-DNS-Prefetch-Control",
-    value: "on",
+    // "off" prevents information leakage via DNS timing side-channels
+    value: "off",
   },
   {
     key:   "X-XSS-Protection",
@@ -90,6 +137,11 @@ const securityHeaders = [
     key:   "Cross-Origin-Resource-Policy",
     value: "same-origin",
   },
+  {
+    // Prevent server technology fingerprinting
+    key:   "X-Powered-By",
+    value: "",
+  },
 ];
 
 const nextConfig: NextConfig = {
@@ -98,7 +150,14 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/(.*)",
-        headers: securityHeaders,
+        headers: securityHeaders.filter(h => h.value !== ""), // skip empty-value entries
+      },
+      // Relax COEP for Stripe-framed payment pages only
+      {
+        source: "/api/checkout",
+        headers: [
+          { key: "Cross-Origin-Embedder-Policy", value: "unsafe-none" },
+        ],
       },
     ];
   },
@@ -106,7 +165,6 @@ const nextConfig: NextConfig = {
   // ── Redirects (permanent 301) ──────────────────────────────────────────────
   async redirects() {
     return [
-      // Legacy B2C URLs → canonical B2B URLs
       { source: "/solutions/supermarket",  destination: "/solutions/retail",   permanent: true },
       { source: "/services/it-staffing",   destination: "/services/staffing",  permanent: true },
       { source: "/careers/internships",    destination: "/talent/internships", permanent: true },
