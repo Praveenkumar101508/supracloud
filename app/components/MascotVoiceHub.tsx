@@ -241,15 +241,16 @@ export default function MascotVoiceHub() {
     return () => document.removeEventListener("nova:open", handler);
   }, [open]);
 
-  // Proactive auto-open: 15 s after first visit per session (sessionStorage prevents repeat)
+  // Proactive auto-open: 12–18 s after first visit per session (random to feel natural)
   useEffect(() => {
     try {
       if (sessionStorage.getItem("nova_has_interacted") === "1") return;
     } catch { /* ignore */ }
+    const delay = 12_000 + Math.random() * 6_000; // 12 – 18 s
     const t = setTimeout(() => {
       try { sessionStorage.setItem("nova_has_interacted", "1"); } catch { /* ignore */ }
       open();
-    }, 15_000);
+    }, delay);
     return () => clearTimeout(t);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

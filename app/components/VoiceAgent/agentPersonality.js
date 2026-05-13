@@ -15,7 +15,11 @@ export const PAGE_AUTO_OPEN_DELAY = {
 // ── Opening ───────────────────────────────────────────────────────────────────
 
 export const ASK_NAME_SCRIPT =
-  "Hey there! I'm Nova, your friendly and highly capable SupraCloud AI companion. I'm here to help you with AI agents for banking and retail, talent programmes, IT staffing, or anything else you need. What would you like to explore today?";
+  "Hey there! I'm Nova, your friendly and highly capable SupraCloud AI companion. I'm here to help you with AI agents for banking and retail, talent programmes, IT staffing, or anything else you need. What would you like to explore today?"
+
+// Visual greeting shown in the chat bubble (may include emoji, not spoken aloud)
+export const ASK_NAME_SCRIPT_VISUAL =
+  "Hey there! 👋 I'm Nova, your friendly and highly capable SupraCloud AI companion. I'm here to help you with AI agents for banking & retail, talent, or anything else. What would you like to explore today?";
 
 export const GREET_BY_NAME = (name) =>
   `Lovely to meet you, ${name}! What can I help you with today?`;

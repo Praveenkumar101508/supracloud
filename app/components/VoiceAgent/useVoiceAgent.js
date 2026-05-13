@@ -3,7 +3,7 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 import {
   KNOWLEDGE_BASE, PAGE_SCRIPTS, DEFAULT_PAGE_SCRIPT,
-  ASK_NAME_SCRIPT, GREET_BY_NAME, GREET_RETURNING,
+  ASK_NAME_SCRIPT, ASK_NAME_SCRIPT_VISUAL, GREET_BY_NAME, GREET_RETURNING,
   LEAD_CAPTURE_INTRO, LEAD_QUESTIONS, LEAD_CONFIRM, LEAD_CONFIRM_NO_EMAIL,
   PROACTIVE_CTA, INACTIVITY_REMINDER, DEMO_INTENT_TAGS,
   PRICING_DATA, calculateRoiResult,
@@ -291,17 +291,18 @@ export function useVoiceAgent() {
 
   // ── Core speak ─────────────────────────────────────────────────────────────
 
-  const speak = useCallback(async (text, { skipPersist = false } = {}) => {
+  const speak = useCallback(async (text, { skipPersist = false, visualText } = {}) => {
     const localId = nextLocalId();
     let dbMessageId = null;
+    const displayText = visualText || text;
 
     if (!skipPersist && sessionId.current) {
       dbMessageId = await persistMessage(
-        sessionId.current, nameRef.current, "nova", text
+        sessionId.current, nameRef.current, "nova", displayText
       );
     }
 
-    const msgObj = { role: "nova", text, id: localId, messageId: dbMessageId };
+    const msgObj = { role: "nova", text: displayText, id: localId, messageId: dbMessageId };
 
     if (mutedRef.current) {
       setMessages((prev) => [...prev, msgObj]);
@@ -522,7 +523,7 @@ export function useVoiceAgent() {
       } else {
         setStage("ask_name");
         setMessages([]);
-        await speakAndResetTimer(ASK_NAME_SCRIPT, false, { skipPersist: true });
+        await speakAndResetTimer(ASK_NAME_SCRIPT, false, { skipPersist: true, visualText: ASK_NAME_SCRIPT_VISUAL });
       }
     }
   }, [saveName, speakAndResetTimer]);
