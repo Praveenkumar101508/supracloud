@@ -345,6 +345,10 @@ export default function MascotVoiceHub() {
   };
   const stateColor = STATE_COLOR[novaState];
 
+  // Derived counts — declared early so all useEffect dependency arrays can reference them
+  const userMessageCount = (rawMessages as NovaMessage[]).filter((m) => m.role === "user").length;
+  const showBookingNudge = userMessageCount >= 3 && !nudgeDismissed;
+
   // ── Web Audio API: tap microphone when listening ───────────────────────────
 
   useEffect(() => {
@@ -409,9 +413,6 @@ export default function MascotVoiceHub() {
   useEffect(() => {
     if (!isOpen) setNudgeDismissed(false);
   }, [isOpen]);
-
-  const userMessageCount = messages.filter((m) => m.role === "user").length;
-  const showBookingNudge = userMessageCount >= 3 && !nudgeDismissed;
 
   // Track nova opened
   useEffect(() => {

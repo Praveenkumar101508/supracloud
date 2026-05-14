@@ -196,7 +196,7 @@ export function FAQSection() {
             <GlowButton
               variant="cyan"
               size="md"
-              onClick={() => document.dispatchEvent(new CustomEvent("nova:open"))}
+              onClick={() => { document.dispatchEvent(new CustomEvent("nova:open")); }}
             >
               Ask Nova Now
             </GlowButton>

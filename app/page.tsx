@@ -18,7 +18,7 @@ import { TestimonialRotator } from "./components/ui/TestimonialRotator";
 import { RegulatedEnvironments } from "./components/sections/RegulatedEnvironments";
 import { HowItWorks } from "./components/sections/HowItWorks";
 import { TeamCredibility } from "./components/sections/TeamCredibility";
-import { PricingTiers } from "./components/sections/PricingTiers";
+import { EnterprisePlans } from "./components/sections/EnterprisePlans";
 import { FAQSection } from "./components/sections/FAQSection";
 import { CaseStudies } from "./components/sections/CaseStudies";
 import { ResourcesTeaser } from "./components/sections/ResourcesTeaser";
@@ -576,8 +576,8 @@ export default function HomePage() {
       {/* ── TEAM CREDIBILITY ── */}
       <TeamCredibility />
 
-      {/* ── PRICING ── */}
-      <PricingTiers />
+      {/* ── ENTERPRISE PLANS ── */}
+      <EnterprisePlans />
 
       {/* ── FAQ ── */}
       <FAQSection />
