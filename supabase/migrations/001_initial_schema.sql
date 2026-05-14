@@ -1,5 +1,11 @@
--- SupraCloud — initial database schema
+-- SupraCloud — complete database schema (all 7 tables)
 -- Run this in Supabase: SQL Editor → paste → Run
+
+-- ── 0. Extensions ────────────────────────────────────────────────────────────
+-- pgvector: required for nova_knowledge semantic search embeddings
+
+create extension if not exists vector with schema extensions;
+
 
 -- ── 1. nova_sessions ─────────────────────────────────────────────────────────
 -- Stores one row per Nova chat session (browser tab / visitor)
@@ -91,15 +97,61 @@ create index if not exists sc_bookings_email_idx      on sc_bookings (email);
 create index if not exists sc_bookings_slot_start_idx on sc_bookings (slot_start);
 
 
+-- ── 6. nova_feedback ─────────────────────────────────────────────────────────
+-- Thumbs up/down feedback on individual Nova messages
+
+create table if not exists nova_feedback (
+  id          uuid primary key default gen_random_uuid(),
+  message_id  uuid unique not null,
+  helpful     boolean not null,
+  created_at  timestamptz not null default now()
+);
+
+create index if not exists nova_feedback_message_idx    on nova_feedback (message_id);
+create index if not exists nova_feedback_created_at_idx on nova_feedback (created_at desc);
+
+
+-- ── 7. nova_knowledge ────────────────────────────────────────────────────────
+-- RAG knowledge base — text chunks + pgvector embeddings for semantic search
+
+create table if not exists nova_knowledge (
+  id         uuid primary key default gen_random_uuid(),
+  chunk_id   text unique not null,
+  content    text not null,
+  metadata   jsonb,
+  embedding  extensions.vector(1536),
+  created_at timestamptz not null default now()
+);
+
+-- Full-text search index (used by /api/agent/knowledge route)
+create index if not exists nova_knowledge_content_fts_idx
+  on nova_knowledge
+  using gin (to_tsvector('english', content));
+
+-- Vector similarity index — build AFTER seeding (needs rows to tune lists)
+-- Run this separately once the knowledge base has been seeded:
+--
+--   create index nova_knowledge_embedding_idx
+--     on nova_knowledge
+--     using ivfflat (embedding extensions.vector_cosine_ops)
+--     with (lists = 100);
+--
+-- Until then the cosine similarity query falls back to a sequential scan (fine for small datasets).
+
+create index if not exists nova_knowledge_created_at_idx on nova_knowledge (created_at desc);
+
+
 -- ── Row Level Security ────────────────────────────────────────────────────────
 -- All tables are private — only accessible via service_role key (server-side)
 -- The anon key cannot read or write any of these tables
 
-alter table nova_sessions enable row level security;
-alter table nova_messages  enable row level security;
-alter table nova_leads     enable row level security;
-alter table audit_log      enable row level security;
-alter table sc_bookings    enable row level security;
+alter table nova_sessions   enable row level security;
+alter table nova_messages   enable row level security;
+alter table nova_leads      enable row level security;
+alter table audit_log       enable row level security;
+alter table sc_bookings     enable row level security;
+alter table nova_feedback   enable row level security;
+alter table nova_knowledge  enable row level security;
 
 -- No public policies — service_role bypasses RLS automatically
 -- This means: your API routes (server-side) can read/write freely
