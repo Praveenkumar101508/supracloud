@@ -10,6 +10,19 @@ import { TrustBadgeRow } from "./components/ui/TrustBadge";
 import { AnimatedCounter } from "./components/ui/AnimatedCounter";
 import { SocialProof } from "./components/ui/SocialProof";
 import { ClientPortalTeaser } from "./components/ui/ClientPortalTeaser";
+import { StickyScrollCTA } from "./components/ui/StickyScrollCTA";
+import { ExitIntentModal } from "./components/ui/ExitIntentModal";
+import { ROICalculator } from "./components/ui/ROICalculator";
+import { ComparisonTable } from "./components/ui/ComparisonTable";
+import { TestimonialRotator } from "./components/ui/TestimonialRotator";
+import { RegulatedEnvironments } from "./components/sections/RegulatedEnvironments";
+import { HowItWorks } from "./components/sections/HowItWorks";
+import { TeamCredibility } from "./components/sections/TeamCredibility";
+import { PricingTiers } from "./components/sections/PricingTiers";
+import { FAQSection } from "./components/sections/FAQSection";
+import { CaseStudies } from "./components/sections/CaseStudies";
+import { ResourcesTeaser } from "./components/sections/ResourcesTeaser";
+import { FinalCTA } from "./components/sections/FinalCTA";
 
 const NeuralBackground = dynamic(
   () => import("./components/3d/NeuralBackground").then((m) => m.NeuralBackground),
@@ -138,108 +151,6 @@ const PROCESS = [
   { step: "04", title: "Self-Learning",   desc: "Agents improve from real interactions via feedback loops — deflection rates grow over time." },
 ];
 
-// ── Testimonials ──────────────────────────────────────────────────────────────
-
-const TESTIMONIALS = [
-  {
-    quote: "We went from 40% CSAT on our customer portal to 91% in three months after deploying SupraCloud's agent. The FCA compliance work was rigorous and thorough.",
-    name: "Head of Digital Transformation",
-    org: "UK Retail Bank (anonymised)",
-  },
-  {
-    quote: "The engineer-first approach made a real difference. They understood our stack on day one and didn't waste time on discovery theatre.",
-    name: "CTO",
-    org: "Fintech Scale-up, London",
-  },
-  {
-    quote: "SupraCloud's Talent Programme placed three engineers who are now leading our internal AI platform. Hands-on from week one, not tutorials.",
-    name: "Engineering Director",
-    org: "FTSE 250 Retail Group",
-  },
-];
-
-// ── ROI Calculator strip ───────────────────────────────────────────────────────
-
-function ROIStrip() {
-  const [volume, setVolume]   = useState(10000);
-  const deflectionRate        = 0.72;
-  const costPerQuery          = 2.5; // £
-  const monthlySaving         = Math.round(volume * deflectionRate * costPerQuery);
-
-  return (
-    <section className="relative py-24 px-4">
-      <div className="max-w-4xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <HolographicCard variant="cyan" className="p-8 md:p-12">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">
-                Quick ROI Estimate
-              </h2>
-              <p className="text-white/50 text-sm">
-                Drag to set your monthly query volume
-              </p>
-            </div>
-
-            <div className="space-y-6">
-              <div>
-                <div className="flex justify-between text-sm text-white/60 mb-2">
-                  <span>Monthly queries / transactions</span>
-                  <span className="text-[#00F5FF] font-bold">{volume.toLocaleString()}</span>
-                </div>
-                <input
-                  type="range"
-                  min={500}
-                  max={500000}
-                  step={500}
-                  value={volume}
-                  onChange={(e) => setVolume(Number(e.target.value))}
-                  className="w-full h-1.5 rounded-full appearance-none cursor-pointer"
-                  style={{
-                    background: `linear-gradient(to right, #00F5FF ${(volume / 500000) * 100}%, rgba(255,255,255,0.1) ${(volume / 500000) * 100}%)`,
-                  }}
-                  aria-label="Monthly query volume"
-                />
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4">
-                {[
-                  { label: "Deflected Queries", value: Math.round(volume * deflectionRate).toLocaleString(), color: "#00F5FF" },
-                  { label: "Est. Monthly Saving", value: `£${monthlySaving.toLocaleString()}`, color: "#8B5CF6" },
-                  { label: "Est. Annual Saving",  value: `£${(monthlySaving * 12).toLocaleString()}`, color: "#00F5FF" },
-                ].map((stat) => (
-                  <div
-                    key={stat.label}
-                    className="text-center p-4 rounded-xl"
-                    style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)" }}
-                  >
-                    <div className="text-2xl font-bold mb-1" style={{ color: stat.color }}>
-                      {stat.value}
-                    </div>
-                    <div className="text-white/40 text-xs">{stat.label}</div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="text-center pt-2">
-                <p className="text-white/30 text-xs mb-4">
-                  Based on 72% deflection at £{costPerQuery}/query. Book a discovery call for a precise estimate.
-                </p>
-                <GlowButton variant="cyan" size="lg" href="/book">
-                  Book a Free Discovery Call
-                </GlowButton>
-              </div>
-            </div>
-          </HolographicCard>
-        </motion.div>
-      </div>
-    </section>
-  );
-}
 
 // ── Main page ─────────────────────────────────────────────────────────────────
 
@@ -249,6 +160,10 @@ export default function HomePage() {
 
   return (
     <main className="relative min-h-screen bg-[#050510] text-white overflow-x-hidden">
+      {/* Conversion layer — always present */}
+      <StickyScrollCTA />
+      <ExitIntentModal />
+
       {/* Fixed neural particle background */}
       <NeuralBackground />
 
@@ -268,58 +183,60 @@ export default function HomePage() {
             <NovaSphere state="idle" />
           </motion.div>
 
-          {/* Badge */}
+          {/* Status badge */}
           <motion.div
-            className="flex items-center gap-2 px-4 py-1.5 rounded-full mb-5 text-xs font-semibold text-[#00F5FF]"
+            className="flex items-center gap-2 px-4 py-1.5 rounded-full mb-6 text-xs font-semibold text-[#00F5FF]"
             style={{ background: "rgba(0,245,255,0.08)", border: "1px solid rgba(0,245,255,0.2)" }}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.25 }}
           >
             <span className="w-1.5 h-1.5 rounded-full bg-[#00F5FF] animate-pulse" />
-            Nova AI · Now Live · UK-Based
+            Systems operational · UK-Based · Engineer-led
           </motion.div>
 
-          {/* Brand name */}
-          <motion.div
-            className="mb-4"
+          {/* Primary headline — benefit-first */}
+          <motion.h1
+            className="text-4xl sm:text-5xl md:text-7xl font-black leading-[1.05] tracking-tight mb-4"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.35, duration: 0.6 }}
+            transition={{ delay: 0.35, duration: 0.65 }}
           >
+            <span className="text-white">Cut Support Costs.</span>
+            <br />
             <span
-              className="text-5xl sm:text-7xl md:text-8xl font-black tracking-tight"
               style={{
-                background: "linear-gradient(135deg, #ffffff 0%, #00F5FF 50%, #8B5CF6 100%)",
+                background: "linear-gradient(135deg, #00F5FF 0%, #8B5CF6 60%, #0070FF 100%)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text",
-                filter: "drop-shadow(0 0 32px rgba(0,245,255,0.35))",
+                filter: "drop-shadow(0 0 24px rgba(0,245,255,0.3))",
               }}
             >
-              SupraCloud
+              Deploy in 6 Weeks.
             </span>
-          </motion.div>
+          </motion.h1>
 
-          {/* Headline */}
-          <motion.h1
-            className="text-2xl sm:text-3xl md:text-4xl font-bold text-white/80 leading-snug tracking-tight mb-6"
-            initial={{ opacity: 0, y: 16 }}
+          {/* Typewriter secondary line */}
+          <motion.div
+            className="text-xl sm:text-2xl md:text-3xl font-bold text-white/60 mb-6"
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.45, duration: 0.6 }}
           >
-            Enterprise AI for <TypewriterWord />
-          </motion.h1>
+            Autonomous AI for <TypewriterWord />
+          </motion.div>
 
           {/* Sub */}
           <motion.p
-            className="text-lg md:text-xl text-white/55 max-w-2xl leading-relaxed mb-10"
+            className="text-base md:text-lg text-white/50 max-w-2xl leading-relaxed mb-10"
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.55, duration: 0.6 }}
           >
-            SupraCloud builds production-grade autonomous AI agents for banking and retail,
-            deployed within your cloud tenant — engineer-led, FCA-aware, and self-improving.
+            Production-grade autonomous AI agents built inside your cloud tenant —
+            FCA-compliant by design, self-improving from day one, zero data exfiltration.
+            Your engineer is on the first call.
           </motion.p>
 
           {/* CTAs */}
@@ -337,7 +254,7 @@ export default function HomePage() {
               size="lg"
               onClick={() => { document.dispatchEvent(new CustomEvent("nova:open")); }}
             >
-              Try Nova Now
+              Talk to Nova Live
             </GlowButton>
             <GlowButton variant="outline" size="lg" href="/solutions/banking">
               See Banking Demo
@@ -642,99 +559,40 @@ export default function HomePage() {
       </section>
 
       {/* ── ROI CALCULATOR ── */}
-      <ROIStrip />
+      <ROICalculator />
 
-      {/* ── TESTIMONIALS ── */}
-      <section className="relative py-24 px-4">
-        <div className="max-w-6xl mx-auto">
-          <motion.div
-            className="text-center mb-16"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">
-              Proven in Production
-            </h2>
-            <p className="text-white/40 text-lg">Results shared under NDA — anonymised here with permission.</p>
-          </motion.div>
+      {/* ── TESTIMONIALS (auto-rotating) ── */}
+      <TestimonialRotator />
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {TESTIMONIALS.map((t, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.12 }}
-              >
-                <HolographicCard
-                  variant={i === 1 ? "cyan" : "default"}
-                  className="p-6 h-full flex flex-col"
-                >
-                  {/* Stars */}
-                  <div className="flex gap-0.5 mb-4">
-                    {Array.from({ length: 5 }).map((_, j) => (
-                      <svg key={j} width="14" height="14" viewBox="0 0 24 24" fill="#00F5FF">
-                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                      </svg>
-                    ))}
-                  </div>
-                  <blockquote className="text-white/70 text-sm leading-relaxed flex-1 mb-4 italic">
-                    "{t.quote}"
-                  </blockquote>
-                  <div>
-                    <div className="text-white text-sm font-semibold">{t.name}</div>
-                    <div className="text-white/35 text-xs">{t.org}</div>
-                  </div>
-                </HolographicCard>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* ── COMPARISON TABLE ── */}
+      <ComparisonTable />
+
+      {/* ── REGULATED ENVIRONMENTS ── */}
+      <RegulatedEnvironments />
+
+      {/* ── HOW IT WORKS ── */}
+      <HowItWorks />
+
+      {/* ── TEAM CREDIBILITY ── */}
+      <TeamCredibility />
+
+      {/* ── PRICING ── */}
+      <PricingTiers />
+
+      {/* ── FAQ ── */}
+      <FAQSection />
+
+      {/* ── CASE STUDIES ── */}
+      <CaseStudies />
 
       {/* ── CLIENT PORTAL TEASER ── */}
       <ClientPortalTeaser />
 
+      {/* ── RESOURCES / BLOG TEASER ── */}
+      <ResourcesTeaser />
+
       {/* ── FINAL CTA ── */}
-      <section className="relative py-32 px-4 overflow-hidden">
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background:
-              "radial-gradient(ellipse 70% 60% at 50% 50%, rgba(0,245,255,0.06) 0%, transparent 70%), " +
-              "radial-gradient(ellipse 50% 40% at 80% 20%, rgba(139,92,246,0.06) 0%, transparent 60%)",
-          }}
-        />
-        <div className="relative max-w-3xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 32 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
-          >
-            <h2 className="text-4xl md:text-6xl font-black leading-tight mb-6">
-              Ready to Deploy
-              <br />
-              <span className="gradient-text-nova">Your First Agent?</span>
-            </h2>
-            <p className="text-white/50 text-lg mb-10 max-w-xl mx-auto">
-              Book a 30-minute discovery call. Engineer-led, no sales deck.
-              We'll give you a realistic estimate on the same call.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4 mb-8">
-              <GlowButton variant="cyan" size="lg" href="/book">
-                Book Discovery Call
-              </GlowButton>
-              <GlowButton variant="outline" size="lg" href="/contact">
-                Send Us a Message
-              </GlowButton>
-            </div>
-            <TrustBadgeRow className="justify-center" />
-          </motion.div>
-        </div>
-      </section>
+      <FinalCTA />
     </main>
   );
 }

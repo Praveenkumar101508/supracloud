@@ -6,6 +6,7 @@ import { Providers } from "./providers";
 import { AIStateProvider } from "./context/AIState";
 import { BootOverlay } from "./components/BootOverlay";
 import ClientShell from "./components/ClientShell";
+import { ScrollProgressBar } from "./components/ui/ScrollProgressBar";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -55,8 +56,14 @@ export const metadata: Metadata = {
     title:     "SupraCloud | Enterprise AI Agents for Banking & Retail",
     description:
       "Production-grade autonomous AI agents for UK banking and retail — compliance-native, engineer-led, measurable SLAs from week one.",
-    images: [{ url: "/og-image.jpg", width: 1200, height: 630,
-      alt: "SupraCloud — Enterprise AI Agent Development" }],
+    images: [
+      {
+        url: `/api/og?title=${encodeURIComponent("Enterprise AI Agents for Banking & Retail")}&subtitle=${encodeURIComponent("Production-grade. FCA-compliant. Deployed in 6 weeks.")}`,
+        width: 1200, height: 630,
+        alt: "SupraCloud — Enterprise AI Agent Development",
+      },
+      { url: "/og-image.jpg", width: 1200, height: 630, alt: "SupraCloud" },
+    ],
   },
   twitter: {
     card:        "summary_large_image",
@@ -113,6 +120,18 @@ const jsonLd = {
       areaServed:    "GB",
       serviceType:   "Enterprise AI Development",
     },
+    {
+      "@type": "FAQPage",
+      "@id":   `${BASE_URL}/#faq`,
+      mainEntity: [
+        { "@type": "Question", name: "How does SupraCloud ensure my customer data never leaves our environment?", acceptedAnswer: { "@type": "Answer", text: "Every SupraCloud agent runs entirely inside your own AWS or Azure tenant. We deploy the agent runtime using your cloud credentials, your KMS keys, and your network policies. We have no access to your data post-deployment." } },
+        { "@type": "Question", name: "Are your agents compliant with FCA regulations?", acceptedAnswer: { "@type": "Answer", text: "Our agents are designed with FCA alignment from the architecture stage: every decision is logged with timestamp, rationale, confidence score, and the data sources used. We produce explainability outputs suitable for SMCR accountability requirements and Consumer Duty obligations." } },
+        { "@type": "Question", name: "How long does a typical deployment take?", acceptedAnswer: { "@type": "Answer", text: "A contained single-agent deployment typically runs 4–6 weeks from discovery call to production go-live. Multi-agent platforms typically run 3–6 months." } },
+        { "@type": "Question", name: "Can you integrate with our existing core banking systems or ERP?", acceptedAnswer: { "@type": "Answer", text: "Yes — API-first integration is central to our architecture. We do not require a rip-and-replace of any existing systems. Common integrations include core banking APIs, Salesforce, ServiceNow, and proprietary internal tools via REST or GraphQL." } },
+        { "@type": "Question", name: "Do the agents improve over time without manual intervention?", acceptedAnswer: { "@type": "Answer", text: "Yes. Every agent includes structured feedback loops: interaction outcomes, CSAT scores, escalation patterns, and resolution rates are fed back into a fine-tuning pipeline. Deflection rates typically improve 8–15% per quarter without manual retraining." } },
+        { "@type": "Question", name: "What cloud providers do you support?", acceptedAnswer: { "@type": "Answer", text: "Primarily AWS and Microsoft Azure. We support Azure OpenAI Service, AWS Bedrock, and on-premises model endpoints for highest-sensitivity workloads." } },
+      ],
+    },
   ],
 };
 
@@ -133,6 +152,7 @@ export default function RootLayout({
       >
         <AIStateProvider>
           <BootOverlay />
+          <ScrollProgressBar />
           <Providers>
             <ClientShell>{children}</ClientShell>
             <MascotVoiceHub />
