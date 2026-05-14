@@ -12,7 +12,7 @@ const TIERS = [
     id:       "core",
     name:     "Core",
     badge:    null,
-    tagline:  "One agent, one regulated workflow — fully deployed in your cloud tenant.",
+    tagline:  "Cut support costs with a single AI agent, live in your cloud tenant within 6 weeks.",
     color:    "#00F5FF",
     variant:  "default" as const,
     features: [
@@ -35,7 +35,7 @@ const TIERS = [
     id:       "advanced",
     name:     "Advanced",
     badge:    "Most Popular",
-    tagline:  "Multiple coordinated AI agents with advanced analytics and quarterly fine-tuning.",
+    tagline:  "Five coordinated agents, real-time deflection analytics, and quarterly fine-tuning — built for scale.",
     color:    "#8B5CF6",
     variant:  "purple" as const,
     features: [
@@ -58,7 +58,7 @@ const TIERS = [
     id:       "platform",
     name:     "Platform",
     badge:    "Enterprise",
-    tagline:  "A bespoke, fully managed AI platform built around your environment and SLAs.",
+    tagline:  "Unlimited agents, dedicated success engineering, and custom SLAs — built entirely to your specification.",
     color:    "#10B981",
     variant:  "default" as const,
     features: [
@@ -254,11 +254,11 @@ export function EnterprisePlans() {
             }}
           >
             <Building2 size={11} />
-            Get Started
+            Solutions
           </div>
 
           <h2 className="text-3xl md:text-[44px] font-bold text-white leading-tight mb-4">
-            Select the right edition{" "}
+            Choose the right edition{" "}
             <span
               style={{
                 background:           "linear-gradient(135deg, #8B5CF6 0%, #00F5FF 100%)",
@@ -267,7 +267,7 @@ export function EnterprisePlans() {
                 backgroundClip:       "text",
               }}
             >
-              for your organisation.
+              for your organization.
             </span>
           </h2>
 

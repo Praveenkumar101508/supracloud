@@ -195,14 +195,14 @@ export default function HomePage() {
             Systems operational · UK-Based · Engineer-led
           </motion.div>
 
-          {/* Primary headline — benefit-first */}
+          {/* Primary headline — outcome-first */}
           <motion.h1
             className="text-4xl sm:text-5xl md:text-7xl font-black leading-[1.05] tracking-tight mb-4"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.35, duration: 0.65 }}
           >
-            <span className="text-white">Cut Support Costs.</span>
+            <span className="text-white">Autonomous AI Agents</span>
             <br />
             <span
               style={{
@@ -213,7 +213,7 @@ export default function HomePage() {
                 filter: "drop-shadow(0 0 24px rgba(0,245,255,0.3))",
               }}
             >
-              Deploy in 6 Weeks.
+              Built for Regulated Enterprise.
             </span>
           </motion.h1>
 
@@ -224,7 +224,7 @@ export default function HomePage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.45, duration: 0.6 }}
           >
-            Autonomous AI for <TypewriterWord />
+            Powering <TypewriterWord />
           </motion.div>
 
           {/* Sub */}
@@ -234,9 +234,9 @@ export default function HomePage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.55, duration: 0.6 }}
           >
-            Production-grade autonomous AI agents built inside your cloud tenant —
+            AI infrastructure deployed entirely inside your cloud tenant —
             FCA-compliant by design, self-improving from day one, zero data exfiltration.
-            Your engineer is on the first call.
+            An engineer joins your first call.
           </motion.p>
 
           {/* CTAs */}
