@@ -25,9 +25,12 @@ const ROUTE_LIMITS: Record<string, number> = {
   "/api/agent/lead":       5,
   "/api/agent/knowledge": 30,
   "/api/contact":          5,
+  "/api/apply":            5,
   "/api/book":            10,
   "/api/booking":         10,
   "/api/checkout":        10,
+  "/api/nova/session":    60,
+  "/api/nova/feedback":   20,
 };
 
 type WindowEntry = { count: number; windowStart: number };

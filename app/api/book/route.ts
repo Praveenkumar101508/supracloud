@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { randomUUID } from "crypto";
+import { z } from "zod";
+import { sanitiseText } from "@/lib/sanitize";
+import { rateLimit } from "@/lib/rateLimiter";
 
 const OWNER_EMAIL = "rk@supracloud.co.uk";
 const FROM_EMAIL =
@@ -127,7 +130,7 @@ function clientHtml(d: {
         </td></tr>
 
         <tr><td style="padding:36px 40px 0;">
-          <p style="margin:0 0 20px;font-size:16px;color:#1e293b;line-height:1.5;">Hi ${d.firstName},</p>
+          <p style="margin:0 0 20px;font-size:16px;color:#1e293b;line-height:1.5;">Hi ${esc(d.firstName)},</p>
           <p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.7;">
             Thanks for reaching out to SupraCloud. I&rsquo;ve received your discovery call request and will confirm a time with you within <strong style="color:#0A192F;">1 business day</strong>.
           </p>
@@ -154,19 +157,19 @@ function clientHtml(d: {
               <table width="100%" cellpadding="0" cellspacing="0">
                 <tr>
                   <td style="padding:5px 0;font-size:13px;color:#94a3b8;width:38%;">Name</td>
-                  <td style="padding:5px 0;font-size:13px;font-weight:600;color:#1e293b;">${d.name}</td>
+                  <td style="padding:5px 0;font-size:13px;font-weight:600;color:#1e293b;">${esc(d.name)}</td>
                 </tr>
                 ${d.company ? `<tr>
                   <td style="padding:5px 0;font-size:13px;color:#94a3b8;">Organisation</td>
-                  <td style="padding:5px 0;font-size:13px;font-weight:600;color:#1e293b;">${d.company}</td>
+                  <td style="padding:5px 0;font-size:13px;font-weight:600;color:#1e293b;">${esc(d.company)}</td>
                 </tr>` : ""}
                 <tr>
                   <td style="padding:5px 0;font-size:13px;color:#94a3b8;">Topic</td>
-                  <td style="padding:5px 0;font-size:13px;font-weight:600;color:#1e293b;">${d.inquiryType}</td>
+                  <td style="padding:5px 0;font-size:13px;font-weight:600;color:#1e293b;">${esc(d.inquiryType)}</td>
                 </tr>
                 <tr>
                   <td style="padding:5px 0;font-size:13px;color:#94a3b8;vertical-align:top;">Preferred times</td>
-                  <td style="padding:5px 0;font-size:13px;font-weight:600;color:#1e293b;">${d.slots.replace(/\n/g, "<br>")}</td>
+                  <td style="padding:5px 0;font-size:13px;font-weight:600;color:#1e293b;">${esc(d.slots).replace(/\n/g, "<br>")}</td>
                 </tr>
               </table>
             </td></tr>
@@ -240,18 +243,18 @@ function ownerHtml(d: {
 
         <tr><td style="background:#0A192F;padding:20px 28px;">
           <p style="margin:0 0 2px;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#10B981;">NEW BOOKING</p>
-          <p style="margin:0;font-size:18px;font-weight:800;color:#fff;">${d.name}${d.company ? ` — ${d.company}` : ""}</p>
+          <p style="margin:0;font-size:18px;font-weight:800;color:#fff;">${esc(d.name)}${d.company ? ` — ${esc(d.company)}` : ""}</p>
         </td></tr>
 
         <tr><td style="padding:24px 28px;">
           <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:20px;">
             ${[
-              ["Topic", d.inquiryType],
-              ["Name", d.name],
-              ["Company", d.company || "—"],
-              ["Email", `<a href="mailto:${d.email}" style="color:#10B981;">${d.email}</a>`],
-              ["Phone", d.phone || "—"],
-              ["Preferred slots", d.slots.replace(/\n/g, "<br>")],
+              ["Topic", esc(d.inquiryType)],
+              ["Name", esc(d.name)],
+              ["Company", esc(d.company) || "—"],
+              ["Email", `<a href="mailto:${esc(d.email)}" style="color:#10B981;">${esc(d.email)}</a>`],
+              ["Phone", esc(d.phone) || "—"],
+              ["Preferred slots", esc(d.slots).replace(/\n/g, "<br>")],
             ].map(([k, v]) => `
             <tr style="border-bottom:1px solid #f1f5f9;">
               <td style="padding:9px 0;font-size:12px;color:#94a3b8;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;width:34%;vertical-align:top;">${k}</td>
@@ -262,7 +265,7 @@ function ownerHtml(d: {
           ${d.message ? `
           <div style="background:#f8fafc;border-left:3px solid #10B981;border-radius:0 8px 8px 0;padding:14px 18px;margin-bottom:20px;">
             <p style="margin:0 0 6px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#94a3b8;">Requirements</p>
-            <p style="margin:0;font-size:14px;color:#374151;line-height:1.6;">${d.message}</p>
+            <p style="margin:0;font-size:14px;color:#374151;line-height:1.6;">${esc(d.message)}</p>
           </div>` : ""}
 
           <table cellpadding="0" cellspacing="0">
@@ -293,18 +296,68 @@ function ownerHtml(d: {
 </html>`;
 }
 
+// ── Request schema ─────────────────────────────────────────────────────────────
+
+const INQUIRY_TYPES = [
+  "Banking AI Agent",
+  "Retail AI Agent",
+  "IT Staffing",
+  "Cloud Architecture",
+  "Enterprise Consultation",
+  "Other",
+] as const;
+
+const BookSchema = z.object({
+  name:        z.string().min(1, "Name is required.").max(100),
+  email:       z.string().email("Valid email is required.").max(200),
+  company:     z.string().max(200).optional().default(""),
+  phone:       z.string().max(30).optional().default(""),
+  inquiryType: z.enum(INQUIRY_TYPES, { message: "Invalid inquiry type." }),
+  slots:       z.string().min(1, "At least one slot is required.").max(500),
+  message:     z.string().max(2000).optional().default(""),
+});
+
+/** Escape HTML entities to prevent XSS in email HTML. */
+function esc(value: string): string {
+  return value
+    .replace(/&/g,  "&amp;")
+    .replace(/</g,  "&lt;")
+    .replace(/>/g,  "&gt;")
+    .replace(/"/g,  "&quot;")
+    .replace(/'/g,  "&#x27;");
+}
+
 //  Route handler
 export async function POST(req: NextRequest) {
-  try {
-    const body = await req.json();
-    const { name, company, email, phone, inquiryType, slots, message } = body;
+  const rl = await rateLimit(req);
+  if (!rl.success) return rl.response!;
 
-    if (!name || !email || !inquiryType || !slots) {
-      return NextResponse.json(
-        { success: false, error: "Missing required fields" },
-        { status: 400 }
-      );
-    }
+  let rawBody: unknown;
+  try {
+    rawBody = await req.json();
+  } catch {
+    return NextResponse.json({ success: false, error: "Invalid JSON body." }, { status: 400 });
+  }
+
+  const parsed = BookSchema.safeParse(rawBody);
+  if (!parsed.success) {
+    return NextResponse.json(
+      { success: false, error: "Invalid booking data.", details: parsed.error.flatten().fieldErrors },
+      { status: 400 }
+    );
+  }
+
+  try {
+    const d = parsed.data;
+
+    // Sanitise free-text fields
+    const name        = sanitiseText(d.name, 100);
+    const company     = sanitiseText(d.company, 200);
+    const phone       = sanitiseText(d.phone, 30);
+    const slots       = sanitiseText(d.slots, 500);
+    const message     = sanitiseText(d.message, 2000);
+    const inquiryType = d.inquiryType; // enum-validated
+    const email       = d.email;       // RFC-validated by Zod
 
     const firstName = name.trim().split(" ")[0];
 
@@ -328,41 +381,25 @@ export async function POST(req: NextRequest) {
 
     // 1 — Confirmation email to prospect
     await resend.emails.send({
-      from: FROM_EMAIL,
-      to: email,
+      from:    FROM_EMAIL,
+      to:      email,
       replyTo: OWNER_EMAIL,
       subject: "Your SupraCloud discovery call request — meet link inside",
-      html: clientHtml({
-        name,
-        firstName,
-        company: company || "",
-        inquiryType,
-        slots,
-        meetLink,
-      }),
+      html:    clientHtml({ name, firstName, company, inquiryType, slots, meetLink }),
     });
 
     // 2 — Notification to owner
     await resend.emails.send({
-      from: FROM_EMAIL,
-      to: OWNER_EMAIL,
+      from:    FROM_EMAIL,
+      to:      OWNER_EMAIL,
       replyTo: email,
-      subject: `New booking: ${name}${company ? ` (${company})` : ""} — ${inquiryType}`,
-      html: ownerHtml({
-        name,
-        company: company || "",
-        email,
-        phone: phone || "",
-        inquiryType,
-        slots,
-        message: message || "",
-        meetLink,
-      }),
+      subject: `New booking: ${esc(name)}${company ? ` (${esc(company)})` : ""} — ${esc(inquiryType)}`,
+      html:    ownerHtml({ name, company, email, phone, inquiryType, slots, message, meetLink }),
     });
 
     return NextResponse.json({ success: true });
-  } catch (err) {
-    const message = err instanceof Error ? err.message : "Unknown error";
-    return NextResponse.json({ success: false, error: message }, { status: 500 });
+  } catch {
+    console.error("[Book] Unexpected error");
+    return NextResponse.json({ success: false, error: "Failed to process booking. Please try again." }, { status: 500 });
   }
 }
