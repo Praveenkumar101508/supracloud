@@ -12,7 +12,7 @@ const TIERS = [
     id:       "core",
     name:     "Core",
     badge:    null,
-    tagline:  "Single-domain autonomous agent for one regulated use case.",
+    tagline:  "One agent, one regulated workflow — fully deployed in your cloud tenant.",
     color:    "#00F5FF",
     variant:  "default" as const,
     features: [
@@ -29,53 +29,53 @@ const TIERS = [
     ],
     cta:          "Explore Core",
     ctaVariant:   "outline" as const,
-    secondaryCta: "Request Custom Quote",
+    secondaryCta: "Schedule a Discovery Call",
   },
   {
     id:       "advanced",
     name:     "Advanced",
     badge:    "Most Popular",
-    tagline:  "Multi-agent platform for enterprise teams at scale.",
+    tagline:  "Multiple coordinated AI agents with advanced analytics and quarterly fine-tuning.",
     color:    "#8B5CF6",
     variant:  "purple" as const,
     features: [
-      { label: "Up to 5 autonomous AI agents",           included: true  },
-      { label: "RAG pipeline + knowledge base",          included: true  },
-      { label: "FCA/GDPR full compliance documentation", included: true  },
-      { label: "Deployment in your cloud tenant",        included: true  },
-      { label: "Advanced analytics + deflection reports",included: true  },
-      { label: "Bi-weekly performance reviews",          included: true  },
+      { label: "Up to 5 autonomous AI agents",               included: true  },
+      { label: "RAG pipeline + knowledge base",              included: true  },
+      { label: "FCA/GDPR full compliance documentation",     included: true  },
+      { label: "Deployment in your cloud tenant",            included: true  },
+      { label: "Advanced analytics + deflection reports",    included: true  },
+      { label: "Bi-weekly performance reviews",              included: true  },
       { label: "Human escalation paths + confidence tuning", included: true  },
-      { label: "Multi-agent orchestration",              included: true  },
-      { label: "Quarterly fine-tuning pipeline",         included: true  },
-      { label: "Embedded success engineer",              included: false },
+      { label: "Multi-agent orchestration",                  included: true  },
+      { label: "Quarterly fine-tuning pipeline",             included: true  },
+      { label: "Embedded success engineer",                  included: false },
     ],
     cta:          "Get Started with Advanced",
     ctaVariant:   "purple" as const,
-    secondaryCta: "Request Custom Quote",
+    secondaryCta: "Schedule a Discovery Call",
   },
   {
     id:       "platform",
     name:     "Platform",
     badge:    "Enterprise",
-    tagline:  "Unlimited agents, custom SLAs, white-glove delivery.",
+    tagline:  "A bespoke, fully managed AI platform built around your environment and SLAs.",
     color:    "#10B981",
     variant:  "default" as const,
     features: [
-      { label: "Unlimited autonomous AI agents",         included: true  },
-      { label: "Custom RAG + vector store architecture", included: true  },
-      { label: "Full regulatory documentation pack",     included: true  },
-      { label: "Multi-cloud / on-premises deployment",   included: true  },
-      { label: "Real-time SLA monitoring + alerting",    included: true  },
-      { label: "Weekly executive briefings",             included: true  },
+      { label: "Unlimited autonomous AI agents",             included: true  },
+      { label: "Custom RAG + vector store architecture",     included: true  },
+      { label: "Full regulatory documentation pack",         included: true  },
+      { label: "Multi-cloud / on-premises deployment",       included: true  },
+      { label: "Real-time SLA monitoring + alerting",        included: true  },
+      { label: "Weekly executive briefings",                 included: true  },
       { label: "Human escalation paths + confidence tuning", included: true  },
-      { label: "Multi-agent orchestration",              included: true  },
-      { label: "Continuous fine-tuning pipeline",        included: true  },
-      { label: "Embedded success engineer (dedicated)",  included: true  },
+      { label: "Multi-agent orchestration",                  included: true  },
+      { label: "Continuous fine-tuning pipeline",            included: true  },
+      { label: "Embedded success engineer (dedicated)",      included: true  },
     ],
     cta:          "Talk to Sales about Platform",
     ctaVariant:   "outline" as const,
-    secondaryCta: "Request Custom Quote",
+    secondaryCta: "Schedule a Discovery Call",
   },
 ] as const;
 
@@ -151,7 +151,7 @@ function TierCard({ tier, index }: { tier: typeof TIERS[number]; index: number }
           <p className="text-white/40 text-xs leading-relaxed">{tier.tagline}</p>
         </div>
 
-        {/* Pricing block */}
+        {/* Licensing block */}
         <div
           className="mb-6 pb-6 rounded-xl p-4"
           style={{
@@ -163,10 +163,10 @@ function TierCard({ tier, index }: { tier: typeof TIERS[number]; index: number }
             className="text-base font-black mb-0.5"
             style={{ color: tier.color }}
           >
-            Custom Enterprise Pricing
+            Enterprise Licensing
           </p>
           <p className="text-[11px] text-white/35 leading-relaxed">
-            Starting from enterprise scale&nbsp;·&nbsp;Tailored to your deployment
+            Scoped to your environment&nbsp;·&nbsp;No obligation to proceed
           </p>
         </div>
 
@@ -254,12 +254,11 @@ export function EnterprisePlans() {
             }}
           >
             <Building2 size={11} />
-            Platform Editions
+            Get Started
           </div>
 
-          <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">
-            Choose Your
-            <br />
+          <h2 className="text-3xl md:text-[44px] font-bold text-white leading-tight mb-4">
+            Select the right edition{" "}
             <span
               style={{
                 background:           "linear-gradient(135deg, #8B5CF6 0%, #00F5FF 100%)",
@@ -268,38 +267,33 @@ export function EnterprisePlans() {
                 backgroundClip:       "text",
               }}
             >
-              Edition.
+              for your organisation.
             </span>
           </h2>
 
-          <p className="text-white/40 text-base max-w-xl mx-auto mb-8">
+          <p className="text-white/40 text-base max-w-xl mx-auto mb-6">
             Secure, scalable AI agents purpose-built for regulated environments.
             Custom enterprise licensing tailored to your scale and compliance needs.
           </p>
 
-          {/* Differentiator strip */}
+          {/* Trust guarantee — right under subheading */}
           <motion.div
-            className="inline-flex flex-wrap justify-center items-center gap-x-5 gap-y-2 px-6 py-3 rounded-2xl"
-            style={{
-              background: "rgba(0,245,255,0.04)",
-              border:     "1px solid rgba(0,245,255,0.12)",
-            }}
-            initial={{ opacity: 0, scale: 0.97 }}
-            whileInView={{ opacity: 1, scale: 1 }}
+            className="flex justify-center mb-2"
+            initial={{ opacity: 0, y: 8 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
+            transition={{ delay: 0.18 }}
           >
-            {[
-              { icon: Shield, label: "Zero data exfiltration" },
-              { icon: Shield, label: "Full tenant isolation" },
-              { icon: Shield, label: "FCA / GDPR-ready from day one" },
-            ].map(({ icon: Icon, label }, i) => (
-              <span key={label} className="flex items-center gap-1.5 text-xs text-white/55">
-                {i > 0 && <span className="text-white/15 hidden sm:inline">·</span>}
-                <Icon size={11} className="text-[#00F5FF] shrink-0" />
-                {label}
-              </span>
-            ))}
+            <div
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl text-xs text-white/55"
+              style={{
+                background: "rgba(0,245,255,0.04)",
+                border:     "1px solid rgba(0,245,255,0.12)",
+              }}
+            >
+              <Shield size={12} className="text-[#00F5FF] shrink-0" />
+              All editions include full tenant isolation, zero data exfiltration, and FCA/GDPR readiness.
+            </div>
           </motion.div>
         </motion.div>
 
@@ -310,26 +304,6 @@ export function EnterprisePlans() {
           ))}
         </div>
 
-        {/* Edition-wide trust guarantee */}
-        <motion.div
-          className="mt-8 flex justify-center"
-          initial={{ opacity: 0, y: 12 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.35 }}
-        >
-          <div
-            className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl text-xs text-white/55"
-            style={{
-              background: "rgba(0,245,255,0.04)",
-              border:     "1px solid rgba(0,245,255,0.12)",
-            }}
-          >
-            <Shield size={12} className="text-[#00F5FF] shrink-0" />
-            All editions include full tenant isolation, zero data exfiltration, and FCA/GDPR readiness.
-          </div>
-        </motion.div>
-
         {/* Footer note */}
         <motion.div
           className="mt-10 text-center space-y-4"
@@ -339,9 +313,9 @@ export function EnterprisePlans() {
           transition={{ delay: 0.4 }}
         >
           <p className="text-xs text-white/22 max-w-2xl mx-auto leading-relaxed">
-            All plans include deployment inside your cloud tenant, full compliance documentation,
+            All editions include deployment inside your cloud tenant, full compliance documentation,
             engineer-led onboarding, and a dedicated technical point of contact.
-            Pricing is scoped per engagement following an initial discovery call —
+            Licensing is scoped per engagement following an initial discovery call —
             no obligation to proceed.
           </p>
 
