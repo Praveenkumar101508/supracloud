@@ -45,7 +45,6 @@ export const metadata: Metadata = {
   publisher: "SupraCloud",
   icons: {
     icon:    [{ url: "/favicon.ico", sizes: "any" }],
-    apple:   [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
     shortcut: "/favicon.ico",
   },
   openGraph: {
@@ -62,14 +61,13 @@ export const metadata: Metadata = {
         width: 1200, height: 630,
         alt: "SupraCloud — Enterprise AI Agent Development",
       },
-      { url: "/og-image.jpg", width: 1200, height: 630, alt: "SupraCloud" },
     ],
   },
   twitter: {
     card:        "summary_large_image",
     title:       "SupraCloud | Enterprise AI Agents for Banking & Retail",
     description: "Production-grade autonomous AI agents for UK banking and retail. Engineer-led, compliance-native, measurable SLAs.",
-    images:      ["/og-image.jpg"],
+    images:      [`/api/og?title=${encodeURIComponent("Enterprise AI Agents for Banking & Retail")}&subtitle=${encodeURIComponent("FCA-compliant. Zero data exfiltration. Live in 6 weeks.")}`],
     creator:     "@supracloud",
   },
   robots: {
@@ -87,7 +85,7 @@ const jsonLd = {
       "@id":   `${BASE_URL}/#organization`,
       name:    "SupraCloud",
       url:     BASE_URL,
-      logo:    { "@type": "ImageObject", url: `${BASE_URL}/logo.png` },
+      logo:    { "@type": "ImageObject", url: `${BASE_URL}/api/og?tag=Logo` },
       sameAs:  ["https://www.linkedin.com/company/supracloud"],
       contactPoint: [
         { "@type": "ContactPoint", email: "rk@supracloud.co.uk", contactType: "customer service", areaServed: "GB" },
