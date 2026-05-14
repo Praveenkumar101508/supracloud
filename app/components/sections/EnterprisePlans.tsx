@@ -27,7 +27,7 @@ const TIERS = [
       { label: "Continuous fine-tuning pipeline",        included: false },
       { label: "Embedded success engineer",              included: false },
     ],
-    cta:          "Contact Sales Team",
+    cta:          "Explore Core",
     ctaVariant:   "outline" as const,
     secondaryCta: "Request Custom Quote",
   },
@@ -50,7 +50,7 @@ const TIERS = [
       { label: "Quarterly fine-tuning pipeline",         included: true  },
       { label: "Embedded success engineer",              included: false },
     ],
-    cta:          "Contact Sales Team",
+    cta:          "Get Started with Advanced",
     ctaVariant:   "purple" as const,
     secondaryCta: "Request Custom Quote",
   },
@@ -73,7 +73,7 @@ const TIERS = [
       { label: "Continuous fine-tuning pipeline",        included: true  },
       { label: "Embedded success engineer (dedicated)",  included: true  },
     ],
-    cta:          "Contact Sales Team",
+    cta:          "Talk to Sales about Platform",
     ctaVariant:   "outline" as const,
     secondaryCta: "Request Custom Quote",
   },
@@ -254,11 +254,11 @@ export function EnterprisePlans() {
             }}
           >
             <Building2 size={11} />
-            Enterprise Plans
+            Platform Editions
           </div>
 
           <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">
-            Built for Regulated
+            Choose Your
             <br />
             <span
               style={{
@@ -268,14 +268,13 @@ export function EnterprisePlans() {
                 backgroundClip:       "text",
               }}
             >
-              Enterprise Scale.
+              Edition.
             </span>
           </h2>
 
           <p className="text-white/40 text-base max-w-xl mx-auto mb-8">
-            Purpose-built AI agents with custom pricing based on number of agents,
-            deployment model, volume, and compliance requirements. Our team will
-            prepare a tailored proposal for your organisation.
+            Secure, scalable AI agents purpose-built for regulated environments.
+            Custom enterprise licensing tailored to your scale and compliance needs.
           </p>
 
           {/* Differentiator strip */}
@@ -310,6 +309,26 @@ export function EnterprisePlans() {
             <TierCard key={tier.id} tier={tier} index={i} />
           ))}
         </div>
+
+        {/* Edition-wide trust guarantee */}
+        <motion.div
+          className="mt-8 flex justify-center"
+          initial={{ opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.35 }}
+        >
+          <div
+            className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl text-xs text-white/55"
+            style={{
+              background: "rgba(0,245,255,0.04)",
+              border:     "1px solid rgba(0,245,255,0.12)",
+            }}
+          >
+            <Shield size={12} className="text-[#00F5FF] shrink-0" />
+            All editions include full tenant isolation, zero data exfiltration, and FCA/GDPR readiness.
+          </div>
+        </motion.div>
 
         {/* Footer note */}
         <motion.div
