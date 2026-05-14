@@ -195,14 +195,14 @@ export default function HomePage() {
             Systems operational · UK-Based · Engineer-led
           </motion.div>
 
-          {/* Primary headline — outcome-first */}
+          {/* Primary headline */}
           <motion.h1
             className="text-4xl sm:text-5xl md:text-7xl font-black leading-[1.05] tracking-tight mb-4"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.35, duration: 0.65 }}
           >
-            <span className="text-white">Autonomous AI Agents</span>
+            <span className="text-white">AI Agents That Work</span>
             <br />
             <span
               style={{
@@ -213,7 +213,7 @@ export default function HomePage() {
                 filter: "drop-shadow(0 0 24px rgba(0,245,255,0.3))",
               }}
             >
-              Built for Regulated Enterprise.
+              Inside Your Bank.
             </span>
           </motion.h1>
 
@@ -234,9 +234,9 @@ export default function HomePage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.55, duration: 0.6 }}
           >
-            AI infrastructure deployed entirely inside your cloud tenant —
-            FCA-compliant by design, self-improving from day one, zero data exfiltration.
-            An engineer joins your first call.
+            Deploy secure, self-improving autonomous agents in your own cloud tenant.
+            FCA-ready, zero data exfiltration, full audit trail.
+            First results in weeks.
           </motion.p>
 
           {/* CTAs */}
